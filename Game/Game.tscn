@@ -1,0 +1,18 @@
+[gd_scene load_steps=8 format=3 uid="uid://de7go8qepykmg"]
+
+[ext_resource type="Script" path="res://Game/Game.cs" id="1_ke53x"]
+[ext_resource type="PackedScene" uid="uid://cis6rtdjl57pd" path="res://Objects/Player.tscn" id="2_eroco"]
+[ext_resource type="PackedScene" uid="uid://8q6rfd32ru7s" path="res://Objects/Wall.tscn" id="3_8kfx1"]
+[ext_resource type="PackedScene" uid="uid://bmu6wpcfumpuy" path="res://Objects/Upstair.tscn" id="4_xtmbj"]
+[ext_resource type="PackedScene" uid="uid://bycgfb6su03wp" path="res://Objects/Downstair.tscn" id="5_k38gh"]
+[ext_resource type="PackedScene" uid="uid://c0c6hqvqgotx1" path="res://Objects/Ground.tscn" id="6_pphtt"]
+[ext_resource type="PackedScene" uid="uid://dc7dsj1p1381e" path="res://Objects/Door.tscn" id="7_7jmva"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_ke53x")
+packedPlayer = ExtResource("2_eroco")
+packedWall = ExtResource("3_8kfx1")
+packedUpstair = ExtResource("4_xtmbj")
+packedDownstair = ExtResource("5_k38gh")
+packedGround = ExtResource("6_pphtt")
+packedDoor = ExtResource("7_7jmva")
