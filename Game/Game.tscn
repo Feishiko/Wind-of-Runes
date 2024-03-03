@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://de7go8qepykmg"]
+[gd_scene load_steps=9 format=3 uid="uid://de7go8qepykmg"]
 
 [ext_resource type="Script" path="res://Game/Game.cs" id="1_ke53x"]
 [ext_resource type="PackedScene" uid="uid://cis6rtdjl57pd" path="res://Objects/Player.tscn" id="2_eroco"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bycgfb6su03wp" path="res://Objects/Downstair.tscn" id="5_k38gh"]
 [ext_resource type="PackedScene" uid="uid://c0c6hqvqgotx1" path="res://Objects/Ground.tscn" id="6_pphtt"]
 [ext_resource type="PackedScene" uid="uid://dc7dsj1p1381e" path="res://Objects/Door.tscn" id="7_7jmva"]
+[ext_resource type="PackedScene" uid="uid://d4bjw44aqs8j" path="res://Objects/Rat.tscn" id="8_7o4qd"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_ke53x")
@@ -16,3 +17,4 @@ packedUpstair = ExtResource("4_xtmbj")
 packedDownstair = ExtResource("5_k38gh")
 packedGround = ExtResource("6_pphtt")
 packedDoor = ExtResource("7_7jmva")
+packedRat = ExtResource("8_7o4qd")
