@@ -1,9 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cis6rtdjl57pd"]
+[gd_scene load_steps=2 format=3 uid="uid://e2vrde0skrku"]
 
-[ext_resource type="Script" path="res://Objects/Player.cs" id="1_06q1j"]
+[ext_resource type="Script" path="res://Objects/Corpse.cs" id="1_cden5"]
 
-[node name="Player" type="Node2D"]
-script = ExtResource("1_06q1j")
+[node name="Corpse" type="Node2D"]
+script = ExtResource("1_cden5")
 
 [node name="Label" type="Label" parent="."]
 texture_filter = 1
@@ -19,8 +19,6 @@ offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 16
-text = "@"
+text = "%"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Camera2D" type="Camera2D" parent="."]

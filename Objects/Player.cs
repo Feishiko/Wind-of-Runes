@@ -70,13 +70,19 @@ public partial class Player : BaseObject
 				return;
 			}
 		}
+		// Attack
+		if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 3] is Enemy enemy)
+		{
+			enemy.hitPoint -= strength;
+			return;
+		}
 		// Is Ground
 		if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 0] is Ground)
 		{
-			game.level[gridX, gridY, 2] = null;
+			game.level[gridX, gridY, 3] = null;
 			gridX += (int)dir.X;
 			gridY += (int)dir.Y;
-			game.level[gridX, gridY, 2] = this;
+			game.level[gridX, gridY, 3] = this;
 		}
 	}
 }

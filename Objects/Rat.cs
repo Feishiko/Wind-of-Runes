@@ -28,14 +28,20 @@ public partial class Rat : Enemy
 
 	public override void _Process(double delta)
 	{
+		Visible = isVisible;
+		if (hitPoint <= 0)
+		{
+			game.RemoveEnemy(this);
+		}
 	}
 
-	public void TurnPassed()
+	public override void TurnPassed()
 	{
+		GD.Print("turn passed");
 		var newPos = Behavior.BFS(gridX, gridY, game.player.gridX, game.player.gridY, game);
-		game.level[gridX, gridY, 2] = null;
+		game.level[gridX, gridY, 3] = null;
 		gridX = newPos.X;
 		gridY = newPos.Y;
-		game.level[gridX, gridY, 2] = this;
+		game.level[gridX, gridY, 3] = this;
 	}
 }

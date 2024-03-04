@@ -8,6 +8,13 @@ public static class Behavior
 	public static Vector2I BFS(int startPosX, int startPosY, int endPosX, int endPosY, Game game)
 	{
 		int[,] paths = new int[game.LevelWidthGet(), game.LevelHeightGet()];
+		for (var i = 0; i < game.LevelWidthGet(); i++)
+		{
+			for (var j = 0; j < game.LevelHeightGet(); j++)
+			{
+				paths[j, i] = 0;
+			}
+		}
 		Stack<Vector2I> stackPos = new Stack<Vector2I>();
 		Vector2I currentPos = new Vector2I();
 		paths[endPosX, endPosY] = 10; // Start Diffuse
@@ -26,22 +33,10 @@ public static class Behavior
 				return door.isOpen;
 			}
 
-			// Enemy
-			// if (game.level[pos.X, pos.Y, 2] is Enemy)
-			// {
-			// 	return false;
-			// }
-
-			// Player
-			// if (game.level[pos.X, pos.Y, 2] is Player)
-			// {
-			// 	return false;
-			// }
-
 			return true;
 		};
 		// 8-dir Diffuse
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 300; i++)
 		{
 			if (stackPos.TryPop(out currentPos))
 			{
@@ -76,7 +71,18 @@ public static class Behavior
 			{
 				if (paths[startPosX + i, startPosY + j] == paths[startPosX, startPosY] - 1)
 				{
-					return new Vector2I(startPosX + i, startPosY + j);
+					// for (var y = 0; y < game.LevelHeightGet(); y++)
+					// {
+					// 	for (var x = 0; x < game.LevelWidthGet(); x++)
+					// 	{
+					// 		GD.PrintRaw($"{paths[x, y]},");
+					// 	}
+					// 	GD.PrintRaw("\n");
+					// }
+					if (game.level[startPosX + i, startPosY + j, 3] is not Player && game.level[startPosX + i, startPosY + j, 3] is not Enemy)
+					{
+						return new Vector2I(startPosX + i, startPosY + j);
+					}
 				}
 			}
 		}

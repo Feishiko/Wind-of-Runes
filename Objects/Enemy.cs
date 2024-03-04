@@ -23,4 +23,9 @@ public partial class Enemy : BaseObject
 	public override void _Process(double delta)
 	{
 	}
+
+	public virtual void TurnPassed()
+	{
+		GD.Print("SayHI");
+	}
 }

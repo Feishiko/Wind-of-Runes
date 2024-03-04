@@ -18,16 +18,20 @@ public partial class Game : Node2D
 	private PackedScene packedDoor;
 	[Export]
 	private PackedScene packedRat;
+	[Export]
+	private PackedScene packedCorpse;
 	public Player player;
 	const int levelWidth = 40;
 	const int levelHeight = 40;
 	// Level Generator
-	public BaseObject[,,] level = new BaseObject[levelWidth, levelHeight, 3];
+	// 0->Ground/Wall 1->Wall/Stairs 2->Dropitems 3->Creatures
+	public BaseObject[,,] level = new BaseObject[levelWidth, levelHeight, 4];
 	private int[,] roomSpace = new int[levelWidth * levelHeight, 2];
 	// Level Info
 	public int floor = 1;
 	// tmp
 	private Font font = new Godot.SystemFont();
+	private Enemy[] enemyList = new Enemy[200];
 	public override void _Ready()
 	{
 		player = packedPlayer.Instantiate<Player>();
@@ -91,24 +95,24 @@ public partial class Game : Node2D
 					}
 					else
 					{
-						// item.Visible = false;
+						item.Visible = false;
 					}
 				}
 			}
 		}
 	}
 
-    public override void _Draw()
-    {
-        DrawStringOutline(font, new Vector2(10, 600),
-		$"{player.name} {player.species} HitPoint: {player.hitPoint} Level: {player.level} Gender: {player.gender}", HorizontalAlignment.Left, -1, 16, 1);
-		DrawStringOutline(font, new Vector2(10, 620),
-		$"Str: {player.strength} Agi: {player.agility} Int: {player.intelligence} Tou: {player.toughness} AV: {player.AV} DV: {player.DV}", HorizontalAlignment.Left, -1, 16, 1);
-    }
-
-    public BaseObject[,,] TerrianGenerate(int roomIter, int minWidth, int minHeight, int maxWidth, int maxHeight, int roomType = 0)
+	public override void _Draw()
 	{
-		var level = new BaseObject[levelWidth, levelHeight, 3];
+		// DrawStringOutline(font, new Vector2(10, 600),
+		// $"{player.name} {player.species} HitPoint: {player.hitPoint} Level: {player.level} Gender: {player.gender}", HorizontalAlignment.Left, -1, 16, 1);
+		// DrawStringOutline(font, new Vector2(10, 620),
+		// $"Str: {player.strength} Agi: {player.agility} Int: {player.intelligence} Tou: {player.toughness} AV: {player.AV} DV: {player.DV}", HorizontalAlignment.Left, -1, 16, 1);
+	}
+
+	public BaseObject[,,] TerrianGenerate(int roomIter, int minWidth, int minHeight, int maxWidth, int maxHeight, int roomType = 0)
+	{
+		var level = new BaseObject[levelWidth, levelHeight, 4];
 
 		// Bottom
 		// Add Wall
@@ -166,9 +170,13 @@ public partial class Game : Node2D
 							var someRandom = new Random();
 							if (someRandom.Next(100) < 2)
 							{
-								level[xPos, yPos, 2] = packedRat.Instantiate<Rat>();
-								level[xPos, yPos, 2].gridX = xPos;
-								level[xPos, yPos, 2].gridY = yPos;
+								level[xPos, yPos, 3] = packedRat.Instantiate<Rat>();
+								if (level[xPos, yPos, 3] is Enemy enemy)
+								{
+									AddEnemy(enemy);
+								}
+								level[xPos, yPos, 3].gridX = xPos;
+								level[xPos, yPos, 3].gridY = yPos;
 							}
 
 							for (var space = 0; space < levelWidth * levelHeight; space++)
@@ -212,13 +220,6 @@ public partial class Game : Node2D
 				};
 				for (var horizontal = 0; horizontal <= Math.Abs(lengthX); horizontal++)
 				{
-					// // GD.Print(isDoor);
-					// // GD.Print(level[currentRoomX + horizontal * Math.Sign(lengthX), currentRoomY, 0] is Wall);
-					// level[currentRoomX + horizontal * Math.Sign(lengthX), currentRoomY, 0] =
-					// // !IsInRoom(currentRoomX + horizontal * Math.Sign(lengthX), currentRoomY) &&
-					// level[currentRoomX + horizontal * Math.Sign(lengthX), currentRoomY, 0] is Wall ?
-					// isDoor ? this.packedGround.Instantiate<Ground>() : DoorCreate()
-					// : level[currentRoomX + horizontal * Math.Sign(lengthX), currentRoomY, 0];
 					if (level[currentRoomX + horizontal * Math.Sign(lengthX), currentRoomY, 0] is Wall)
 					{
 						if (isDoor)
@@ -284,27 +285,6 @@ public partial class Game : Node2D
 						level[previousRoomX, previousRoomY + vertical * Math.Sign(lengthY), 0].gridY = previousRoomY + vertical * Math.Sign(lengthY);
 
 					}
-
-					// Create another door
-					// if (isDoor)
-					// {
-					// 	if (isInRoom == false && IsInRoom(previousRoomX, previousRoomY + vertical * Math.Sign(lengthY)))
-					// 	{
-					// 		isInRoom = true;
-					// 		level[previousRoomX, previousRoomY + vertical * Math.Sign(lengthY) - Math.Sign(lengthY), 0] =
-					// 		this.packedDoor.Instantiate<Door>();
-					// 		level[previousRoomX, previousRoomY + vertical * Math.Sign(lengthY) - Math.Sign(lengthY), 0].Position =
-					// 		new Vector2(previousRoomX * 16, (previousRoomY + vertical * Math.Sign(lengthY) - Math.Sign(lengthY)) * 16);
-					// 	}
-					// 	if (isInRoom == true && !IsInRoom(previousRoomX, previousRoomY + vertical * Math.Sign(lengthY)))
-					// 	{
-					// 		isInRoom = false;
-					// 		level[previousRoomX, previousRoomY + vertical * Math.Sign(lengthY), 0] =
-					// 		this.packedDoor.Instantiate<Door>();
-					// 		level[previousRoomX, previousRoomY + vertical * Math.Sign(lengthY), 0].Position =
-					// 		new Vector2(previousRoomX * 16, (previousRoomY + vertical * Math.Sign(lengthY)) * 16);
-					// 	}
-					// }
 				}
 			}
 			// Add Stairs and Player
@@ -313,20 +293,14 @@ public partial class Game : Node2D
 				level[currentRoomX, currentRoomY, 1] = packedDownstair.Instantiate<Downstair>();
 				level[currentRoomX, currentRoomY, 1].gridX = currentRoomX;
 				level[currentRoomX, currentRoomY, 1].gridY = currentRoomY;
-				level[currentRoomX, currentRoomY, 2] = packedPlayer.Instantiate<Player>();
-				level[currentRoomX, currentRoomY, 2].gridX = currentRoomX;
-				level[currentRoomX, currentRoomY, 2].gridY = currentRoomY;
-				if (level[currentRoomX, currentRoomY, 2] is Player player)
+				level[currentRoomX, currentRoomY, 3] = packedPlayer.Instantiate<Player>();
+				level[currentRoomX, currentRoomY, 3].gridX = currentRoomX;
+				level[currentRoomX, currentRoomY, 3].gridY = currentRoomY;
+				if (level[currentRoomX, currentRoomY, 3] is Player player)
 				{
 					this.player = player;
 				}
 			}
-			// if (!isUpstair && previousRoomX != -1)
-			// {
-			// 	level[currentRoomX, currentRoomY, 1] = packedUpstair.Instantiate<Upstair>();
-			// 	level[currentRoomX, currentRoomY, 1].Position = new Vector2(currentRoomX * 16, currentRoomY * 16);
-			// 	isUpstair = true;
-			// }
 
 			previousRoomX = randomPosX + Even(randomSizeX) / 2;
 			previousRoomY = randomPosY + Even(randomSizeY) / 2;
@@ -359,17 +333,45 @@ public partial class Game : Node2D
 		return levelHeight;
 	}
 
+	public void AddEnemy(Enemy enemy)
+	{
+		for (var iter = 0; iter < 200; iter++)
+		{
+			if (enemyList[iter] == null)
+			{
+				GD.Print("Some Enemy Has been added");
+				enemyList[iter] = enemy;
+				break;
+			}
+		}
+	}
+
+	public void RemoveEnemy(Enemy enemy)
+	{
+		for (var iter = 0; iter < 200; iter++)
+		{
+			if (enemyList[iter] == enemy)
+			{
+				enemyList[iter] = null;
+				level[enemy.gridX, enemy.gridY, 3] = null;
+				level[enemy.gridX, enemy.gridY, 2] = packedCorpse.Instantiate<Corpse>();
+				level[enemy.gridX, enemy.gridY, 2].gridX = enemy.gridX;
+				level[enemy.gridX, enemy.gridY, 2].gridY = enemy.gridY;
+				level[enemy.gridX, enemy.gridY, 2].Position = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+				AddChild(level[enemy.gridX, enemy.gridY, 2]);
+				enemy.QueueFree();
+				// TODO: Add some LOG
+			}
+		}
+	}
+
 	public void TurnPassed()
 	{
-		// Add function one by one
-		foreach (var item in level)
+		for (var iter = 0; iter < 200; iter++)
 		{
-			if (item != null)
+			if (enemyList[iter] != null)
 			{
-				if (item is Rat rat)
-				{
-					rat.TurnPassed();
-				}
+				enemyList[iter].TurnPassed();
 			}
 		}
 	}
