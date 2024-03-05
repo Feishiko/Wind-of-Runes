@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0c6hqvqgotx1"]
+[gd_scene load_steps=3 format=3 uid="uid://c0c6hqvqgotx1"]
 
 [ext_resource type="Script" path="res://Objects/Ground.cs" id="1_eii2r"]
+[ext_resource type="Texture2D" uid="uid://bfjwavtb28qvr" path="res://Texture/ground1.png" id="2_xls5a"]
 
 [node name="Ground" type="Node2D"]
+z_index = -2
+texture_filter = 1
 script = ExtResource("1_eii2r")
 
 [node name="Label" type="Label" parent="."]
@@ -22,3 +25,6 @@ theme_override_font_sizes/font_size = 16
 text = "."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_xls5a")

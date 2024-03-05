@@ -1,11 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://d4bjw44aqs8j"]
+[gd_scene load_steps=3 format=3 uid="uid://d4bjw44aqs8j"]
 
 [ext_resource type="Script" path="res://Objects/Rat.cs" id="1_kaxtp"]
+[ext_resource type="Texture2D" uid="uid://chbcnuov2w5qx" path="res://Texture/rat.png" id="2_sr8xq"]
 
 [node name="Rat" type="Node2D"]
+z_index = 1
+texture_filter = 1
 script = ExtResource("1_kaxtp")
 
 [node name="Label" type="Label" parent="."]
+visible = false
 texture_filter = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -22,3 +26,6 @@ theme_override_font_sizes/font_size = 16
 text = "r"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_sr8xq")

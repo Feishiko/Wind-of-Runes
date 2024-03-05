@@ -1,11 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bmu6wpcfumpuy"]
+[gd_scene load_steps=3 format=3 uid="uid://bmu6wpcfumpuy"]
 
 [ext_resource type="Script" path="res://Objects/Upstair.cs" id="1_mh2xe"]
+[ext_resource type="Texture2D" uid="uid://bwdhyiaqgi1tg" path="res://Texture/upstairs.png" id="2_krmh8"]
 
 [node name="Upstair" type="Node2D"]
+z_index = -1
+texture_filter = 1
 script = ExtResource("1_mh2xe")
 
 [node name="Label" type="Label" parent="."]
+visible = false
 texture_filter = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -22,3 +26,6 @@ theme_override_font_sizes/font_size = 16
 text = "<"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_krmh8")

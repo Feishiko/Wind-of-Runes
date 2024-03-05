@@ -1,11 +1,35 @@
-[gd_scene load_steps=2 format=3 uid="uid://cis6rtdjl57pd"]
+[gd_scene load_steps=12 format=3 uid="uid://cis6rtdjl57pd"]
 
 [ext_resource type="Script" path="res://Objects/Player.cs" id="1_06q1j"]
+[ext_resource type="Texture2D" uid="uid://k8ks0q1mon2x" path="res://Texture/humanmale.png" id="2_ou3am"]
+[ext_resource type="Texture2D" uid="uid://tjlrrsx5h1rg" path="res://Texture/humanfemale.png" id="3_iyelh"]
+[ext_resource type="Texture2D" uid="uid://75j455t5s78h" path="res://Texture/koboldmale.png" id="4_0g6lq"]
+[ext_resource type="Texture2D" uid="uid://dyuign34kr7ee" path="res://Texture/koboldfemale.png" id="5_gpxfv"]
+[ext_resource type="Texture2D" uid="uid://c3ctpchvw7bsp" path="res://Texture/avianmale.png" id="6_6l8ie"]
+[ext_resource type="Texture2D" uid="uid://cpvb005wl7gn4" path="res://Texture/avianfemale.png" id="7_u5br5"]
+[ext_resource type="Texture2D" uid="uid://cot2bmp7ta7n" path="res://Texture/avalimale.png" id="8_yx8dt"]
+[ext_resource type="Texture2D" uid="uid://dxkmiuik2285y" path="res://Texture/avalifemale.png" id="9_y6ub6"]
+[ext_resource type="Texture2D" uid="uid://bh7uftsriy8x8" path="res://Texture/robotmale.png" id="10_pwi26"]
+[ext_resource type="Texture2D" uid="uid://x58h8k8fwcep" path="res://Texture/robotfemale.png" id="11_y2in2"]
 
 [node name="Player" type="Node2D"]
+z_index = 1
 script = ExtResource("1_06q1j")
+textureHumanMale = ExtResource("2_ou3am")
+textureHumanFemale = ExtResource("3_iyelh")
+textureKoboldMale = ExtResource("4_0g6lq")
+textureKoboldFemale = ExtResource("5_gpxfv")
+textureAvianMale = ExtResource("6_6l8ie")
+textureAvianFemale = ExtResource("7_u5br5")
+textureAvaliMale = ExtResource("8_yx8dt")
+textureAvaliFemale = ExtResource("9_y6ub6")
+textureRobotMale = ExtResource("10_pwi26")
+textureRobotFemale = ExtResource("11_y2in2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
 
 [node name="Label" type="Label" parent="."]
+visible = false
 texture_filter = 1
 anchors_preset = 8
 anchor_left = 0.5

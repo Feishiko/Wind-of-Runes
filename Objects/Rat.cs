@@ -37,7 +37,6 @@ public partial class Rat : Enemy
 
 	public override void TurnPassed()
 	{
-		GD.Print("turn passed");
 		var newPos = Behavior.BFS(gridX, gridY, game.player.gridX, game.player.gridY, game);
 		game.level[gridX, gridY, 3] = null;
 		gridX = newPos.X;

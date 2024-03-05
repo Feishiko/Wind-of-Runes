@@ -1,11 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://dc7dsj1p1381e"]
+[gd_scene load_steps=4 format=3 uid="uid://dc7dsj1p1381e"]
 
 [ext_resource type="Script" path="res://Objects/Door.cs" id="1_6f1wp"]
+[ext_resource type="Texture2D" uid="uid://cekauv4ea53jo" path="res://Texture/woodDoorClose.png" id="2_38u0v"]
+[ext_resource type="Texture2D" uid="uid://bnd8gq34qviay" path="res://Texture/woodDoorOpen.png" id="3_n5eud"]
 
 [node name="Door" type="Node2D"]
+z_index = -1
+texture_filter = 1
 script = ExtResource("1_6f1wp")
+closedDoor = ExtResource("2_38u0v")
+openedDoor = ExtResource("3_n5eud")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_38u0v")
 
 [node name="Label" type="Label" parent="."]
+visible = false
 texture_filter = 1
 anchors_preset = 8
 anchor_left = 0.5

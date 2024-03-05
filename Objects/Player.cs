@@ -4,6 +4,26 @@ using System.IO;
 
 public partial class Player : BaseObject
 {
+	[Export]
+	private Texture2D textureHumanMale;
+	[Export]
+	private Texture2D textureHumanFemale;
+	[Export]
+	private Texture2D textureKoboldMale;
+	[Export]
+	private Texture2D textureKoboldFemale;
+	[Export]
+	private Texture2D textureAvianMale;
+	[Export]
+	private Texture2D textureAvianFemale;
+	[Export]
+	private Texture2D textureAvaliMale;
+	[Export]
+	private Texture2D textureAvaliFemale;
+	[Export]
+	private Texture2D textureRobotMale;
+	[Export]
+	private Texture2D textureRobotFemale;
 	private Game game;
 	public int hitPoint = 20;
 	public int level = 1;
@@ -20,6 +40,63 @@ public partial class Player : BaseObject
 	public override void _Ready()
 	{
 		game = GetParent<Game>();
+		var playerTexture = textureHumanMale;
+		if (species == "Human")
+		{
+			if (gender == "Male")
+			{
+				playerTexture = textureHumanMale;
+			}
+			else
+			{
+				playerTexture = textureHumanFemale;
+			}
+		}
+		if (species == "Kobold")
+		{
+			if (gender == "Male")
+			{
+				playerTexture = textureKoboldMale;
+			}
+			else
+			{
+				playerTexture = textureKoboldFemale;
+			}
+		}
+		if (species == "Avian")
+		{
+			if (gender == "Male")
+			{
+				playerTexture = textureAvianMale;
+			}
+			else
+			{
+				playerTexture = textureAvianFemale;
+			}
+		}
+		if (species == "Avali")
+		{
+			if (gender == "Male")
+			{
+				playerTexture = textureAvaliMale;
+			}
+			else
+			{
+				playerTexture = textureAvaliFemale;
+			}
+		}
+		if (species == "Robot")
+		{
+			if (gender == "Male")
+			{
+				playerTexture = textureRobotMale;
+			}
+			else
+			{
+				playerTexture = textureRobotFemale;
+			}
+		}
+		GetChild<Sprite2D>(0).Texture = playerTexture;
 	}
 
 	public override void _Process(double delta)
@@ -56,6 +133,24 @@ public partial class Player : BaseObject
 		{
 			Movement(new Vector2(1, 1));
 		}
+
+		if (Input.IsActionJustPressed("Close"))
+		{
+			for (var i = -1; i <= 1; i++)
+			{
+				for (var j = -1; j <= 1; j++)
+				{
+					if (i != 0 || j != 0)
+					{
+						if (game.level[gridX + i, gridY + j, 1] is Door door)
+						{
+							door.isOpen = false;
+							game.TurnPassed();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void Movement(Vector2 dir)
@@ -73,7 +168,8 @@ public partial class Player : BaseObject
 		// Attack
 		if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 3] is Enemy enemy)
 		{
-			enemy.hitPoint -= strength;
+			var random = new Random();
+			enemy.hitPoint -= random.Next(1, strength + 1); // 1d(str)
 			return;
 		}
 		// Is Ground

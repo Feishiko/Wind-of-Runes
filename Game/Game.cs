@@ -20,6 +20,8 @@ public partial class Game : Node2D
 	private PackedScene packedRat;
 	[Export]
 	private PackedScene packedCorpse;
+	[Export]
+	private PackedScene packedDropItems;
 	public Player player;
 	const int levelWidth = 40;
 	const int levelHeight = 40;
@@ -91,7 +93,7 @@ public partial class Game : Node2D
 				{
 					if (item.isMemorized)
 					{
-						item.Modulate = Colors.DarkGray;
+						item.Modulate = Colors.DimGray;
 					}
 					else
 					{
@@ -171,10 +173,8 @@ public partial class Game : Node2D
 							if (someRandom.Next(100) < 2)
 							{
 								level[xPos, yPos, 3] = packedRat.Instantiate<Rat>();
-								if (level[xPos, yPos, 3] is Enemy enemy)
-								{
-									AddEnemy(enemy);
-								}
+								// NewInstance<Rat>(packedRat, xPos, yPos, 3);
+								AddEnemy(level[xPos, yPos, 3] as Enemy);
 								level[xPos, yPos, 3].gridX = xPos;
 								level[xPos, yPos, 3].gridY = yPos;
 							}
@@ -200,7 +200,6 @@ public partial class Game : Node2D
 				{
 					if (x == roomSpace[space, 0] && y == roomSpace[space, 1])
 					{
-						GD.Print("true");
 						return true;
 					}
 				}
@@ -354,11 +353,12 @@ public partial class Game : Node2D
 			{
 				enemyList[iter] = null;
 				level[enemy.gridX, enemy.gridY, 3] = null;
-				level[enemy.gridX, enemy.gridY, 2] = packedCorpse.Instantiate<Corpse>();
-				level[enemy.gridX, enemy.gridY, 2].gridX = enemy.gridX;
-				level[enemy.gridX, enemy.gridY, 2].gridY = enemy.gridY;
-				level[enemy.gridX, enemy.gridY, 2].Position = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
-				AddChild(level[enemy.gridX, enemy.gridY, 2]);
+				// level[enemy.gridX, enemy.gridY, 2] = packedCorpse.Instantiate<Corpse>();
+				// level[enemy.gridX, enemy.gridY, 2].gridX = enemy.gridX;
+				// level[enemy.gridX, enemy.gridY, 2].gridY = enemy.gridY;
+				// level[enemy.gridX, enemy.gridY, 2].Position = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+				// AddChild(level[enemy.gridX, enemy.gridY, 2]);
+				NewInstance<Corpse>(packedCorpse, enemy.gridX, enemy.gridY, 2);
 				enemy.QueueFree();
 				// TODO: Add some LOG
 			}
@@ -374,5 +374,27 @@ public partial class Game : Node2D
 				enemyList[iter].TurnPassed();
 			}
 		}
+	}
+
+	public void DropItem(BaseObject item, int x, int y)
+	{
+		if (level[x, y, 2] is DropItems dropItems)
+		{
+
+		}
+		else
+		{
+			level[x, y, 2] = this.packedDropItems.Instantiate<DropItems>();
+			// TODO
+		}
+	}
+
+	public void NewInstance<T>(PackedScene packedScene, int x, int y, int layer) where T: BaseObject
+	{
+		level[x, y, layer] = packedScene.Instantiate<T>();
+		level[x, y, layer].gridX = x;
+		level[x, y, layer].gridY = y;
+		level[x, y, layer].Position = new Vector2(x * 16, y * 16);
+		AddChild(level[x, y, layer]);
 	}
 }

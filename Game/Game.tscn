@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://de7go8qepykmg"]
+[gd_scene load_steps=11 format=3 uid="uid://de7go8qepykmg"]
 
 [ext_resource type="Script" path="res://Game/Game.cs" id="1_ke53x"]
 [ext_resource type="PackedScene" uid="uid://cis6rtdjl57pd" path="res://Objects/Player.tscn" id="2_eroco"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dc7dsj1p1381e" path="res://Objects/Door.tscn" id="7_7jmva"]
 [ext_resource type="PackedScene" uid="uid://d4bjw44aqs8j" path="res://Objects/Rat.tscn" id="8_7o4qd"]
 [ext_resource type="PackedScene" uid="uid://e2vrde0skrku" path="res://Objects/Corpse.tscn" id="9_crjw5"]
+[ext_resource type="PackedScene" uid="uid://pl447e0nlr7p" path="res://Objects/DropItems.tscn" id="10_ihsyn"]
 
 [node name="Game" type="Node2D"]
 texture_filter = 1
@@ -21,3 +22,4 @@ packedGround = ExtResource("6_pphtt")
 packedDoor = ExtResource("7_7jmva")
 packedRat = ExtResource("8_7o4qd")
 packedCorpse = ExtResource("9_crjw5")
+packedDropItems = ExtResource("10_ihsyn")

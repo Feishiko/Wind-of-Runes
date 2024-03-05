@@ -1,11 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://8q6rfd32ru7s"]
+[gd_scene load_steps=3 format=3 uid="uid://8q6rfd32ru7s"]
 
 [ext_resource type="Script" path="res://Objects/Wall.cs" id="1_ak0tw"]
+[ext_resource type="Texture2D" uid="uid://b5m7t1sjh7ky3" path="res://Texture/wall1.png" id="2_e81ek"]
 
 [node name="Wall" type="Node2D"]
+z_index = -2
+texture_filter = 1
 script = ExtResource("1_ak0tw")
 
 [node name="Label" type="Label" parent="."]
+visible = false
 texture_filter = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -22,3 +26,6 @@ theme_override_font_sizes/font_size = 16
 text = "#"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_e81ek")
