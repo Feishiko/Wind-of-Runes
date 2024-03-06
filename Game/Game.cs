@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class Game : Node2D
 {
@@ -36,10 +37,15 @@ public partial class Game : Node2D
 	private Enemy[] enemyList = new Enemy[200];
 	public override void _Ready()
 	{
-		player = packedPlayer.Instantiate<Player>();
-
 		// Level Generate
+
 		level = TerrianGenerate(10, 3, 3, 5, 5);
+
+		if (player == null)
+		{
+			GetTree().ReloadCurrentScene();
+		}
+
 		Position += new Vector2(40, 40);
 	}
 
@@ -140,7 +146,6 @@ public partial class Game : Node2D
 			var Even = (int val) => val % 2 == 0 ? val : val + 1;
 			var currentRoomX = randomPosX + Even(randomSizeX) / 2;
 			var currentRoomY = randomPosY + Even(randomSizeY) / 2;
-			// GD.Print($"randomPosX: {randomPosX}, randomPosY: {randomPosY}, randomSizeX: {randomSizeX}, randomSizeY: {randomSizeY}");
 			var validRoom = true;
 			if (randomSizeX + randomPosX > levelWidth - 1 || randomSizeY + randomPosY > levelHeight - 1)
 			{
@@ -183,7 +188,6 @@ public partial class Game : Node2D
 							{
 								if (roomSpace[space, 0] == 0)
 								{
-									GD.Print("some");
 									roomSpace[xPos, 0] = xPos;
 									roomSpace[yPos, 1] = yPos;
 									break;
@@ -338,7 +342,6 @@ public partial class Game : Node2D
 		{
 			if (enemyList[iter] == null)
 			{
-				GD.Print("Some Enemy Has been added");
 				enemyList[iter] = enemy;
 				break;
 			}
@@ -353,12 +356,12 @@ public partial class Game : Node2D
 			{
 				enemyList[iter] = null;
 				level[enemy.gridX, enemy.gridY, 3] = null;
-				// level[enemy.gridX, enemy.gridY, 2] = packedCorpse.Instantiate<Corpse>();
-				// level[enemy.gridX, enemy.gridY, 2].gridX = enemy.gridX;
-				// level[enemy.gridX, enemy.gridY, 2].gridY = enemy.gridY;
-				// level[enemy.gridX, enemy.gridY, 2].Position = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
-				// AddChild(level[enemy.gridX, enemy.gridY, 2]);
-				NewInstance<Corpse>(packedCorpse, enemy.gridX, enemy.gridY, 2);
+				// NewInstance<Corpse>(packedCorpse, enemy.gridX, enemy.gridY, 2);
+				var corpse = packedCorpse.Instantiate<Corpse>();
+				corpse.name = $"{enemy.species}'s Corpse";
+				corpse.nutrition = enemy.nutrition;
+				corpse.weight = enemy.weight;
+				DropItem(corpse, enemy.gridX, enemy.gridY);
 				enemy.QueueFree();
 				// TODO: Add some LOG
 			}
@@ -376,20 +379,23 @@ public partial class Game : Node2D
 		}
 	}
 
-	public void DropItem(BaseObject item, int x, int y)
+	public void DropItem(PickUp item, int x, int y)
 	{
-		if (level[x, y, 2] is DropItems dropItems)
+		if (level[x, y, 2] is not DropItems)
 		{
-
+			NewInstance<DropItems>(packedDropItems, x, y, 2);
 		}
-		else
+		for (var i = 0; i < 200; i++)
 		{
-			level[x, y, 2] = this.packedDropItems.Instantiate<DropItems>();
-			// TODO
+			if ((level[x, y, 2] as DropItems).dropItems[i] == null)
+			{
+				(level[x, y, 2] as DropItems).dropItems[i] = item;
+				return;
+			}
 		}
 	}
 
-	public void NewInstance<T>(PackedScene packedScene, int x, int y, int layer) where T: BaseObject
+	public void NewInstance<T>(PackedScene packedScene, int x, int y, int layer) where T : BaseObject
 	{
 		level[x, y, layer] = packedScene.Instantiate<T>();
 		level[x, y, layer].gridX = x;

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Corpse : Food
+public partial class Select : ColorRect
 {
 	public override void _Ready()
 	{

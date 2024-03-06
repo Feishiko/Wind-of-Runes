@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw335ao5exwoa"]
+
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="1_qnywl"]
+[ext_resource type="Script" path="res://Game/InventoryItem.cs" id="2_fhv7s"]
+
+[node name="InventoryItem" type="Label"]
+texture_filter = 1
+use_parent_material = true
+offset_right = 9.0
+offset_bottom = 19.0
+theme_override_fonts/font = ExtResource("1_qnywl")
+text = "-"
+uppercase = true
+script = ExtResource("2_fhv7s")

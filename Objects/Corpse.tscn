@@ -6,6 +6,7 @@
 [node name="Corpse" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_cden5")
+icon = ExtResource("2_xpqvv")
 
 [node name="Label" type="Label" parent="."]
 visible = false

@@ -26,17 +26,34 @@ public partial class Player : BaseObject
 	private Texture2D textureRobotFemale;
 	private Game game;
 	public int hitPoint = 20;
+	public int maxHitPoint = 20;
 	public int level = 1;
 	public string name = RandomName.RandomCharacterName(); // Can custom
 	public string gender = RandomName.RandomGender(); // Male or Female
 	public string species = RandomName.RandomSpecies(); // Human, Kobold, Avian, Avali, Robot
 	public int strength = 5; // Decide the melee weapon's damage and resistence
 	public int agility = 5; // Decide the range weapon's damage and resistence
-	public int intelligence = 5; // Decide magic's damage and resistence
-	public int toughness = 5; // Decide how strong you are
+	public int intelligence = 5; // Decide magic's damage and resistence and max health
+	public int toughness = 5; // Decide how strong you are(how heavy stuff you can take)
 	public int AV = 0; // Armor Value
 	public int DV = 0; // Dodge Value
 	public int hungryNess = 500; // Turns(if robot, instead of hungry, it will have a large number of turns)
+	public int maxHungryNess = 500; // Turns(if robot, instead of hungry, it will have a large number of turns)
+	public int time = 0; // How many turns has passed
+	public int exp = 0;
+	public int weight = 0;
+	public int maxWeight = 500; // Str*10 + Tou*20?
+	public PickUp[] inventory = new PickUp[200];
+	public bool isBagOpen = false;
+	public bool isLookingGround = false;
+	public bool isMultiItems = false; // Pick up items when there are multi-items
+	public Equipment head { get; set; }
+	public Equipment hand { get; set; }
+	public Equipment body { get; set; }
+	public Equipment foot { get; set; }
+	public Equipment weapon { get; set; }
+	public Equipment rangeWeapon { get; set; }
+	public Equipment ammo { get; set; }
 	public override void _Ready()
 	{
 		game = GetParent<Game>();
@@ -101,55 +118,92 @@ public partial class Player : BaseObject
 
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("Left"))
+		// If bag is not open
+		if (!isBagOpen && !isLookingGround)
 		{
-			Movement(Vector2.Left);
-		}
-		if (Input.IsActionJustPressed("Down"))
-		{
-			Movement(Vector2.Down);
-		}
-		if (Input.IsActionJustPressed("Up"))
-		{
-			Movement(Vector2.Up);
-		}
-		if (Input.IsActionJustPressed("Right"))
-		{
-			Movement(Vector2.Right);
-		}
-		if (Input.IsActionJustPressed("UpLeft"))
-		{
-			Movement(new Vector2(-1, -1));
-		}
-		if (Input.IsActionJustPressed("UpRight"))
-		{
-			Movement(new Vector2(1, -1));
-		}
-		if (Input.IsActionJustPressed("DownLeft"))
-		{
-			Movement(new Vector2(-1, 1));
-		}
-		if (Input.IsActionJustPressed("DownRight"))
-		{
-			Movement(new Vector2(1, 1));
-		}
-
-		if (Input.IsActionJustPressed("Close"))
-		{
-			for (var i = -1; i <= 1; i++)
+			if (Input.IsActionJustPressed("Left"))
 			{
-				for (var j = -1; j <= 1; j++)
+				Movement(Vector2.Left);
+			}
+			if (Input.IsActionJustPressed("Down"))
+			{
+				Movement(Vector2.Down);
+			}
+			if (Input.IsActionJustPressed("Up"))
+			{
+				Movement(Vector2.Up);
+			}
+			if (Input.IsActionJustPressed("Right"))
+			{
+				Movement(Vector2.Right);
+			}
+			if (Input.IsActionJustPressed("UpLeft"))
+			{
+				Movement(new Vector2(-1, -1));
+			}
+			if (Input.IsActionJustPressed("UpRight"))
+			{
+				Movement(new Vector2(1, -1));
+			}
+			if (Input.IsActionJustPressed("DownLeft"))
+			{
+				Movement(new Vector2(-1, 1));
+			}
+			if (Input.IsActionJustPressed("DownRight"))
+			{
+				Movement(new Vector2(1, 1));
+			}
+
+			if (Input.IsActionJustPressed("Close"))
+			{
+				for (var i = -1; i <= 1; i++)
 				{
-					if (i != 0 || j != 0)
+					for (var j = -1; j <= 1; j++)
 					{
-						if (game.level[gridX + i, gridY + j, 1] is Door door)
+						if (i != 0 || j != 0)
 						{
-							door.isOpen = false;
-							game.TurnPassed();
+							if (game.level[gridX + i, gridY + j, 1] is Door door)
+							{
+								door.isOpen = false;
+								game.TurnPassed();
+							}
 						}
 					}
 				}
 			}
+			// Pick up items
+			if (Input.IsActionJustPressed("Pick"))
+			{
+				if (game.level[gridX, gridY, 2] is DropItems dropItems)
+				{
+					if (dropItems.IsSingleItem())
+					{
+						if (Pickable(dropItems.GetSingleItem()))
+						{
+							Pick(dropItems.GetSingleItem());
+							dropItems.DeleteItem(dropItems.GetSingleItem());
+							game.TurnPassed();
+						}
+					}
+					else
+					{
+						isLookingGround = true;
+					}
+				}
+			}
+		}
+
+		// Open or Close Bag
+		if (Input.IsActionJustPressed("Inventory") && !isLookingGround)
+		{
+			isBagOpen = !isBagOpen;
+		}
+
+		// Close Inventory and LookingGround
+		if (Input.IsActionJustPressed("Cancel"))
+		{
+			isLookingGround = false;
+			isBagOpen = false;
 		}
 	}
 
@@ -179,6 +233,36 @@ public partial class Player : BaseObject
 			gridX += (int)dir.X;
 			gridY += (int)dir.Y;
 			game.level[gridX, gridY, 3] = this;
+		}
+	}
+
+	public void Pick(PickUp pickUp)
+	{
+		for (var iter = 0; iter < 200; iter++)
+		{
+			if (inventory[iter] == null)
+			{
+				inventory[iter] = pickUp;
+				weight += pickUp.weight;
+				return;
+			}
+		}
+	}
+
+	public bool Pickable(PickUp pickUp)
+	{
+		return weight + pickUp.weight <= maxWeight;
+	}
+
+	public void DeleteItem(PickUp pickUp)
+	{
+		for (var iter = 0; iter < 200; iter++)
+		{
+			if (inventory[iter] == pickUp)
+			{
+				weight -= pickUp.weight;
+				inventory[iter] = null;
+			}
 		}
 	}
 }

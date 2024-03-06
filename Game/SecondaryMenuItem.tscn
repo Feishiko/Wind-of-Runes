@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://culhdlnelfmq4"]
+
+[ext_resource type="Script" path="res://Game/SecondaryMenuItem.cs" id="1_7mjrn"]
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="1_hmdw7"]
+
+[node name="SecondaryMenuItem" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_7mjrn")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -93.0
+offset_top = -11.0
+offset_right = 93.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_hmdw7")
+theme_override_font_sizes/font_size = 14
+text = "SomeItem"
+horizontal_alignment = 1
+vertical_alignment = 1

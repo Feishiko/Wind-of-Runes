@@ -1,12 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://b56t5jurbu65u"]
+[gd_scene load_steps=10 format=3 uid="uid://b56t5jurbu65u"]
 
+[ext_resource type="Shader" path="res://Shader/GameShell.gdshader" id="1_1h1ps"]
+[ext_resource type="Script" path="res://Game/GameShell.cs" id="1_4sv0r"]
 [ext_resource type="PackedScene" uid="uid://de7go8qepykmg" path="res://Game/Game.tscn" id="1_mlpcq"]
 [ext_resource type="Texture2D" uid="uid://ce6xmwuf8ml2w" path="res://Texture/background.png" id="2_efb8p"]
+[ext_resource type="PackedScene" uid="uid://dbjp634rol2gb" path="res://Game/Inventory.tscn" id="3_gfa21"]
+[ext_resource type="FontFile" uid="uid://bomv41nw1s0lg" path="res://DPIX_8PT.TTF" id="4_5m83o"]
+[ext_resource type="PackedScene" uid="uid://utq5bad6q7p5" path="res://Game/LookingGround.tscn" id="4_5tp3q"]
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="5_2jox7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8lk4a"]
+shader = ExtResource("1_1h1ps")
 
 [node name="GameShell" type="Node2D"]
 texture_filter = 1
+material = SubResource("ShaderMaterial_8lk4a")
+script = ExtResource("1_4sv0r")
+packedInventory = ExtResource("3_gfa21")
+packedLookingGround = ExtResource("4_5tp3q")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+use_parent_material = true
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -18,5 +32,193 @@ render_target_update_mode = 4
 [node name="Game" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_mlpcq")]
 
 [node name="ShellBackground" type="Sprite2D" parent="."]
+use_parent_material = true
 position = Vector2(350, 150)
 texture = ExtResource("2_efb8p")
+
+[node name="Name" type="Label" parent="."]
+use_parent_material = true
+offset_left = 301.0
+offset_top = 1.0
+offset_right = 399.0
+offset_bottom = 14.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_5m83o")
+theme_override_font_sizes/font_size = 8
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Hitpoint" type="Label" parent="."]
+use_parent_material = true
+offset_left = 301.0
+offset_top = 15.0
+offset_right = 399.0
+offset_bottom = 28.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_5m83o")
+theme_override_font_sizes/font_size = 8
+text = "Hitpoint"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Species" type="Label" parent="."]
+use_parent_material = true
+offset_left = 301.0
+offset_top = 29.0
+offset_right = 399.0
+offset_bottom = 42.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_5m83o")
+theme_override_font_sizes/font_size = 8
+text = "Species"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Level" type="Label" parent="."]
+use_parent_material = true
+offset_left = 301.0
+offset_top = 42.0
+offset_right = 399.0
+offset_bottom = 55.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_5m83o")
+theme_override_font_sizes/font_size = 8
+text = "Level: 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Hungry" type="Label" parent="."]
+use_parent_material = true
+offset_left = 301.0
+offset_top = 56.0
+offset_right = 399.0
+offset_bottom = 69.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_5m83o")
+theme_override_font_sizes/font_size = 8
+text = "Hungry"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Str" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 131.0
+offset_right = 385.0
+offset_bottom = 140.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "Str:"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Agi" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 141.0
+offset_right = 385.0
+offset_bottom = 150.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "Agi:"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Int" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 151.0
+offset_right = 385.0
+offset_bottom = 160.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "Int:"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Tou" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 160.0
+offset_right = 385.0
+offset_bottom = 169.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "Tou:"
+vertical_alignment = 1
+uppercase = true
+
+[node name="AV" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 169.0
+offset_right = 385.0
+offset_bottom = 178.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "AV:"
+vertical_alignment = 1
+uppercase = true
+
+[node name="DV" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 179.0
+offset_right = 385.0
+offset_bottom = 188.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "DV:"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Time" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 189.0
+offset_right = 385.0
+offset_bottom = 198.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "Time:"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Exp" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 199.0
+offset_right = 385.0
+offset_bottom = 208.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "Exp:"
+vertical_alignment = 1
+uppercase = true
+
+[node name="Floor" type="Label" parent="."]
+use_parent_material = true
+offset_left = 323.0
+offset_top = 209.0
+offset_right = 385.0
+offset_bottom = 218.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2jox7")
+theme_override_font_sizes/font_size = 7
+text = "Floor:"
+vertical_alignment = 1
+uppercase = true

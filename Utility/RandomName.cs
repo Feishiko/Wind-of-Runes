@@ -19,7 +19,7 @@ public static class RandomName
 
 	public static string RandomSpecies()
 	{
-		string[] species = new string[] {"Huamn", "Kobold", "Avian", "Avali", "Robot"};
+		string[] species = new string[] {"Human", "Kobold", "Avian", "Avali", "Robot"};
 		Random random = new Random();
 		return species[random.Next(species.Length)];
 	}

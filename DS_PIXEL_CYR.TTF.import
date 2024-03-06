@@ -1,0 +1,39 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://c5cs143l4177s"
+path="res://.godot/imported/DS_PIXEL_CYR.TTF-4b8e327588e38dd4133e44ffc9ac077f.fontdata"
+
+[deps]
+
+source_file="res://DS_PIXEL_CYR.TTF"
+dest_files=["res://.godot/imported/DS_PIXEL_CYR.TTF-4b8e327588e38dd4133e44ffc9ac077f.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=0
+generate_mipmaps=false
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+hinting=0
+subpixel_positioning=0
+oversampling=0.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "新建配置",
+"size": Vector2i(16, 0),
+"variation_embolden": 0.0
+}]
+language_support={}
+script_support={}
+opentype_features={}

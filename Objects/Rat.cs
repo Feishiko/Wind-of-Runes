@@ -14,6 +14,7 @@ public partial class Rat : Enemy
 		agility = level;
 		intelligence = level;
 		toughness = level;
+		weight = 50;
 		AV = 0;
 		DV = 0;
 		switch (game.player.species)
@@ -37,6 +38,8 @@ public partial class Rat : Enemy
 
 	public override void TurnPassed()
 	{
+		GD.Print($"{game}");
+		GD.Print($"{game.player}");
 		var newPos = Behavior.BFS(gridX, gridY, game.player.gridX, game.player.gridY, game);
 		game.level[gridX, gridY, 3] = null;
 		gridX = newPos.X;

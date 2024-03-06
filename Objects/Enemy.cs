@@ -15,6 +15,15 @@ public partial class Enemy : BaseObject
 	public int AV { get; set; }
 	public int DV { get; set; }
 	public int nutrition { get; set; }
+	public int weight { get; set; }
+	public BaseObject[] inventory = new BaseObject[100];
+	public Equipment head { get; set; }
+	public Equipment hand { get; set; }
+	public Equipment body { get; set; }
+	public Equipment foot { get; set; }
+	public Equipment weapon { get; set; }
+	public Equipment rangeWeapon { get; set; }
+	public Equipment ammo { get; set; }
 
 	public override void _Ready()
 	{

@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://utq5bad6q7p5"]
+
+[ext_resource type="Script" path="res://Game/LookingGround.cs" id="1_3r2np"]
+[ext_resource type="PackedScene" uid="uid://cw335ao5exwoa" path="res://Game/InventoryItem.tscn" id="2_vonyq"]
+[ext_resource type="Script" path="res://Game/Select.cs" id="4_wc0jp"]
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="5_pvve2"]
+
+[node name="LookingGround" type="Node2D"]
+texture_filter = 1
+use_parent_material = true
+script = ExtResource("1_3r2np")
+packedInventoryItem = ExtResource("2_vonyq")
+
+[node name="Select" type="ColorRect" parent="."]
+color = Color(0, 0, 0, 1)
+script = ExtResource("4_wc0jp")
+
+[node name="Title" type="Label" parent="."]
+use_parent_material = true
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 74.0
+offset_bottom = 26.0
+theme_override_fonts/font = ExtResource("5_pvve2")
+theme_override_font_sizes/font_size = 14
+text = "What to pick up?"
+uppercase = true
+
+[node name="Help" type="Label" parent="."]
+use_parent_material = true
+offset_left = 200.0
+offset_top = 254.0
+offset_right = 292.0
+offset_bottom = 299.0
+theme_override_fonts/font = ExtResource("5_pvve2")
+theme_override_font_sizes/font_size = 7
+text = "[Up]/[Down] Select
+[Left]/[Right] Page Select
+[Enter]Confirm
+[Esc]Cancel [Space]Submit"
+uppercase = true
+
+[node name="Page" type="Label" parent="."]
+use_parent_material = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 291.0
+offset_top = 9.0
+offset_right = 331.0
+offset_bottom = 26.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("5_pvve2")
+theme_override_font_sizes/font_size = 14
+text = "Page"
+horizontal_alignment = 2
+uppercase = true
