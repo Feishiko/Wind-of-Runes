@@ -17,6 +17,14 @@ public static class RandomName
 		return genders[random.Next(genders.Length)];
 	}
 
+	public static string RandomRune()
+	{
+		// Null Water Fire Electric Leaf Gear
+		string[] genders = new string[] {"Fire", "Water", "Gear", "Leaf", "Electric"};
+		Random random = new Random();
+		return genders[random.Next(genders.Length)];
+	}
+
 	public static string RandomSpecies()
 	{
 		string[] species = new string[] {"Human", "Kobold", "Avian", "Avali", "Robot"};

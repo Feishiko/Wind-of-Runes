@@ -68,7 +68,10 @@ public partial class SecondaryMenu : Node2D
 		{
 			switch (secondaryMenuItems[selectMenuItem].text)
 			{
-				case "Eat":; break;
+				case "Eat":
+					{
+						inventory.Eat();
+					}; break;
 				case "Equip":; break;
 				case "Take off":; break;
 				case "Drop":

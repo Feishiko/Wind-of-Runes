@@ -97,4 +97,13 @@ public partial class Inventory : Node2D
 		gameShell.game.DropItem(secondaryMenu.selectItem, gameShell.game.player.gridX, gameShell.game.player.gridY);
 		gameShell.game.player.isBagOpen = false;
 	}
+
+	public void Eat()
+	{
+		gameShell.game.player.DeleteItem(secondaryMenu.selectItem);
+		// gameShell.game.DropItem(secondaryMenu.selectItem, gameShell.game.player.gridX, gameShell.game.player.gridY);
+		gameShell.game.player.hungryNess += (secondaryMenu.selectItem as Food).nutrition;
+		gameShell.game.player.hungryNess = Math.Min(gameShell.game.player.hungryNess, gameShell.game.player.maxHungryNess);
+		gameShell.game.player.isBagOpen = false;
+	}
 }

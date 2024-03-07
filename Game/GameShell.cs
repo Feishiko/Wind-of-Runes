@@ -7,12 +7,26 @@ public partial class GameShell : Node2D
 	private PackedScene packedInventory;
 	[Export]
 	private PackedScene packedLookingGround;
+	[Export]
+	private PackedScene packedRune;
 	private Inventory inventory;
 	private LookingGround lookingGround;
+	private Rune[] runes = new Rune[5];
 	public Game game;
+	private Controller controller;
 	public override void _Ready()
 	{
+		// Controller
+		controller = Controller.GetInstance();
 		game = GetNode<Game>("SubViewportContainer/SubViewport/Game");
+
+		// Runes
+		for (var iter = 0; iter < 5; iter++)
+		{
+			runes[iter] = packedRune.Instantiate<Rune>();
+			runes[iter].Position = new Vector2(310 + iter * 20, 110);
+			AddChild(runes[iter]);
+		}
 	}
 
 	public override void _Process(double delta)
@@ -21,7 +35,7 @@ public partial class GameShell : Node2D
 		GetNode<Label>("Hitpoint").Text = "HP: " + game.player.hitPoint.ToString() + "/" + game.player.maxHitPoint.ToString();
 		GetNode<Label>("Species").Text = game.player.species + $"({game.player.gender})";
 		GetNode<Label>("Level").Text = "Level: " + game.player.level.ToString();
-		GetNode<Label>("Hungry").Text = "Hungry: " + game.player.hungryNess.ToString() + "/" + game.player.maxHungryNess.ToString();
+		GetNode<Label>("Hungry").Text = "Food: " + game.player.hungryNess.ToString() + "/" + game.player.maxHungryNess.ToString();
 		GetNode<Label>("Str").Text = "Strength: " + game.player.strength.ToString();
 		GetNode<Label>("Agi").Text = "Agility: " + game.player.agility.ToString();
 		GetNode<Label>("Int").Text = "Intelligence: " + game.player.intelligence.ToString();
@@ -29,7 +43,7 @@ public partial class GameShell : Node2D
 		GetNode<Label>("AV").Text = "AV: " + game.player.AV.ToString();
 		GetNode<Label>("DV").Text = "DV: " + game.player.DV.ToString();
 		GetNode<Label>("Time").Text = "Time: " + game.player.time.ToString();
-		GetNode<Label>("Exp").Text = "Exp: " + game.player.exp.ToString() + "/" + (game.player.level * 100).ToString();
+		GetNode<Label>("Exp").Text = "Exp: " + game.player.exp.ToString() + "/" + (game.player.level * 20).ToString();
 		GetNode<Label>("Floor").Text = "Floor: " + game.floor.ToString();
 
 		// Open Inventory
@@ -100,6 +114,12 @@ public partial class GameShell : Node2D
 				lookingGround.QueueFree();
 				lookingGround = null;
 			}
+		}
+
+		// Runes
+		for (var iter = 0; iter < 5; iter++)
+		{
+			runes[iter].rune = game.player.runes[iter];
 		}
 	}
 }

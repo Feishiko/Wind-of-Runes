@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b56t5jurbu65u"]
+[gd_scene load_steps=11 format=3 uid="uid://b56t5jurbu65u"]
 
 [ext_resource type="Shader" path="res://Shader/GameShell.gdshader" id="1_1h1ps"]
 [ext_resource type="Script" path="res://Game/GameShell.cs" id="1_4sv0r"]
@@ -8,6 +8,7 @@
 [ext_resource type="FontFile" uid="uid://bomv41nw1s0lg" path="res://DPIX_8PT.TTF" id="4_5m83o"]
 [ext_resource type="PackedScene" uid="uid://utq5bad6q7p5" path="res://Game/LookingGround.tscn" id="4_5tp3q"]
 [ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="5_2jox7"]
+[ext_resource type="PackedScene" uid="uid://do7q0glnw0c0h" path="res://Game/Rune.tscn" id="5_twu5x"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lk4a"]
 shader = ExtResource("1_1h1ps")
@@ -18,6 +19,7 @@ material = SubResource("ShaderMaterial_8lk4a")
 script = ExtResource("1_4sv0r")
 packedInventory = ExtResource("3_gfa21")
 packedLookingGround = ExtResource("4_5tp3q")
+packedRune = ExtResource("5_twu5x")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 use_parent_material = true
@@ -102,6 +104,20 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_5m83o")
 theme_override_font_sizes/font_size = 8
 text = "Hungry"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Runes" type="Label" parent="."]
+use_parent_material = true
+offset_left = 301.0
+offset_top = 81.0
+offset_right = 399.0
+offset_bottom = 94.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_5m83o")
+theme_override_font_sizes/font_size = 8
+text = "Runes"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true

@@ -14,4 +14,12 @@ public partial class BaseObject : Node2D
 	public override void _Process(double delta)
 	{
 	}
+
+	public void Copy(BaseObject baseObject)
+	{
+		gridX = baseObject.gridX;
+		gridY = baseObject.gridY;
+		isVisible = baseObject.isVisible;
+		isMemorized = baseObject.isMemorized;
+	}
 }

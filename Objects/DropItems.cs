@@ -75,4 +75,11 @@ public partial class DropItems : BaseObject
 			}
 		}
 	}
+
+	public void DropItemsCopy(DropItems dropItems)
+	{
+		this.dropItems = dropItems.dropItems;
+		icon = dropItems.icon;
+		itemNumber = dropItems.itemNumber;
+	}
 }

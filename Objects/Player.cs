@@ -54,10 +54,16 @@ public partial class Player : BaseObject
 	public Equipment weapon { get; set; }
 	public Equipment rangeWeapon { get; set; }
 	public Equipment ammo { get; set; }
+	public string[] runes = new string[5];
+	private Controller controller;
 	public override void _Ready()
 	{
+		// Controller
+		controller = Controller.GetInstance();
+
 		game = GetParent<Game>();
 		var playerTexture = textureHumanMale;
+		species = "Robot";
 		if (species == "Human")
 		{
 			if (gender == "Male")
@@ -104,6 +110,11 @@ public partial class Player : BaseObject
 		}
 		if (species == "Robot")
 		{
+			if (controller.maxFloor <= 0)
+			{
+				hungryNess = 5000;
+				maxHungryNess = 5000;
+			}
 			if (gender == "Male")
 			{
 				playerTexture = textureRobotMale;
@@ -191,6 +202,18 @@ public partial class Player : BaseObject
 					}
 				}
 			}
+
+			// Go Upstair
+			if (Input.IsActionJustPressed("Upstair") && game.level[gridX, gridY, 1] is Upstair)
+			{
+				GoUpStair();
+			}
+
+			// Go Downstair
+			if (Input.IsActionJustPressed("Downstair") && game.level[gridX, gridY, 1] is Downstair)
+			{
+				GoDownStair();
+			}
 		}
 
 		// Open or Close Bag
@@ -204,6 +227,12 @@ public partial class Player : BaseObject
 		{
 			isLookingGround = false;
 			isBagOpen = false;
+		}
+
+		if (exp >= level * 20)
+		{
+			exp = exp - level * 20;
+			level += 1;
 		}
 	}
 
@@ -223,7 +252,10 @@ public partial class Player : BaseObject
 		if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 3] is Enemy enemy)
 		{
 			var random = new Random();
-			enemy.hitPoint -= random.Next(1, strength + 1); // 1d(str)
+			var damage = random.Next(1, strength + 1);
+			enemy.hitPoint -= damage; // 1d(str)
+			Position = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+			game.DamageNumber(enemy.gridX, enemy.gridY, damage);
 			return;
 		}
 		// Is Ground
@@ -264,5 +296,84 @@ public partial class Player : BaseObject
 				inventory[iter] = null;
 			}
 		}
+	}
+
+	public void GoUpStair()
+	{
+		game.MapLevel();
+		controller.currentFloor += 1;
+		controller.player = this;
+		controller.isUp = true;
+		GetTree().ReloadCurrentScene();
+	}
+
+	public void GoDownStair()
+	{
+		game.MapLevel();
+		controller.currentFloor -= 1;
+		controller.player = this;
+		controller.isUp = false;
+		GetTree().ReloadCurrentScene();
+	}
+
+	public void GetRune(Enemy enemy)
+	{
+		for (var iter = 0; iter < 5; iter++)
+		{
+			if (runes[iter] == null)
+			{
+				runes[iter] = enemy.rune;
+				if (runes[4] != null)
+				{
+					var fire = 0;
+					var water = 0;
+					var gear = 0;
+					var leaf = 0;
+					var electric = 0;
+					for (var i = 0; i < 5; i++)
+					{
+						fire += runes[i] == "Fire" ? 1 : 0;
+						water += runes[i] == "Water" ? 1 : 0;
+						gear += runes[i] == "Gear" ? 1 : 0;
+						leaf += runes[i] == "Leaf" ? 1 : 0;
+						electric += runes[i] == "Electric" ? 1 : 0;
+						runes[i] = null;
+					}
+					exp += Math.Max(Math.Max(Math.Max(Math.Max(fire, water), gear), leaf), electric) * 20;
+				}
+				return;
+			}
+		}
+	}
+
+	public void PlayerCopy(Player player)
+	{
+		name = player.name;
+		species = player.species;
+		gender = player.gender;
+		hitPoint = player.hitPoint;
+		maxHitPoint = player.maxHitPoint;
+		level = player.level;
+		strength = player.strength;
+		agility = player.agility;
+		intelligence = player.intelligence;
+		toughness = player.toughness;
+		AV = player.AV;
+		DV = player.DV;
+		hungryNess = player.hungryNess;
+		maxHungryNess = player.maxHungryNess;
+		time = player.time;
+		exp = player.exp;
+		weight = player.weight;
+		maxWeight = player.maxWeight;
+		inventory = player.inventory;
+		head = player.head;
+		hand = player.hand;
+		body = player.body;
+		foot = player.foot;
+		weapon = player.weapon;
+		rangeWeapon = player.rangeWeapon;
+		ammo = player.ammo;
+		runes = player.runes;
 	}
 }

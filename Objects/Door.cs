@@ -16,4 +16,9 @@ public partial class Door : BaseObject
 	{
 		GetChild<Sprite2D>(0).Texture = isOpen ? openedDoor : closedDoor;
 	}
+
+	public void DoorCopy(Door door)
+	{
+		isOpen = door.isOpen;
+	}
 }

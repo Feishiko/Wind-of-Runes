@@ -1,20 +1,20 @@
 using Godot;
 using System;
 
-public partial class Rat : Enemy
+public partial class Worm : Enemy
 {
 	private Game game;
 	public override void _Ready()
 	{
 		game = GetParent<Game>();
 		level = game.floor;
-		hitPoint = level * 5;
-		species = "Rat";
+		hitPoint = level * 1;
+		species = "Worm";
 		strength = level;
 		agility = level;
 		intelligence = level;
 		toughness = level;
-		weight = 50;
+		weight = 20;
 		AV = 0;
 		DV = 0;
 		RuneSprite(rune);
@@ -26,10 +26,10 @@ public partial class Rat : Enemy
 		{
 			switch (game.player.species)
 			{
-				case "Human": nutrition = -10; break;
-				case "Kobold": nutrition = 20; break;
-				case "Avian": nutrition = 50; break;
-				case "Avali": nutrition = 50; break;
+				case "Human": nutrition = 20; break;
+				case "Kobold": nutrition = 40; break;
+				case "Avian": nutrition = 100; break;
+				case "Avali": nutrition = 100; break;
 				case "Robot": nutrition = 0; break;
 			}
 		}
@@ -57,10 +57,5 @@ public partial class Rat : Enemy
 				}
 			}
 		}
-		var newPos = Behavior.BFS(gridX, gridY, game.player.gridX, game.player.gridY, game);
-		game.level[gridX, gridY, 3] = null;
-		gridX = newPos.X;
-		gridY = newPos.Y;
-		game.level[gridX, gridY, 3] = this;
 	}
 }
