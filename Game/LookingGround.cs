@@ -39,7 +39,14 @@ public partial class LookingGround : Node2D
 			inventoryItems[iter].Text = "-";
 			if (pickUps[iter, currentPage] != null)
 			{
-				inventoryItems[iter].Text = pickUps[iter, currentPage].selected ? $"[{pickUps[iter, currentPage].name}]" : pickUps[iter, currentPage].name;
+				if (pickUps[iter, currentPage] is Bullet bullet)
+				{
+					inventoryItems[iter].Text = pickUps[iter, currentPage].selected ? $"[{pickUps[iter, currentPage].name}({pickUps[iter, currentPage].weight}w)x{bullet.numbers}]" : pickUps[iter, currentPage].name + $"({pickUps[iter, currentPage].weight}w)x{bullet.numbers}";
+				}
+				else
+				{
+					inventoryItems[iter].Text = pickUps[iter, currentPage].selected ? $"[{pickUps[iter, currentPage].name}({pickUps[iter, currentPage].weight}w)]" : pickUps[iter, currentPage].name + $"({pickUps[iter, currentPage].weight}w)";
+				}
 			}
 		}
 

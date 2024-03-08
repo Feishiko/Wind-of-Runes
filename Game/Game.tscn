@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://de7go8qepykmg"]
+[gd_scene load_steps=14 format=3 uid="uid://de7go8qepykmg"]
 
 [ext_resource type="Script" path="res://Game/Game.cs" id="1_ke53x"]
 [ext_resource type="PackedScene" uid="uid://cis6rtdjl57pd" path="res://Objects/Player.tscn" id="2_eroco"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://pl447e0nlr7p" path="res://Objects/DropItems.tscn" id="10_ihsyn"]
 [ext_resource type="PackedScene" uid="uid://3tpxp81op5wc" path="res://Objects/DamageNumber.tscn" id="11_1hjx1"]
 [ext_resource type="PackedScene" uid="uid://dsv5o6eg1u42f" path="res://Objects/Worm.tscn" id="12_gsqwy"]
+[ext_resource type="PackedScene" uid="uid://cpto56q71yfy7" path="res://Objects/Rogue.tscn" id="13_b84x5"]
 
 [node name="Game" type="Node2D"]
 texture_filter = 1
@@ -27,3 +28,4 @@ packedCorpse = ExtResource("9_crjw5")
 packedDropItems = ExtResource("10_ihsyn")
 packedDamageNumber = ExtResource("11_1hjx1")
 packedWorm = ExtResource("12_gsqwy")
+packedRogue = ExtResource("13_b84x5")

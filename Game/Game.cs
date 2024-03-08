@@ -27,6 +27,8 @@ public partial class Game : Node2D
 	private PackedScene packedDamageNumber;
 	[Export]
 	private PackedScene packedWorm;
+	[Export]
+	private PackedScene packedRogue;
 	public Player player;
 	const int levelWidth = 40;
 	const int levelHeight = 40;
@@ -42,10 +44,13 @@ public partial class Game : Node2D
 	private Font font = new Godot.SystemFont();
 	private Enemy[] enemyList = new Enemy[200];
 	private Controller controller;
+	public GameShell gameShell;
 	public override void _Ready()
 	{
 		// Controller
 		controller = Controller.GetInstance();
+		// GameShell
+		gameShell = GetNode<GameShell>("../../../.");
 		// GD.Print("currentFloor:" + controller.currentFloor);
 		floor = controller.currentFloor;
 
@@ -58,6 +63,7 @@ public partial class Game : Node2D
 			if (controller.player == null)
 			{
 				level = InitTerrianGenerate();
+				gameShell.AddLog($"{player.name} enters the tower");
 			}
 			else
 			{
@@ -72,6 +78,7 @@ public partial class Game : Node2D
 				level[downstair.gridX, downstair.gridY, 3].gridY = downstair.gridY;
 				AddChild(level[downstair.gridX, downstair.gridY, 3]);
 				player = level[downstair.gridX, downstair.gridY, 3] as Player;
+				gameShell.AddLog($"Welcome to the floor of {controller.currentFloor}");
 			}
 		}
 		else
@@ -214,6 +221,17 @@ public partial class Game : Node2D
 								item.isVisible = false;
 								break;
 							}
+						}
+					}
+				}
+				// Around
+				for (var y = -1; y <= 1; y++)
+				{
+					for (var x = -1; x <= 1; x++)
+					{
+						if (level[player.gridX + x, player.gridY + y, 0] == item)
+						{
+							item.isVisible = true;
 						}
 					}
 				}
@@ -363,9 +381,16 @@ public partial class Game : Node2D
 								level[xPos, yPos, 3].gridX = xPos;
 								level[xPos, yPos, 3].gridY = yPos;
 							}
-							if (randomNumber >= 2 && randomNumber < 4)
+							if (randomNumber >= 2 && randomNumber < 5)
 							{
 								level[xPos, yPos, 3] = packedWorm.Instantiate<Worm>();
+								AddEnemy(level[xPos, yPos, 3] as Enemy);
+								level[xPos, yPos, 3].gridX = xPos;
+								level[xPos, yPos, 3].gridY = yPos;
+							}
+							if (randomNumber >= 6 && randomNumber < 8)
+							{
+								level[xPos, yPos, 3] = packedRogue.Instantiate<Rogue>();
 								AddEnemy(level[xPos, yPos, 3] as Enemy);
 								level[xPos, yPos, 3].gridX = xPos;
 								level[xPos, yPos, 3].gridY = yPos;
@@ -552,9 +577,17 @@ public partial class Game : Node2D
 				corpse.nutrition = enemy.nutrition;
 				corpse.weight = enemy.weight;
 				DropItem(corpse, enemy.gridX, enemy.gridY);
+				for (var i = 0; i < 100; i++)
+				{
+					if (enemy.inventory[i] != null)
+					{
+						DropItem(enemy.inventory[i], enemy.gridX, enemy.gridY);
+					}
+				}
 				player.GetRune(enemy);
 				enemy.QueueFree();
 				// TODO: Add some LOG
+				gameShell.AddLog($"{enemy.species}[{enemy.rune}] has been destroyed");
 			}
 		}
 	}
@@ -563,6 +596,10 @@ public partial class Game : Node2D
 	{
 		player.time++;
 		player.hungryNess--;
+		if (player.time % 50 == 1)
+		{
+			player.Heal(1);
+		}
 		for (var iter = 0; iter < 200; iter++)
 		{
 			if (enemyList[iter] != null)

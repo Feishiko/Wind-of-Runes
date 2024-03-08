@@ -9,11 +9,21 @@ public partial class GameShell : Node2D
 	private PackedScene packedLookingGround;
 	[Export]
 	private PackedScene packedRune;
+	[Export]
+	private PackedScene packedUpgrade;
+	[Export]
+	private PackedScene packedFireMode;
+	[Export]
+	private PackedScene packedLog;
 	private Inventory inventory;
 	private LookingGround lookingGround;
+	private Upgrade upgrade;
 	private Rune[] runes = new Rune[5];
 	public Game game;
 	private Controller controller;
+	private FireMode fireMode;
+	public string[] logs = new string[4];
+	public Log[] labelLogs = new Log[4];
 	public override void _Ready()
 	{
 		// Controller
@@ -26,6 +36,14 @@ public partial class GameShell : Node2D
 			runes[iter] = packedRune.Instantiate<Rune>();
 			runes[iter].Position = new Vector2(310 + iter * 20, 110);
 			AddChild(runes[iter]);
+		}
+
+		for (var iter = 0; iter < 4; iter++)
+		{
+			labelLogs[iter] = packedLog.Instantiate<Log>();
+			labelLogs[iter].text = logs[iter] != null ? logs[iter] : "";
+			labelLogs[iter].Position = new Vector2(310, 220 + iter * 20);
+			AddChild(labelLogs[iter]);
 		}
 	}
 
@@ -121,5 +139,65 @@ public partial class GameShell : Node2D
 		{
 			runes[iter].rune = game.player.runes[iter];
 		}
+
+		// When Upgrade
+		if (game.player.isUpgrade)
+		{
+			if (upgrade == null)
+			{
+				upgrade = packedUpgrade.Instantiate<Upgrade>();
+				AddChild(upgrade);
+			}
+		}
+		else
+		{
+			if (upgrade != null)
+			{
+				upgrade.QueueFree();
+				upgrade = null;
+			}
+		}
+
+		// Fire Mode
+		if (game.player.isFire)
+		{
+			if (fireMode == null)
+			{
+				fireMode = packedFireMode.Instantiate<FireMode>();
+				AddChild(fireMode);
+			}
+		}
+		else
+		{
+			if (fireMode != null)
+			{
+				fireMode.QueueFree();
+				fireMode = null;
+			}
+		}
+
+		// Logs
+		for (var iter = 0; iter < 4; iter++)
+		{
+			labelLogs[iter].text = $">{logs[iter]}";
+		}
+	}
+
+	public void AddLog(string text)
+	{
+		// for (var iter = 0; iter < 4; iter++)
+		// {
+		// 	if (logs[iter] == null)
+		// 	{
+		// 		logs[iter] = text;
+		// 		return;
+		// 	}
+		// }
+		// Full
+		for (var iter = 0; iter < 3; iter++)
+		{
+			logs[iter] = logs[iter + 1];
+		}
+		logs[3] = text;
 	}
 }

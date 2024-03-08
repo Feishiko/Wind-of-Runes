@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1llhkbwxkef3"]
+
+[ext_resource type="Script" path="res://Game/EquipmentPanel.cs" id="1_w5unv"]
+[ext_resource type="PackedScene" uid="uid://blqdl32g7eae" path="res://Game/EquipmentPanelItem.tscn" id="2_nmygy"]
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="3_ge5j8"]
+
+[node name="EquipmentPanel" type="Node2D"]
+texture_filter = 1
+use_parent_material = true
+script = ExtResource("1_w5unv")
+packedEquipmentPanelItem = ExtResource("2_nmygy")
+
+[node name="Back" type="ColorRect" parent="."]
+offset_right = 300.0
+offset_bottom = 300.0
+color = Color(0.231373, 0.309804, 0.301961, 0.811765)
+
+[node name="Select" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Old" type="Label" parent="."]
+use_parent_material = true
+offset_left = 59.0
+offset_top = 12.0
+offset_right = 99.0
+offset_bottom = 35.0
+theme_override_fonts/font = ExtResource("3_ge5j8")
+theme_override_font_sizes/font_size = 14
+text = "OLD"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="New" type="Label" parent="."]
+use_parent_material = true
+offset_left = 202.0
+offset_top = 12.0
+offset_right = 242.0
+offset_bottom = 35.0
+theme_override_fonts/font = ExtResource("3_ge5j8")
+theme_override_font_sizes/font_size = 14
+text = "New"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm64ubu5i0q07"]
+
+[ext_resource type="Script" path="res://Objects/Pistol.cs" id="1_hwwuj"]
+[ext_resource type="Texture2D" uid="uid://bj3junof7604m" path="res://Texture/pistol.png" id="2_adq6t"]
+
+[node name="Pistol" type="Node2D"]
+script = ExtResource("1_hwwuj")
+icon = ExtResource("2_adq6t")

@@ -49,7 +49,19 @@ public partial class Inventory : Node2D
 			inventoryItems[iter].Text = "-";
 			if (pickUps[iter, currentPage] != null)
 			{
-				inventoryItems[iter].Text = pickUps[iter, currentPage].name;
+				if (pickUps[iter, currentPage] is Equipment equipment)
+				{
+					var e = equipment.isEquipped ? "[E]" : "";
+					inventoryItems[iter].Text = pickUps[iter, currentPage].name + $"({pickUps[iter, currentPage].weight}w)" + e;
+					if (equipment is Bullet bullet)
+					{
+						inventoryItems[iter].Text = pickUps[iter, currentPage].name + $"({pickUps[iter, currentPage].weight}w)x{bullet.numbers}" + e;
+					}
+				}
+				else
+				{
+					inventoryItems[iter].Text = pickUps[iter, currentPage].name + $"({pickUps[iter, currentPage].weight}w)";
+				}
 			}
 		}
 
@@ -74,10 +86,6 @@ public partial class Inventory : Node2D
 			{
 				currentPage += 1;
 			}
-			select.Size = new Vector2((float)Mathf.Lerp(select.Size.X, inventoryItems[currentItem].Size.X + 3, delta * 120 * .2f),
-			(float)Mathf.Lerp(select.Size.Y, inventoryItems[currentItem].Size.Y - 3, delta * 120 * .2f));
-			select.Position = new Vector2((float)Mathf.Lerp(select.Position.X, inventoryItems[currentItem].Position.X - 3, delta * 120 * .2f),
-			(float)Mathf.Lerp(select.Position.Y, inventoryItems[currentItem].Position.Y, delta * 120 * .2f));
 
 			// SecondaryMenu
 			if (Input.IsActionJustPressed("Confirm") && pickUps[currentItem, currentPage] != null)
@@ -89,6 +97,10 @@ public partial class Inventory : Node2D
 				AddChild(secondaryMenu);
 			}
 		}
+		select.Size = new Vector2((float)Mathf.Lerp(select.Size.X, inventoryItems[currentItem].Size.X + 3, delta * 120 * .2f),
+		(float)Mathf.Lerp(select.Size.Y, inventoryItems[currentItem].Size.Y - 3, delta * 120 * .2f));
+		select.Position = new Vector2((float)Mathf.Lerp(select.Position.X, inventoryItems[currentItem].Position.X - 3, delta * 120 * .2f),
+		(float)Mathf.Lerp(select.Position.Y, inventoryItems[currentItem].Position.Y, delta * 120 * .2f));
 	}
 
 	public void Drop()
@@ -103,6 +115,22 @@ public partial class Inventory : Node2D
 		gameShell.game.player.DeleteItem(secondaryMenu.selectItem);
 		// gameShell.game.DropItem(secondaryMenu.selectItem, gameShell.game.player.gridX, gameShell.game.player.gridY);
 		gameShell.game.player.hungryNess += (secondaryMenu.selectItem as Food).nutrition;
+		if ((secondaryMenu.selectItem as Food).nutrition < 0)
+		{
+			gameShell.AddLog($"You can't bear that {secondaryMenu.selectItem.name}");
+		}
+		if ((secondaryMenu.selectItem as Food).nutrition == 0)
+		{
+			gameShell.AddLog($"{secondaryMenu.selectItem.name} taste nothing for you");
+		}
+		if ((secondaryMenu.selectItem as Food).nutrition > 0 && (secondaryMenu.selectItem as Food).nutrition < 100)
+		{
+			gameShell.AddLog("Ordinary food");
+		}
+		if ((secondaryMenu.selectItem as Food).nutrition >= 100)
+		{
+			gameShell.AddLog($"Yummy {secondaryMenu.selectItem.name}!");
+		}
 		gameShell.game.player.hungryNess = Math.Min(gameShell.game.player.hungryNess, gameShell.game.player.maxHungryNess);
 		gameShell.game.player.isBagOpen = false;
 	}

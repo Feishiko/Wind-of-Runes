@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://nktd2igqj6w1"]
+
+[ext_resource type="Script" path="res://Objects/Boot.cs" id="1_kefvr"]
+[ext_resource type="Texture2D" uid="uid://buvelxlgugq7x" path="res://Texture/boot.png" id="2_606u8"]
+
+[node name="Boot" type="Node2D"]
+script = ExtResource("1_kefvr")
+icon = ExtResource("2_606u8")

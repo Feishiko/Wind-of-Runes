@@ -6,7 +6,7 @@ void vertex() {
 
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
-	COLOR = vec4(vec3(round(fract(UV.y*300.))==1.?1.:.8), 1.)*tex;
+	COLOR = vec4(vec3(round(fract(UV.y*150.))==1.?1.:.9), 1.)*tex;
 }
 
 //void light() {

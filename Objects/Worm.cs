@@ -50,6 +50,11 @@ public partial class Worm : Enemy
 				{
 					var random = new Random();
 					var damage = random.Next(1, strength);
+					damage = Mathf.Max(0, damage - player.AV);
+					if (player.DV > random.Next(30))
+					{
+						damage = 0;
+					}
 					player.hitPoint -= damage;
 					Position = new Vector2(player.gridX * 16, player.gridY * 16);
 					game.DamageNumber(player.gridX, player.gridY, damage);

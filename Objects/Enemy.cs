@@ -13,6 +13,14 @@ public partial class Enemy : BaseObject
 	private Texture2D textureWaterRune;
 	[Export]
 	private Texture2D textureElectricRune;
+	[Export]
+	public PackedScene packedBullet;
+	[Export]
+	public PackedScene packedBoot;
+	[Export]
+	public PackedScene packedSword;
+	[Export]
+	public PackedScene packedClothes;
 	public string name { get; set; } = RandomName.RandomCharacterName();
 	public int hitPoint { get; set; }
 	public int level { get; set; }
@@ -26,7 +34,7 @@ public partial class Enemy : BaseObject
 	public int DV { get; set; }
 	public int nutrition { get; set; }
 	public int weight { get; set; }
-	public BaseObject[] inventory = new BaseObject[100];
+	public PickUp[] inventory = new PickUp[100];
 	public Equipment head { get; set; }
 	public Equipment hand { get; set; }
 	public Equipment body { get; set; }
@@ -84,6 +92,19 @@ public partial class Enemy : BaseObject
 			case "Leaf": GetNode<Sprite2D>("Rune").Texture = textureLeafRune; break;
 			case "Gear": GetNode<Sprite2D>("Rune").Texture = textureGearRune; break;
 			case "Electric": GetNode<Sprite2D>("Rune").Texture = textureElectricRune; break;
+		}
+	}
+
+	public void Pick(PickUp pickUp)
+	{
+		for (var iter = 0; iter < 100; iter++)
+		{
+			if (inventory[iter] == null)
+			{
+				inventory[iter] = pickUp;
+				weight += pickUp.weight;
+				break;
+			}
 		}
 	}
 }

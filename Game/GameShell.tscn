@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b56t5jurbu65u"]
+[gd_scene load_steps=14 format=3 uid="uid://b56t5jurbu65u"]
 
 [ext_resource type="Shader" path="res://Shader/GameShell.gdshader" id="1_1h1ps"]
 [ext_resource type="Script" path="res://Game/GameShell.cs" id="1_4sv0r"]
@@ -9,6 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://utq5bad6q7p5" path="res://Game/LookingGround.tscn" id="4_5tp3q"]
 [ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="5_2jox7"]
 [ext_resource type="PackedScene" uid="uid://do7q0glnw0c0h" path="res://Game/Rune.tscn" id="5_twu5x"]
+[ext_resource type="PackedScene" uid="uid://dtiapnfei2d1e" path="res://Game/Upgrade.tscn" id="6_n5ae0"]
+[ext_resource type="PackedScene" uid="uid://brtbxq003t1mk" path="res://Game/FireMode.tscn" id="7_8alvs"]
+[ext_resource type="PackedScene" uid="uid://b7evnd2hgf7pg" path="res://Game/Log.tscn" id="8_7rlnf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lk4a"]
 shader = ExtResource("1_1h1ps")
@@ -20,6 +23,9 @@ script = ExtResource("1_4sv0r")
 packedInventory = ExtResource("3_gfa21")
 packedLookingGround = ExtResource("4_5tp3q")
 packedRune = ExtResource("5_twu5x")
+packedUpgrade = ExtResource("6_n5ae0")
+packedFireMode = ExtResource("7_8alvs")
+packedLog = ExtResource("8_7rlnf")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 use_parent_material = true

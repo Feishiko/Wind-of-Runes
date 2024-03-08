@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Rat : Enemy
+public partial class Rogue : Enemy
 {
 	private Game game;
 	public override void _Ready()
@@ -9,18 +9,38 @@ public partial class Rat : Enemy
 		game = GetParent<Game>();
 		level = game.floor;
 		hitPoint = level * 5;
-		species = "Rat";
+		species = "Rogue";
 		strength = level;
 		agility = level;
 		intelligence = level;
 		toughness = level;
-		weight = 50;
+		weight = 100;
 		AV = 0;
-		DV = 0;
+		DV = level;
 		RuneSprite(rune);
+		var random = new Random();
 		var bullet = packedBullet.Instantiate<Bullet>();
 		bullet.Init();
+		bullet.numbers = random.Next(1, 3);
 		Pick(bullet);
+		if (random.Next(3) == 1)
+		{
+			var boot = packedBoot.Instantiate<Boot>();
+			boot.Init();
+			Pick(boot);
+		}
+		if (random.Next(3) == 1)
+		{
+			var clothes = packedClothes.Instantiate<Clothes>();
+			clothes.Init();
+			Pick(clothes);
+		}
+		if (random.Next(3) == 1)
+		{
+			var sword = packedSword.Instantiate<Sword>();
+			sword.Init();
+			Pick(sword);
+		}
 	}
 
 	public override void _Process(double delta)
@@ -30,9 +50,9 @@ public partial class Rat : Enemy
 			switch (game.player.species)
 			{
 				case "Human": nutrition = -10; break;
-				case "Kobold": nutrition = 20; break;
-				case "Avian": nutrition = 50; break;
-				case "Avali": nutrition = 50; break;
+				case "Kobold": nutrition = 60; break;
+				case "Avian": nutrition = 60; break;
+				case "Avali": nutrition = 60; break;
 				case "Robot": nutrition = 0; break;
 			}
 		}

@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://c52lpqno77463"]
+
+[ext_resource type="Script" path="res://Objects/Sword.cs" id="1_jk2vd"]
+[ext_resource type="Texture2D" uid="uid://desp7tt8mdamy" path="res://Texture/sword.png" id="2_e4ego"]
+
+[node name="Sword" type="Node2D"]
+script = ExtResource("1_jk2vd")
+icon = ExtResource("2_e4ego")

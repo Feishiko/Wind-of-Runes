@@ -8,6 +8,7 @@ public class Controller
 	public BaseObject[,,,] wholeLevels = new BaseObject[40, 40, 4, 20];
 	// public int turn = 0;
 	public bool isUp = false;
+	// public string[] logs = new string[4];
 	private Controller()
 	{
 	}

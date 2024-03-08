@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://blqdl32g7eae"]
+
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="1_d1lw8"]
+[ext_resource type="Script" path="res://Game/EquipmentPanelItem.cs" id="1_t63cu"]
+
+[node name="EquipmentPanelItem" type="Node2D"]
+texture_filter = 1
+use_parent_material = true
+script = ExtResource("1_t63cu")
+
+[node name="Label" type="Label" parent="."]
+use_parent_material = true
+offset_right = 100.0
+offset_bottom = 231.0
+theme_override_fonts/font = ExtResource("1_d1lw8")
+theme_override_font_sizes/font_size = 7
+autowrap_mode = 2

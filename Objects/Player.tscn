@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cis6rtdjl57pd"]
+[gd_scene load_steps=16 format=3 uid="uid://cis6rtdjl57pd"]
 
 [ext_resource type="Script" path="res://Objects/Player.cs" id="1_06q1j"]
 [ext_resource type="Texture2D" uid="uid://k8ks0q1mon2x" path="res://Texture/humanmale.png" id="2_ou3am"]
@@ -11,6 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://dxkmiuik2285y" path="res://Texture/avalifemale.png" id="9_y6ub6"]
 [ext_resource type="Texture2D" uid="uid://bh7uftsriy8x8" path="res://Texture/robotmale.png" id="10_pwi26"]
 [ext_resource type="Texture2D" uid="uid://x58h8k8fwcep" path="res://Texture/robotfemale.png" id="11_y2in2"]
+[ext_resource type="PackedScene" uid="uid://dv62pxyf4bd2p" path="res://Objects/Glove.tscn" id="12_vppi2"]
+[ext_resource type="PackedScene" uid="uid://bm64ubu5i0q07" path="res://Objects/Pistol.tscn" id="13_yfgwe"]
+[ext_resource type="PackedScene" uid="uid://bn84jts6yuwd1" path="res://Objects/Bullet.tscn" id="14_lytm7"]
+[ext_resource type="PackedScene" uid="uid://vka4dehsdd5n" path="res://Effect/ShootingLine.tscn" id="15_8i4n8"]
 
 [node name="Player" type="Node2D"]
 z_index = 1
@@ -25,6 +29,10 @@ textureAvaliMale = ExtResource("8_yx8dt")
 textureAvaliFemale = ExtResource("9_y6ub6")
 textureRobotMale = ExtResource("10_pwi26")
 textureRobotFemale = ExtResource("11_y2in2")
+packedGlove = ExtResource("12_vppi2")
+packedPistol = ExtResource("13_yfgwe")
+packedBullet = ExtResource("14_lytm7")
+packedShootingLine = ExtResource("15_8i4n8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

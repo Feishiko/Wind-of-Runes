@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw80teqf5jef8"]
+
+[ext_resource type="Script" path="res://Objects/Helmet.cs" id="1_cpgpc"]
+[ext_resource type="Texture2D" uid="uid://3axr6xj76uk8" path="res://Texture/helmet.png" id="2_k60su"]
+
+[node name="Helmet" type="Node2D"]
+script = ExtResource("1_cpgpc")
+icon = ExtResource("2_k60su")

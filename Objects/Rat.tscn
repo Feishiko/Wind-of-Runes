@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d4bjw44aqs8j"]
+[gd_scene load_steps=10 format=3 uid="uid://d4bjw44aqs8j"]
 
 [ext_resource type="Script" path="res://Objects/Rat.cs" id="1_kaxtp"]
 [ext_resource type="Texture2D" uid="uid://dg7tvmriofqc6" path="res://Texture/gearWind.png" id="2_40wa5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ceb7r1umnlfo1" path="res://Texture/fireWind.png" id="4_xlqq3"]
 [ext_resource type="Texture2D" uid="uid://d8k4sb7746qs" path="res://Texture/waterWind.png" id="5_u8a4y"]
 [ext_resource type="Texture2D" uid="uid://hpuj4u4sffpi" path="res://Texture/electricWind.png" id="6_18kmp"]
+[ext_resource type="PackedScene" uid="uid://bn84jts6yuwd1" path="res://Objects/Bullet.tscn" id="7_r6tej"]
 [ext_resource type="Texture2D" uid="uid://d04w3aigu40pq" path="res://Texture/emptyWind.png" id="8_jndil"]
 
 [node name="Rat" type="Node2D"]
@@ -18,6 +19,7 @@ textureLeafRune = ExtResource("3_b56eq")
 textureFireRune = ExtResource("4_xlqq3")
 textureWaterRune = ExtResource("5_u8a4y")
 textureElectricRune = ExtResource("6_18kmp")
+packedBullet = ExtResource("7_r6tej")
 
 [node name="Label" type="Label" parent="."]
 visible = false

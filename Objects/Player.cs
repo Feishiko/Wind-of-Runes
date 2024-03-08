@@ -24,6 +24,14 @@ public partial class Player : BaseObject
 	private Texture2D textureRobotMale;
 	[Export]
 	private Texture2D textureRobotFemale;
+	[Export]
+	private PackedScene packedGlove;
+	[Export]
+	private PackedScene packedPistol;
+	[Export]
+	private PackedScene packedBullet;
+	[Export]
+	private PackedScene packedShootingLine;
 	private Game game;
 	public int hitPoint = 20;
 	public int maxHitPoint = 20;
@@ -56,6 +64,8 @@ public partial class Player : BaseObject
 	public Equipment ammo { get; set; }
 	public string[] runes = new string[5];
 	private Controller controller;
+	public bool isUpgrade = false;
+	public bool isFire = false;
 	public override void _Ready()
 	{
 		// Controller
@@ -63,7 +73,20 @@ public partial class Player : BaseObject
 
 		game = GetParent<Game>();
 		var playerTexture = textureHumanMale;
-		species = "Robot";
+		if (controller.maxFloor <= 0)
+		{
+			var glove = packedGlove.Instantiate<Glove>();
+			glove.Init();
+			Pick(glove);
+			var pistol = packedPistol.Instantiate<Pistol>();
+			pistol.Init();
+			Pick(pistol);
+			var bullet = packedBullet.Instantiate<Bullet>();
+			bullet.Init();
+			bullet.numbers = 50;
+			Pick(bullet);
+		}
+
 		if (species == "Human")
 		{
 			if (gender == "Male")
@@ -129,8 +152,10 @@ public partial class Player : BaseObject
 
 	public override void _Process(double delta)
 	{
+		maxWeight = strength * 10 + toughness * 50;
+		maxHitPoint = toughness * 4;
 		// If bag is not open
-		if (!isBagOpen && !isLookingGround)
+		if (!isBagOpen && !isLookingGround && !isUpgrade && !isFire)
 		{
 			if (Input.IsActionJustPressed("Left"))
 			{
@@ -163,6 +188,10 @@ public partial class Player : BaseObject
 			if (Input.IsActionJustPressed("DownRight"))
 			{
 				Movement(new Vector2(1, 1));
+			}
+			if (Input.IsActionJustPressed("Wait"))
+			{
+				game.TurnPassed();
 			}
 
 			if (Input.IsActionJustPressed("Close"))
@@ -214,10 +243,16 @@ public partial class Player : BaseObject
 			{
 				GoDownStair();
 			}
+
+			// Fire Mode Open
+			if (Input.IsActionJustPressed("Fire") && rangeWeapon != null && ammo != null)
+			{
+				isFire = true;
+			}
 		}
 
 		// Open or Close Bag
-		if (Input.IsActionJustPressed("Inventory") && !isLookingGround)
+		if (Input.IsActionJustPressed("Inventory") && !isLookingGround && !isUpgrade && !isFire)
 		{
 			isBagOpen = !isBagOpen;
 		}
@@ -227,44 +262,113 @@ public partial class Player : BaseObject
 		{
 			isLookingGround = false;
 			isBagOpen = false;
+			isFire = false;
 		}
 
-		if (exp >= level * 20)
+		// Fire Mode
+		if (isFire)
 		{
-			exp = exp - level * 20;
-			level += 1;
+			if (Input.IsActionJustPressed("Left"))
+			{
+				Fire(-1, 0);
+			}
+			if (Input.IsActionJustPressed("Right"))
+			{
+				Fire(1, 0);
+			}
+			if (Input.IsActionJustPressed("Up"))
+			{
+				Fire(0, -1);
+			}
+			if (Input.IsActionJustPressed("Down"))
+			{
+				Fire(0, 1);
+			}
+			if (Input.IsActionJustPressed("UpLeft"))
+			{
+				Fire(-1, -1);
+			}
+			if (Input.IsActionJustPressed("UpRight"))
+			{
+				Fire(1, -1);
+			}
+			if (Input.IsActionJustPressed("DownLeft"))
+			{
+				Fire(-1, 1);
+			}
+			if (Input.IsActionJustPressed("DownRight"))
+			{
+				Fire(1, 1);
+			}
 		}
+
+		// Upgrade
+		isUpgrade = exp >= level * 20;
 	}
 
 	public void Movement(Vector2 dir)
 	{
-		game.TurnPassed();
-		// Is Door
-		if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 1] is Door door)
+		if (weight <= maxWeight)
 		{
-			if (!door.isOpen)
+			game.TurnPassed();
+			// Is Door
+			if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 1] is Door door)
 			{
-				door.isOpen = true;
+				if (!door.isOpen)
+				{
+					door.isOpen = true;
+					return;
+				}
+			}
+			// Attack
+			if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 3] is Enemy enemy)
+			{
+				var random = new Random();
+				var damage = 0;
+				if (weapon != null)
+				{
+					for (var iter = 0; iter < weapon.damageDiceNumber; iter++)
+					{
+						damage = random.Next(1, strength + 1 + (weapon != null ? weapon.damage : 0));
+					}
+				}
+				else
+				{
+					damage = random.Next(1, strength + 1 + (weapon != null ? weapon.damage : 0));
+				}
+				damage = Mathf.Max(0, damage - enemy.AV);
+				if (enemy.DV > random.Next(30))
+				{
+					damage = 0;
+				}
+				enemy.hitPoint -= damage; // 1d(str)
+				Position = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+				game.DamageNumber(enemy.gridX, enemy.gridY, damage);
 				return;
 			}
+			// Is Ground
+			if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 0] is Ground)
+			{
+				game.level[gridX, gridY, 3] = null;
+				gridX += (int)dir.X;
+				gridY += (int)dir.Y;
+				game.level[gridX, gridY, 3] = this;
+			}
+			if (game.level[gridX, gridY, 2] is DropItems dropItems)
+			{
+				if (dropItems.IsSingleItem())
+				{
+					game.gameShell.AddLog($"{name} step on the {dropItems.GetSingleItem().name}");
+				}
+				else
+				{
+					game.gameShell.AddLog("Here are some items");
+				}
+			}
 		}
-		// Attack
-		if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 3] is Enemy enemy)
+		else
 		{
-			var random = new Random();
-			var damage = random.Next(1, strength + 1);
-			enemy.hitPoint -= damage; // 1d(str)
-			Position = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
-			game.DamageNumber(enemy.gridX, enemy.gridY, damage);
-			return;
-		}
-		// Is Ground
-		if (game.level[gridX + (int)dir.X, gridY + (int)dir.Y, 0] is Ground)
-		{
-			game.level[gridX, gridY, 3] = null;
-			gridX += (int)dir.X;
-			gridY += (int)dir.Y;
-			game.level[gridX, gridY, 3] = this;
+			game.gameShell.AddLog("Too heavy to move!");
 		}
 	}
 
@@ -274,9 +378,26 @@ public partial class Player : BaseObject
 		{
 			if (inventory[iter] == null)
 			{
-				inventory[iter] = pickUp;
-				weight += pickUp.weight;
-				return;
+				if (pickUp is Bullet bullet)
+				{
+					for (var i = 0; i < 200; i++)
+					{
+						if (inventory[i] is Bullet bullet1)
+						{
+							bullet1.numbers += bullet.numbers;
+							return;
+						}
+					}
+					inventory[iter] = pickUp;
+					weight += pickUp.weight;
+					return;
+				}
+				else
+				{
+					inventory[iter] = pickUp;
+					weight += pickUp.weight;
+					return;
+				}
 			}
 		}
 	}
@@ -375,5 +496,57 @@ public partial class Player : BaseObject
 		rangeWeapon = player.rangeWeapon;
 		ammo = player.ammo;
 		runes = player.runes;
+	}
+
+	public void Fire(int dirX, int dirY)
+	{
+		for (var iter = 0; iter < 10; iter++)
+		{
+			if (game.level[gridX + dirX * iter, gridY + dirY * iter, 3] is Enemy enemy)
+			{
+				var random = new Random();
+				var damage = random.Next(rangeWeapon.damage + agility) + 1;
+				damage = Mathf.Max(0, damage - enemy.AV);
+				if (enemy.DV > random.Next(30))
+				{
+					damage = 0;
+				}
+				enemy.hitPoint -= damage;
+				game.DamageNumber(enemy.gridX, enemy.gridY, damage);
+				(ammo as Bullet).numbers -= 1;
+				var line = packedShootingLine.Instantiate<ShootingLine>();
+				line.originPos = new Vector2(gridX * 16, gridY * 16);
+				line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+				game.AddChild(line);
+				if ((ammo as Bullet).numbers <= 0)
+				{
+					DeleteItem(ammo);
+					ammo = null;
+				}
+				game.TurnPassed();
+				break;
+			}
+			if (game.level[gridX + dirX * iter, gridY + dirY * iter, 0] is Wall wall)
+			{
+				(ammo as Bullet).numbers -= 1;
+				var line = packedShootingLine.Instantiate<ShootingLine>();
+				line.originPos = new Vector2(gridX * 16, gridY * 16);
+				line.targetPos = new Vector2(wall.gridX * 16 - dirX * 8, wall.gridY * 16 - dirY * 8);
+				game.AddChild(line);
+				if ((ammo as Bullet).numbers <= 0)
+				{
+					DeleteItem(ammo);
+					ammo = null;
+				}
+				game.TurnPassed();
+				break;
+			}
+		}
+		isFire = false;
+	}
+
+	public void Heal(int number)
+	{
+		hitPoint = Mathf.Min(hitPoint + number, maxHitPoint);
 	}
 }

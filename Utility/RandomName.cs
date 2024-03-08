@@ -5,7 +5,7 @@ public static class RandomName
 {
 	public static string RandomCharacterName()
 	{
-		string[] names = new string[] {"Prem", "Anđelko", "Miguel", "Marju", "Abdelhak", "Khurshid", "Cezar", "Polya", "Alex", "Katsu", "Sirje", "Jadranka", "Ganesh", "Abubakar", "Yishai", "Polissena", "Augustín", "Aella", "Hōkūlani", "Aradhana", "Ekene", "Tryphaina", "Oakleigh", "Europa", "Agathangelos", "Yao", "Kristofor", "Gabija", "Porfirio", "Alparslan", "Chandrasekhar", "Uhuru", "Muhammadu", "Nabu-Apla-Usur", "Farhad", "Radoslava", "Are", "Adel", "Tadhg", "Touthmosis"};
+		string[] names = new string[] {"Prem", "Anđelko", "Miguel", "Marju", "Abdelhak", "Khurshid", "Cezar", "Polya", "Alex", "Katsu", "Sirje", "Jadranka", "Ganesh", "Abubakar", "Yishai", "Polissena", "Augustín", "Aella", "Hōkūlani", "Aradhana", "Ekene", "Tryphaina", "Oakleigh", "Europa", "Yao", "Kristofor", "Gabija", "Porfirio", "Alparslan", "Uhuru", "Muhammadu", "Farhad", "Radoslava", "Are", "Adel", "Tadhg", "Touthmosis"};
 		Random random = new Random();
 		return names[random.Next(names.Length)];
 	}
