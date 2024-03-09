@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://de7go8qepykmg"]
+[gd_scene load_steps=21 format=3 uid="uid://de7go8qepykmg"]
 
 [ext_resource type="Script" path="res://Game/Game.cs" id="1_ke53x"]
 [ext_resource type="PackedScene" uid="uid://cis6rtdjl57pd" path="res://Objects/Player.tscn" id="2_eroco"]
@@ -13,6 +13,13 @@
 [ext_resource type="PackedScene" uid="uid://3tpxp81op5wc" path="res://Objects/DamageNumber.tscn" id="11_1hjx1"]
 [ext_resource type="PackedScene" uid="uid://dsv5o6eg1u42f" path="res://Objects/Worm.tscn" id="12_gsqwy"]
 [ext_resource type="PackedScene" uid="uid://cpto56q71yfy7" path="res://Objects/Rogue.tscn" id="13_b84x5"]
+[ext_resource type="PackedScene" uid="uid://bqeae2gr15t5a" path="res://Objects/Slime.tscn" id="14_eahd1"]
+[ext_resource type="PackedScene" uid="uid://bu4lakgv5osi6" path="res://Objects/Avian.tscn" id="15_6584l"]
+[ext_resource type="PackedScene" uid="uid://b7m4tuj660u1d" path="res://Objects/Mushroom.tscn" id="16_j7vy1"]
+[ext_resource type="PackedScene" uid="uid://giugsuw1kr1s" path="res://Objects/Micro.tscn" id="17_tdgkd"]
+[ext_resource type="PackedScene" uid="uid://bmceuro652v5a" path="res://Objects/BulletMan.tscn" id="18_j5t3v"]
+[ext_resource type="PackedScene" uid="uid://b8ji8dxnvejml" path="res://Objects/Kobold.tscn" id="19_ywqvr"]
+[ext_resource type="PackedScene" uid="uid://deh6hfcfloyvj" path="res://Objects/StoneMan.tscn" id="20_1lrk3"]
 
 [node name="Game" type="Node2D"]
 texture_filter = 1
@@ -29,3 +36,10 @@ packedDropItems = ExtResource("10_ihsyn")
 packedDamageNumber = ExtResource("11_1hjx1")
 packedWorm = ExtResource("12_gsqwy")
 packedRogue = ExtResource("13_b84x5")
+packedSlime = ExtResource("14_eahd1")
+packedAvian = ExtResource("15_6584l")
+packedMushroom = ExtResource("16_j7vy1")
+packedMicro = ExtResource("17_tdgkd")
+packedBulletMan = ExtResource("18_j5t3v")
+packedKobold = ExtResource("19_ywqvr")
+packedStoneMan = ExtResource("20_1lrk3")

@@ -13,5 +13,6 @@ public partial class EquipmentPanelItem : Node2D
 
 	public override void _Process(double delta)
 	{
+		size = GetNode<Label>("Label").Size;
 	}
 }

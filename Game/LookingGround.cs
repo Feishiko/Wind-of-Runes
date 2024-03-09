@@ -47,6 +47,14 @@ public partial class LookingGround : Node2D
 				{
 					inventoryItems[iter].Text = pickUps[iter, currentPage].selected ? $"[{pickUps[iter, currentPage].name}({pickUps[iter, currentPage].weight}w)]" : pickUps[iter, currentPage].name + $"({pickUps[iter, currentPage].weight}w)";
 				}
+				if (pickUps[iter, currentPage] is ShrinkGun shrinkGun)
+				{
+					inventoryItems[iter].Text = pickUps[iter, currentPage].selected ? "[" + shrinkGun.name + $"({shrinkGun.weight}w)[{shrinkGun.ammo}/{shrinkGun.maxAmmo}]]" : shrinkGun.name + $"({shrinkGun.weight}w)[{shrinkGun.ammo}/{shrinkGun.maxAmmo}]";
+				}
+				if (pickUps[iter, currentPage] is LaserGun laserGun)
+				{
+					inventoryItems[iter].Text = pickUps[iter, currentPage].selected ? "[" + laserGun.name + $"({laserGun.weight}w)[{laserGun.ammo}/{laserGun.maxAmmo}]]" : laserGun.name + $"({laserGun.weight}w)[{laserGun.ammo}/{laserGun.maxAmmo}]";
+				}
 			}
 		}
 

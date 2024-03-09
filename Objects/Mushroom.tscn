@@ -1,0 +1,63 @@
+[gd_scene load_steps=16 format=3 uid="uid://b7m4tuj660u1d"]
+
+[ext_resource type="Script" path="res://Objects/Mushroom.cs" id="1_32hsm"]
+[ext_resource type="Texture2D" uid="uid://dg7tvmriofqc6" path="res://Texture/gearWind.png" id="2_c3saq"]
+[ext_resource type="Texture2D" uid="uid://dinaw7lauxpna" path="res://Texture/leafWind.png" id="3_02yjm"]
+[ext_resource type="Texture2D" uid="uid://ceb7r1umnlfo1" path="res://Texture/fireWind.png" id="4_28yiv"]
+[ext_resource type="Texture2D" uid="uid://d8k4sb7746qs" path="res://Texture/waterWind.png" id="5_1i6do"]
+[ext_resource type="Texture2D" uid="uid://hpuj4u4sffpi" path="res://Texture/electricWind.png" id="6_t2t46"]
+[ext_resource type="PackedScene" uid="uid://bn84jts6yuwd1" path="res://Objects/Bullet.tscn" id="7_i4o6b"]
+[ext_resource type="PackedScene" uid="uid://nktd2igqj6w1" path="res://Objects/Boot.tscn" id="8_484ig"]
+[ext_resource type="PackedScene" uid="uid://c52lpqno77463" path="res://Objects/Sword.tscn" id="9_yly01"]
+[ext_resource type="PackedScene" uid="uid://l33mqv70r8pq" path="res://Objects/Clothes.tscn" id="10_01ikw"]
+[ext_resource type="PackedScene" uid="uid://cw80teqf5jef8" path="res://Objects/Helmet.tscn" id="11_w1be8"]
+[ext_resource type="PackedScene" uid="uid://bm64ubu5i0q07" path="res://Objects/Pistol.tscn" id="12_jatce"]
+[ext_resource type="PackedScene" uid="uid://dv62pxyf4bd2p" path="res://Objects/Glove.tscn" id="13_qwlwc"]
+[ext_resource type="Texture2D" uid="uid://8wn34f6lfgq0" path="res://Texture/mushroom.png" id="14_ffpl5"]
+[ext_resource type="Texture2D" uid="uid://d04w3aigu40pq" path="res://Texture/emptyWind.png" id="15_3uq8s"]
+
+[node name="Mushroom" type="Node2D"]
+z_index = 1
+texture_filter = 1
+script = ExtResource("1_32hsm")
+textureGearRune = ExtResource("2_c3saq")
+textureLeafRune = ExtResource("3_02yjm")
+textureFireRune = ExtResource("4_28yiv")
+textureWaterRune = ExtResource("5_1i6do")
+textureElectricRune = ExtResource("6_t2t46")
+packedBullet = ExtResource("7_i4o6b")
+packedBoot = ExtResource("8_484ig")
+packedSword = ExtResource("9_yly01")
+packedClothes = ExtResource("10_01ikw")
+packedHelmet = ExtResource("11_w1be8")
+packedPistol = ExtResource("12_jatce")
+packedGlove = ExtResource("13_qwlwc")
+icon = ExtResource("14_ffpl5")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.5
+offset_top = -11.5
+offset_right = 11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "r"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("14_ffpl5")
+
+[node name="Rune" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.545098)
+position = Vector2(5, 6)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("15_3uq8s")

@@ -25,6 +25,7 @@ public partial class Equipment : PickUp
 	public void MakeDescription()
 	{
 		description = $"Name: {name}\n";
+		description += $"Part: {part}\n";
 		description += damage == 0 ? "" : $"Damage: {damage}\n";
 		description += damageDiceNumber == 0 ? "" : $"Damage DiceNumber: {damageDiceNumber}\n";
 		description += strength == 0 ? "" : $"Strength: {strength}\n";

@@ -29,5 +29,6 @@ public partial class Sword : Equipment
 		AV = 0;
 		DV = 0;
 		MakeDescription();
+		description += "Damage depend on your strength\n";
 	}
 }

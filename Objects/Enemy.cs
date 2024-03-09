@@ -21,6 +21,14 @@ public partial class Enemy : BaseObject
 	public PackedScene packedSword;
 	[Export]
 	public PackedScene packedClothes;
+	[Export]
+	public PackedScene packedHelmet;
+	[Export]
+	public PackedScene packedPistol;
+	[Export]
+	public PackedScene packedGlove;
+	[Export]
+	public Texture2D icon;
 	public string name { get; set; } = RandomName.RandomCharacterName();
 	public int hitPoint { get; set; }
 	public int level { get; set; }
@@ -34,6 +42,7 @@ public partial class Enemy : BaseObject
 	public int DV { get; set; }
 	public int nutrition { get; set; }
 	public int weight { get; set; }
+	public bool isShrink { get; set; }
 	public PickUp[] inventory = new PickUp[100];
 	public Equipment head { get; set; }
 	public Equipment hand { get; set; }
@@ -102,7 +111,6 @@ public partial class Enemy : BaseObject
 			if (inventory[iter] == null)
 			{
 				inventory[iter] = pickUp;
-				weight += pickUp.weight;
 				break;
 			}
 		}

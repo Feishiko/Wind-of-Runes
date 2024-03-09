@@ -32,8 +32,14 @@ public partial class Player : BaseObject
 	private PackedScene packedBullet;
 	[Export]
 	private PackedScene packedShootingLine;
+	[Export]
+	private PackedScene packedBread;
+	[Export]
+	private PackedScene packedShrinkGun;
+	[Export]
+	private PackedScene packedLaserGun;
 	private Game game;
-	public int hitPoint = 20;
+	public int hitPoint = 24;
 	public int maxHitPoint = 20;
 	public int level = 1;
 	public string name = RandomName.RandomCharacterName(); // Can custom
@@ -73,19 +79,8 @@ public partial class Player : BaseObject
 
 		game = GetParent<Game>();
 		var playerTexture = textureHumanMale;
-		if (controller.maxFloor <= 0)
-		{
-			var glove = packedGlove.Instantiate<Glove>();
-			glove.Init();
-			Pick(glove);
-			var pistol = packedPistol.Instantiate<Pistol>();
-			pistol.Init();
-			Pick(pistol);
-			var bullet = packedBullet.Instantiate<Bullet>();
-			bullet.Init();
-			bullet.numbers = 50;
-			Pick(bullet);
-		}
+
+		species = "Avali";
 
 		if (species == "Human")
 		{
@@ -96,6 +91,15 @@ public partial class Player : BaseObject
 			else
 			{
 				playerTexture = textureHumanFemale;
+			}
+			if (controller.currentFloor <= 0)
+			{
+				for (var iter = 0; iter < 3; iter++)
+				{
+					var bread = packedBread.Instantiate<Bread>();
+					bread.Init();
+					Pick(bread);
+				}
 			}
 		}
 		if (species == "Kobold")
@@ -108,6 +112,12 @@ public partial class Player : BaseObject
 			{
 				playerTexture = textureKoboldFemale;
 			}
+			if (controller.currentFloor <= 0)
+			{
+				var laserGun = packedLaserGun.Instantiate<LaserGun>();
+				laserGun.Init();
+				Pick(laserGun);
+			}
 		}
 		if (species == "Avian")
 		{
@@ -119,6 +129,16 @@ public partial class Player : BaseObject
 			{
 				playerTexture = textureAvianFemale;
 			}
+			if (controller.currentFloor <= 0)
+			{
+				var pistol = packedPistol.Instantiate<Pistol>();
+				pistol.Init();
+				Pick(pistol);
+				var bullet = packedBullet.Instantiate<Bullet>();
+				bullet.Init();
+				bullet.numbers = 10;
+				Pick(bullet);
+			}
 		}
 		if (species == "Avali")
 		{
@@ -129,6 +149,12 @@ public partial class Player : BaseObject
 			else
 			{
 				playerTexture = textureAvaliFemale;
+			}
+			if (controller.currentFloor <= 0)
+			{
+				var shrinkGun = packedShrinkGun.Instantiate<ShrinkGun>();
+				shrinkGun.Init();
+				Pick(shrinkGun);
 			}
 		}
 		if (species == "Robot")
@@ -153,7 +179,7 @@ public partial class Player : BaseObject
 	public override void _Process(double delta)
 	{
 		maxWeight = strength * 10 + toughness * 50;
-		maxHitPoint = toughness * 4;
+		maxHitPoint = toughness * 4 + level * 4;
 		// If bag is not open
 		if (!isBagOpen && !isLookingGround && !isUpgrade && !isFire)
 		{
@@ -227,6 +253,7 @@ public partial class Player : BaseObject
 					}
 					else
 					{
+						game.gameShell.logs = null;
 						isLookingGround = true;
 					}
 				}
@@ -244,22 +271,70 @@ public partial class Player : BaseObject
 				GoDownStair();
 			}
 
-			// Fire Mode Open
+			// Fire Mode Open(Normal Weapon)
 			if (Input.IsActionJustPressed("Fire") && rangeWeapon != null && ammo != null)
 			{
+				// Clear the log
+				game.gameShell.logs = null;
 				isFire = true;
+			}
+			if (Input.IsActionJustPressed("Fire"))
+			{
+				if (rangeWeapon == null)
+				{
+					game.gameShell.AddLog("You need a rangeweapon to shoot");
+				}
+				else
+				{
+					if (rangeWeapon is Pistol && ammo == null)
+					{
+						game.gameShell.AddLog("You need some bullet to shoot");
+					}
+					// High-tech Weapon
+					if (rangeWeapon is ShrinkGun shrinkGun)
+					{
+						if (shrinkGun.ammo > 0)
+						{
+							// Clear the log
+							game.gameShell.logs = null;
+							isFire = true;
+						}
+						else
+						{
+							game.gameShell.AddLog("Your shrink gun need to charge before use");
+						}
+					}
+					if (rangeWeapon is LaserGun laserGun)
+					{
+						if (laserGun.ammo > 0)
+						{
+							// Clear the log
+							game.gameShell.logs = null;
+							isFire = true;
+						}
+						else
+						{
+							game.gameShell.AddLog("Your laser gun need to charge before use");
+						}
+					}
+				}
+
 			}
 		}
 
 		// Open or Close Bag
 		if (Input.IsActionJustPressed("Inventory") && !isLookingGround && !isUpgrade && !isFire)
 		{
+			// Clear the log
+			game.gameShell.logs = null;
 			isBagOpen = !isBagOpen;
 		}
 
 		// Close Inventory and LookingGround
 		if (Input.IsActionJustPressed("Cancel"))
 		{
+			// Clear the log
+			game.gameShell.logs = null;
 			isLookingGround = false;
 			isBagOpen = false;
 			isFire = false;
@@ -304,10 +379,30 @@ public partial class Player : BaseObject
 
 		// Upgrade
 		isUpgrade = exp >= level * 20;
+
+		// Inventory
+		for (var iter = 0; iter < 199; iter++)
+		{
+			if (inventory[iter] == null && inventory[iter + 1] != null)
+			{
+				inventory[iter] = inventory[iter + 1];
+				inventory[iter + 1] = null;
+			}
+		}
+
+		if (Input.IsKeyPressed(Key.A))
+		{
+			game.level[gridX, gridY, 3] = null;
+			gridX = game.upstair.gridX;
+			gridY = game.upstair.gridY;
+			game.level[gridX, gridY, 3] = this;
+		}
 	}
 
 	public void Movement(Vector2 dir)
 	{
+		// Clear the log
+		game.gameShell.logs = null;
 		if (weight <= maxWeight)
 		{
 			game.TurnPassed();
@@ -336,7 +431,7 @@ public partial class Player : BaseObject
 				{
 					damage = random.Next(1, strength + 1 + (weapon != null ? weapon.damage : 0));
 				}
-				damage = Mathf.Max(0, damage - enemy.AV);
+				damage = Mathf.Max(1, damage - enemy.AV);
 				if (enemy.DV > random.Next(30))
 				{
 					damage = 0;
@@ -467,6 +562,36 @@ public partial class Player : BaseObject
 		}
 	}
 
+	public void GetRuneFromMicro(string rune)
+	{
+		for (var iter = 0; iter < 5; iter++)
+		{
+			if (runes[iter] == null)
+			{
+				runes[iter] = rune;
+				if (runes[4] != null)
+				{
+					var fire = 0;
+					var water = 0;
+					var gear = 0;
+					var leaf = 0;
+					var electric = 0;
+					for (var i = 0; i < 5; i++)
+					{
+						fire += runes[i] == "Fire" ? 1 : 0;
+						water += runes[i] == "Water" ? 1 : 0;
+						gear += runes[i] == "Gear" ? 1 : 0;
+						leaf += runes[i] == "Leaf" ? 1 : 0;
+						electric += runes[i] == "Electric" ? 1 : 0;
+						runes[i] = null;
+					}
+					exp += Math.Max(Math.Max(Math.Max(Math.Max(fire, water), gear), leaf), electric) * 20;
+				}
+				return;
+			}
+		}
+	}
+
 	public void PlayerCopy(Player player)
 	{
 		name = player.name;
@@ -505,38 +630,103 @@ public partial class Player : BaseObject
 			if (game.level[gridX + dirX * iter, gridY + dirY * iter, 3] is Enemy enemy)
 			{
 				var random = new Random();
-				var damage = random.Next(rangeWeapon.damage + agility) + 1;
-				damage = Mathf.Max(0, damage - enemy.AV);
-				if (enemy.DV > random.Next(30))
+				if (rangeWeapon is Pistol)
 				{
-					damage = 0;
+					var damage = random.Next(rangeWeapon.damage + agility) + 1;
+					damage = Mathf.Max(1, damage - enemy.AV);
+					if (enemy.DV > random.Next(30))
+					{
+						damage = 0;
+					}
+					enemy.hitPoint -= damage;
+					game.DamageNumber(enemy.gridX, enemy.gridY, damage);
+					(ammo as Bullet).numbers -= 1;
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+					game.AddChild(line);
+					if ((ammo as Bullet).numbers <= 0)
+					{
+						DeleteItem(ammo);
+						ammo = null;
+					}
 				}
-				enemy.hitPoint -= damage;
-				game.DamageNumber(enemy.gridX, enemy.gridY, damage);
-				(ammo as Bullet).numbers -= 1;
-				var line = packedShootingLine.Instantiate<ShootingLine>();
-				line.originPos = new Vector2(gridX * 16, gridY * 16);
-				line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
-				game.AddChild(line);
-				if ((ammo as Bullet).numbers <= 0)
+				// High-tech Weapon
+				if (rangeWeapon is ShrinkGun shrinkGun)
 				{
-					DeleteItem(ammo);
-					ammo = null;
+					var hit = true;
+					if (enemy.DV > random.Next(30))
+					{
+						hit = false;
+						game.gameShell.AddLog("The ray missed!");
+					}
+					if (hit)
+					{
+						enemy.isShrink = true;
+						game.RemoveEnemy(enemy);
+					}
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+					line.GetNode<Line2D>("Line2D").DefaultColor = Colors.Blue;
+					game.AddChild(line);
+					shrinkGun.ammo -= 1;
+					game.DamageNumber(enemy.gridX, enemy.gridY, hit ? 9999 : 0);
+				}
+				if (rangeWeapon is LaserGun laserGun)
+				{
+					var damage = random.Next(rangeWeapon.damage + agility) + 1;
+					damage = Mathf.Max(1, damage - enemy.AV);
+					if (enemy.DV > random.Next(30))
+					{
+						damage = 0;
+					}
+					enemy.hitPoint -= damage;
+					game.DamageNumber(enemy.gridX, enemy.gridY, damage);
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+					line.GetNode<Line2D>("Line2D").DefaultColor = Colors.Green;
+					game.AddChild(line);
+					laserGun.ammo -= 1;
 				}
 				game.TurnPassed();
 				break;
 			}
 			if (game.level[gridX + dirX * iter, gridY + dirY * iter, 0] is Wall wall)
 			{
-				(ammo as Bullet).numbers -= 1;
-				var line = packedShootingLine.Instantiate<ShootingLine>();
-				line.originPos = new Vector2(gridX * 16, gridY * 16);
-				line.targetPos = new Vector2(wall.gridX * 16 - dirX * 8, wall.gridY * 16 - dirY * 8);
-				game.AddChild(line);
-				if ((ammo as Bullet).numbers <= 0)
+				if (rangeWeapon is Pistol)
 				{
-					DeleteItem(ammo);
-					ammo = null;
+					(ammo as Bullet).numbers -= 1;
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(wall.gridX * 16 - dirX * 8, wall.gridY * 16 - dirY * 8);
+					game.AddChild(line);
+					if ((ammo as Bullet).numbers <= 0)
+					{
+						DeleteItem(ammo);
+						ammo = null;
+					}
+
+				}
+				// High-tech Weapon
+				if (rangeWeapon is ShrinkGun shrinkGun)
+				{
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(wall.gridX * 16 - dirX * 8, wall.gridY * 16 - dirY * 8);
+					line.GetNode<Line2D>("Line2D").DefaultColor = Colors.Blue;
+					game.AddChild(line);
+					shrinkGun.ammo -= 1;
+				}
+				if (rangeWeapon is LaserGun laserGun)
+				{
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(wall.gridX * 16 - dirX * 8, wall.gridY * 16 - dirY * 8);
+					line.GetNode<Line2D>("Line2D").DefaultColor = Colors.Green;
+					game.AddChild(line);
+					laserGun.ammo -= 1;
 				}
 				game.TurnPassed();
 				break;

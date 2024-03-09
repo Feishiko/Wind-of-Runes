@@ -20,6 +20,7 @@ textureFireRune = ExtResource("4_xlqq3")
 textureWaterRune = ExtResource("5_u8a4y")
 textureElectricRune = ExtResource("6_18kmp")
 packedBullet = ExtResource("7_r6tej")
+icon = ExtResource("2_sr8xq")
 
 [node name="Label" type="Label" parent="."]
 visible = false

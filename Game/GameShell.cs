@@ -22,8 +22,8 @@ public partial class GameShell : Node2D
 	public Game game;
 	private Controller controller;
 	private FireMode fireMode;
-	public string[] logs = new string[4];
-	public Log[] labelLogs = new Log[4];
+	public string logs = "";
+	public Log labelLogs = new Log();
 	public override void _Ready()
 	{
 		// Controller
@@ -38,13 +38,12 @@ public partial class GameShell : Node2D
 			AddChild(runes[iter]);
 		}
 
-		for (var iter = 0; iter < 4; iter++)
-		{
-			labelLogs[iter] = packedLog.Instantiate<Log>();
-			labelLogs[iter].text = logs[iter] != null ? logs[iter] : "";
-			labelLogs[iter].Position = new Vector2(310, 220 + iter * 20);
-			AddChild(labelLogs[iter]);
-		}
+
+		labelLogs = packedLog.Instantiate<Log>();
+		labelLogs.text = logs != null ? logs : "";
+		labelLogs.Position = new Vector2(10, 280);
+		AddChild(labelLogs);
+
 	}
 
 	public override void _Process(double delta)
@@ -177,27 +176,13 @@ public partial class GameShell : Node2D
 		}
 
 		// Logs
-		for (var iter = 0; iter < 4; iter++)
-		{
-			labelLogs[iter].text = $">{logs[iter]}";
-		}
+		var right = logs != null ? ">" : "";
+		labelLogs.text = $"{right}{logs}";
+
 	}
 
 	public void AddLog(string text)
 	{
-		// for (var iter = 0; iter < 4; iter++)
-		// {
-		// 	if (logs[iter] == null)
-		// 	{
-		// 		logs[iter] = text;
-		// 		return;
-		// 	}
-		// }
-		// Full
-		for (var iter = 0; iter < 3; iter++)
-		{
-			logs[iter] = logs[iter + 1];
-		}
-		logs[3] = text;
+		logs = text;
 	}
 }

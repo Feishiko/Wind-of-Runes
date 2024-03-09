@@ -1,12 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://8q6rfd32ru7s"]
+[gd_scene load_steps=4 format=3 uid="uid://8q6rfd32ru7s"]
 
 [ext_resource type="Script" path="res://Objects/Wall.cs" id="1_ak0tw"]
 [ext_resource type="Texture2D" uid="uid://b5m7t1sjh7ky3" path="res://Texture/wall1.png" id="2_e81ek"]
+[ext_resource type="Texture2D" uid="uid://dti7nlwduagjo" path="res://Texture/wallw.png" id="3_q2vbr"]
 
 [node name="Wall" type="Node2D"]
 z_index = -2
 texture_filter = 1
 script = ExtResource("1_ak0tw")
+textureWall1 = ExtResource("2_e81ek")
+textureWall2 = ExtResource("3_q2vbr")
 
 [node name="Label" type="Label" parent="."]
 visible = false

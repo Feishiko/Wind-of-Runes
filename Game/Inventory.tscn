@@ -41,14 +41,13 @@ uppercase = true
 
 [node name="Help" type="Label" parent="."]
 use_parent_material = true
-offset_left = 208.0
-offset_top = 266.0
+offset_left = 136.0
+offset_top = 277.0
 offset_right = 299.0
 offset_bottom = 303.0
 theme_override_fonts/font = ExtResource("1_f8dkh")
 theme_override_font_sizes/font_size = 7
-text = "[Up]/[Down] Select
-[Left]/[Right] Page Select
+text = "[Up]/[Down] Select    [Left]/[Right] Page Select
 [Enter]Confirm"
 uppercase = true
 

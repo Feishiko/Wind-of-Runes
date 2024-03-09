@@ -3,14 +3,16 @@ using System;
 
 public partial class Rogue : Enemy
 {
+	[Export]
+	private PackedScene packedBread;
 	private Game game;
 	public override void _Ready()
 	{
 		game = GetParent<Game>();
 		level = game.floor;
-		hitPoint = level * 5;
+		hitPoint = level * 5 + 1;
 		species = "Rogue";
-		strength = level;
+		strength = level + 1;
 		agility = level;
 		intelligence = level;
 		toughness = level;
@@ -23,23 +25,47 @@ public partial class Rogue : Enemy
 		bullet.Init();
 		bullet.numbers = random.Next(1, 3);
 		Pick(bullet);
-		if (random.Next(3) == 1)
+		if (random.Next(10) == 1)
+		{
+			var bread = packedBread.Instantiate<Bread>();
+			bread.Init();
+			Pick(bread);
+		}
+		if (random.Next(10) == 1)
 		{
 			var boot = packedBoot.Instantiate<Boot>();
 			boot.Init();
 			Pick(boot);
 		}
-		if (random.Next(3) == 1)
+		if (random.Next(10) == 1)
 		{
 			var clothes = packedClothes.Instantiate<Clothes>();
 			clothes.Init();
 			Pick(clothes);
 		}
-		if (random.Next(3) == 1)
+		if (random.Next(10) == 1)
 		{
 			var sword = packedSword.Instantiate<Sword>();
 			sword.Init();
 			Pick(sword);
+		}
+		if (random.Next(10) == 1)
+		{
+			var glove = packedGlove.Instantiate<Glove>();
+			glove.Init();
+			Pick(glove);
+		}
+		if (random.Next(10) == 1)
+		{
+			var pistol = packedPistol.Instantiate<Pistol>();
+			pistol.Init();
+			Pick(pistol);
+		}
+		if (random.Next(10) == 1)
+		{
+			var helmet = packedHelmet.Instantiate<Helmet>();
+			helmet.Init();
+			Pick(helmet);
 		}
 	}
 
@@ -73,7 +99,7 @@ public partial class Rogue : Enemy
 				{
 					var random = new Random();
 					var damage = random.Next(1, strength);
-					damage = Mathf.Max(0, damage - player.AV);
+					damage = Mathf.Max(1, damage - player.AV);
 					if (player.DV > random.Next(30))
 					{
 						damage = 0;

@@ -59,6 +59,8 @@ public partial class Upgrade : Node2D
 					case "Toughness": player.toughness++; break;
 				}
 			}
+			player.maxHitPoint = player.toughness * 4 + player.level * 4;
+			player.Heal(999);
 		}
 	}
 }

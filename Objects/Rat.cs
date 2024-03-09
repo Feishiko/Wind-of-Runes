@@ -52,8 +52,8 @@ public partial class Rat : Enemy
 				if (game.level[gridX + x, gridY + y, 3] is Player player)
 				{
 					var random = new Random();
-					var damage = random.Next(1, strength);
-					damage = Mathf.Max(0, damage - player.AV);
+					var damage = random.Next(1, strength + 1);
+					damage = Mathf.Max(1, damage - player.AV);
 					if (player.DV > random.Next(30))
 					{
 						damage = 0;

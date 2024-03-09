@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://cpto56q71yfy7"]
+[gd_scene load_steps=17 format=3 uid="uid://cpto56q71yfy7"]
 
 [ext_resource type="Script" path="res://Objects/Rogue.cs" id="1_t4a5j"]
+[ext_resource type="PackedScene" uid="uid://rxf5t65k2ug8" path="res://Objects/Bread.tscn" id="2_lb6ip"]
 [ext_resource type="Texture2D" uid="uid://dg7tvmriofqc6" path="res://Texture/gearWind.png" id="2_u5gk7"]
 [ext_resource type="Texture2D" uid="uid://dinaw7lauxpna" path="res://Texture/leafWind.png" id="3_p54kj"]
 [ext_resource type="Texture2D" uid="uid://ceb7r1umnlfo1" path="res://Texture/fireWind.png" id="4_ivgsy"]
@@ -12,11 +13,15 @@
 [ext_resource type="Texture2D" uid="uid://d04w3aigu40pq" path="res://Texture/emptyWind.png" id="8_xg5um"]
 [ext_resource type="PackedScene" uid="uid://c52lpqno77463" path="res://Objects/Sword.tscn" id="9_82j6d"]
 [ext_resource type="PackedScene" uid="uid://l33mqv70r8pq" path="res://Objects/Clothes.tscn" id="10_aafbl"]
+[ext_resource type="PackedScene" uid="uid://cw80teqf5jef8" path="res://Objects/Helmet.tscn" id="11_35lxm"]
+[ext_resource type="PackedScene" uid="uid://bm64ubu5i0q07" path="res://Objects/Pistol.tscn" id="12_ogya2"]
+[ext_resource type="PackedScene" uid="uid://dv62pxyf4bd2p" path="res://Objects/Glove.tscn" id="13_8kql1"]
 
 [node name="Rogue" type="Node2D"]
 z_index = 1
 texture_filter = 1
 script = ExtResource("1_t4a5j")
+packedBread = ExtResource("2_lb6ip")
 textureGearRune = ExtResource("2_u5gk7")
 textureLeafRune = ExtResource("3_p54kj")
 textureFireRune = ExtResource("4_ivgsy")
@@ -26,6 +31,10 @@ packedBullet = ExtResource("7_tqqsk")
 packedBoot = ExtResource("8_thy3k")
 packedSword = ExtResource("9_82j6d")
 packedClothes = ExtResource("10_aafbl")
+packedHelmet = ExtResource("11_35lxm")
+packedPistol = ExtResource("12_ogya2")
+packedGlove = ExtResource("13_8kql1")
+icon = ExtResource("7_x5ue5")
 
 [node name="Label" type="Label" parent="."]
 visible = false

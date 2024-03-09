@@ -26,7 +26,7 @@ public partial class Clothes : Equipment
 		agility = random.Next(controller.currentFloor);
 		intelligence = random.Next(controller.currentFloor);
 		toughness = random.Next(controller.currentFloor);
-		AV = random.Next(controller.currentFloor + 2);
+		AV = random.Next(controller.currentFloor + 1);
 		DV = random.Next(controller.currentFloor + 1);
 		MakeDescription();
 	}

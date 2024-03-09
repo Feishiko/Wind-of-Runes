@@ -18,6 +18,7 @@ textureLeafRune = ExtResource("3_qfc83")
 textureFireRune = ExtResource("4_t23hy")
 textureWaterRune = ExtResource("5_1burv")
 textureElectricRune = ExtResource("6_s4m0v")
+icon = ExtResource("1_iygpe")
 
 [node name="Label" type="Label" parent="."]
 visible = false

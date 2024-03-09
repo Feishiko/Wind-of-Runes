@@ -33,6 +33,14 @@ public partial class DropItems : BaseObject
 			if (dropItems[iter] != null)
 			{
 				icon = dropItems[iter].icon;
+				if (dropItems[iter] is Micro)
+				{
+					Scale = new Vector2(.4f, .4f);
+				}
+				else
+				{
+					Scale = Vector2.One;
+				}
 				break;
 			}
 		}

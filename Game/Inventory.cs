@@ -57,6 +57,14 @@ public partial class Inventory : Node2D
 					{
 						inventoryItems[iter].Text = pickUps[iter, currentPage].name + $"({pickUps[iter, currentPage].weight}w)x{bullet.numbers}" + e;
 					}
+					if (equipment is ShrinkGun shrinkGun)
+					{
+						inventoryItems[iter].Text = shrinkGun.name + $"({shrinkGun.weight}w)[{shrinkGun.ammo}/{shrinkGun.maxAmmo}]" + e;
+					}
+					if (equipment is LaserGun laserGun)
+					{
+						inventoryItems[iter].Text = laserGun.name + $"({laserGun.weight}w)[{laserGun.ammo}/{laserGun.maxAmmo}]" + e;
+					}
 				}
 				else
 				{
@@ -117,7 +125,7 @@ public partial class Inventory : Node2D
 		gameShell.game.player.hungryNess += (secondaryMenu.selectItem as Food).nutrition;
 		if ((secondaryMenu.selectItem as Food).nutrition < 0)
 		{
-			gameShell.AddLog($"You can't bear that {secondaryMenu.selectItem.name}");
+			gameShell.AddLog($"The {secondaryMenu.selectItem.name} makes you vomit!");
 		}
 		if ((secondaryMenu.selectItem as Food).nutrition == 0)
 		{
@@ -125,11 +133,15 @@ public partial class Inventory : Node2D
 		}
 		if ((secondaryMenu.selectItem as Food).nutrition > 0 && (secondaryMenu.selectItem as Food).nutrition < 100)
 		{
-			gameShell.AddLog("Ordinary food");
+			gameShell.AddLog($"You eat up the {secondaryMenu.selectItem.name}");
 		}
 		if ((secondaryMenu.selectItem as Food).nutrition >= 100)
 		{
 			gameShell.AddLog($"Yummy {secondaryMenu.selectItem.name}!");
+		}
+		if (secondaryMenu.selectItem is Micro micro)
+		{
+			gameShell.game.player.GetRuneFromMicro(micro.rune);
 		}
 		gameShell.game.player.hungryNess = Math.Min(gameShell.game.player.hungryNess, gameShell.game.player.maxHungryNess);
 		gameShell.game.player.isBagOpen = false;

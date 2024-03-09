@@ -9,9 +9,9 @@ use_parent_material = true
 script = ExtResource("1_sj1x4")
 
 [node name="Label" type="Label" parent="."]
-offset_right = 80.0
-offset_bottom = 9.0
+offset_right = 300.0
+offset_bottom = 17.0
 theme_override_fonts/font = ExtResource("1_1yyay")
-theme_override_font_sizes/font_size = 7
+theme_override_font_sizes/font_size = 14
 vertical_alignment = 1
 autowrap_mode = 2

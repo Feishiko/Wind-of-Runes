@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://vd0gu33phblr"]
+
+[ext_resource type="Script" path="res://Objects/LaserGun.cs" id="1_fjjsw"]
+[ext_resource type="Texture2D" uid="uid://dix1unlb35hq7" path="res://Texture/laserGun.png" id="2_rriyv"]
+
+[node name="ShrinkGun" type="Node2D"]
+script = ExtResource("1_fjjsw")
+icon = ExtResource("2_rriyv")

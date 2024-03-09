@@ -29,6 +29,20 @@ public partial class Game : Node2D
 	private PackedScene packedWorm;
 	[Export]
 	private PackedScene packedRogue;
+	[Export]
+	private PackedScene packedSlime;
+	[Export]
+	private PackedScene packedAvian;
+	[Export]
+	private PackedScene packedMushroom;
+	[Export]
+	private PackedScene packedMicro;
+	[Export]
+	private PackedScene packedBulletMan;
+	[Export]
+	private PackedScene packedKobold;
+	[Export]
+	private PackedScene packedStoneMan;
 	public Player player;
 	const int levelWidth = 40;
 	const int levelHeight = 40;
@@ -36,7 +50,7 @@ public partial class Game : Node2D
 	// 0->Ground/Wall 1->Wall/Stairs 2->Dropitems 3->Creatures
 	public BaseObject[,,] level = new BaseObject[levelWidth, levelHeight, 4];
 	private int[,] roomSpace = new int[levelWidth * levelHeight, 2];
-	private Upstair upstair;
+	public Upstair upstair;
 	private Downstair downstair;
 	// Level Info
 	public int floor = 1;
@@ -67,12 +81,23 @@ public partial class Game : Node2D
 			}
 			else
 			{
-				// GD.Print("theplayer:" + controller.player);
-				level = TerrianGenerate(10, 3, 3, 5, 5);
-				// level[downstair.gridX, downstair.gridY, 3] = controller.player;
-				// player = level[downstair.gridX, downstair.gridY, 3] as Player;
+				if (controller.currentFloor <= 5)
+				{
+					level = TerrianGenerate(12, 3, 3, 5, 5);
+				}
+				if (controller.currentFloor > 5 && controller.currentFloor <= 10)
+				{
+					level = TerrianGenerate(20, 5, 5, 10, 10);
+				}
+				if (controller.currentFloor > 10 && controller.currentFloor <= 15)
+				{
+					level = TerrianGenerate(20, 2, 2, 2, 2);
+				}
+				if (controller.currentFloor >= 16)
+				{
+					level = EndTerrianGenerate();
+				}
 				level[downstair.gridX, downstair.gridY, 3] = packedPlayer.Instantiate<Player>();
-				// player = controller.player;
 				(level[downstair.gridX, downstair.gridY, 3] as Player).PlayerCopy(controller.player);
 				level[downstair.gridX, downstair.gridY, 3].gridX = downstair.gridX;
 				level[downstair.gridX, downstair.gridY, 3].gridY = downstair.gridY;
@@ -105,13 +130,41 @@ public partial class Game : Node2D
 						}
 						if (item is Enemy enemy)
 						{
-							if (enemy is Rat rat)
+							if (enemy is Rat)
 							{
 								level[width, height, layer] = packedRat.Instantiate<Rat>();
 							}
-							if (enemy is Worm worm)
+							if (enemy is Worm)
 							{
 								level[width, height, layer] = packedWorm.Instantiate<Worm>();
+							}
+							if (enemy is Rogue)
+							{
+								level[width, height, layer] = packedRogue.Instantiate<Rogue>();
+							}
+							if (enemy is Slime)
+							{
+								level[width, height, layer] = packedSlime.Instantiate<Slime>();
+							}
+							if (enemy is Mushroom)
+							{
+								level[width, height, layer] = packedMushroom.Instantiate<Mushroom>();
+							}
+							if (enemy is Avian)
+							{
+								level[width, height, layer] = packedAvian.Instantiate<Avian>();
+							}
+							if (enemy is BulletMan)
+							{
+								level[width, height, layer] = packedBulletMan.Instantiate<BulletMan>();
+							}
+							if (enemy is Kobold)
+							{
+								level[width, height, layer] = packedKobold.Instantiate<Kobold>();
+							}
+							if (enemy is StoneMan)
+							{
+								level[width, height, layer] = packedStoneMan.Instantiate<StoneMan>();
 							}
 							level[width, height, layer].Copy(enemy);
 							(level[width, height, layer] as Enemy).EnemyCopy(enemy);
@@ -316,6 +369,94 @@ public partial class Game : Node2D
 		return level;
 	}
 
+	public BaseObject[,,] EndTerrianGenerate()
+	{
+		var level = new BaseObject[levelWidth, levelHeight, 4];
+
+		// Add Wall
+		for (var height = 0; height < levelHeight; height++)
+		{
+			for (var width = 0; width < levelWidth; width++)
+			{
+				level[width, height, 0] = packedWall.Instantiate<Wall>();
+				level[width, height, 0].gridX = width;
+				level[width, height, 0].gridY = height;
+			}
+		}
+
+		for (var height = 5; height < 30; height++)
+		{
+			for (var width = 5; width < 10; width++)
+			{
+				level[width, height, 0] = packedGround.Instantiate<Ground>();
+				level[width, height, 0].gridX = width;
+				level[width, height, 0].gridY = height;
+			}
+		}
+
+		for (var width = 5; width < 10; width++)
+		{
+			level[width, 10, 0] = packedWall.Instantiate<Wall>();
+			level[width, 10, 0].gridX = width;
+			level[width, 10, 0].gridY = 10;
+		}
+		// Door
+		level[7, 10, 0] = packedGround.Instantiate<Ground>();
+		level[7, 10, 0].gridX = 7;
+		level[7, 10, 0].gridY = 10;
+		level[7, 10, 1] = packedDoor.Instantiate<Door>();
+		level[7, 10, 1].gridX = 7;
+		level[7, 10, 1].gridY = 10;
+
+		// Enemies
+		for (var height = 11; height < 20; height++)
+		{
+			for (var width = 5; width < 10; width++)
+			{
+				var random = new Random();
+				var randomNumber = random.Next(9);
+				switch (randomNumber)
+				{
+					case 0: level[width, height, 3] = packedRat.Instantiate<Rat>(); break;
+					case 1: level[width, height, 3] = packedWorm.Instantiate<Worm>(); break;
+					case 2: level[width, height, 3] = packedRogue.Instantiate<Rogue>(); break;
+					case 3: level[width, height, 3] = packedMushroom.Instantiate<Mushroom>(); break;
+					case 4: level[width, height, 3] = packedSlime.Instantiate<Slime>(); break;
+					case 5: level[width, height, 3] = packedAvian.Instantiate<Avian>(); break;
+					case 6: level[width, height, 3] = packedBulletMan.Instantiate<BulletMan>(); break;
+					case 7: level[width, height, 3] = packedStoneMan.Instantiate<StoneMan>(); break;
+					case 8: level[width, height, 3] = packedKobold.Instantiate<Kobold>(); break;
+				}
+				AddEnemy(level[width, height, 3] as Enemy);
+				level[width, height, 3].gridX = width;
+				level[width, height, 3].gridY = height;
+			}
+		}
+
+		// Downstair
+		level[7, 6, 1] = packedDownstair.Instantiate<Downstair>();
+		level[7, 6, 1].gridX = 7;
+		level[7, 6, 1].gridY = 6;
+		downstair = level[7, 6, 1] as Downstair;
+
+		// Upstair
+		level[7, 28, 1] = packedUpstair.Instantiate<Upstair>();
+		level[7, 28, 1].gridX = 7;
+		level[7, 28, 1].gridY = 28;
+		upstair = level[7, 28, 1] as Upstair;
+
+		// Add Child
+		foreach (var item in level)
+		{
+			if (item != null)
+			{
+				AddChild(item);
+			}
+		}
+
+		return level;
+	}
+
 	public BaseObject[,,] TerrianGenerate(int roomIter, int minWidth, int minHeight, int maxWidth, int maxHeight, int roomType = 0)
 	{
 		var level = new BaseObject[levelWidth, levelHeight, 4];
@@ -376,24 +517,75 @@ public partial class Game : Node2D
 							var randomNumber = someRandom.Next(100);
 							if (randomNumber < 2)
 							{
-								level[xPos, yPos, 3] = packedRat.Instantiate<Rat>();
-								AddEnemy(level[xPos, yPos, 3] as Enemy);
-								level[xPos, yPos, 3].gridX = xPos;
-								level[xPos, yPos, 3].gridY = yPos;
+								if (controller.currentFloor <= 5)
+								{
+									level[xPos, yPos, 3] = packedRat.Instantiate<Rat>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
+								if (controller.currentFloor > 5 && controller.currentFloor <= 10)
+								{
+									level[xPos, yPos, 3] = packedSlime.Instantiate<Slime>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
+								if (controller.currentFloor > 10 && controller.currentFloor <= 15)
+								{
+									level[xPos, yPos, 3] = packedBulletMan.Instantiate<BulletMan>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
 							}
 							if (randomNumber >= 2 && randomNumber < 5)
 							{
-								level[xPos, yPos, 3] = packedWorm.Instantiate<Worm>();
-								AddEnemy(level[xPos, yPos, 3] as Enemy);
-								level[xPos, yPos, 3].gridX = xPos;
-								level[xPos, yPos, 3].gridY = yPos;
+								if (controller.currentFloor <= 5)
+								{
+									level[xPos, yPos, 3] = packedWorm.Instantiate<Worm>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
+								if (controller.currentFloor > 5 && controller.currentFloor <= 10)
+								{
+									level[xPos, yPos, 3] = packedAvian.Instantiate<Avian>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
+								if (controller.currentFloor > 10 && controller.currentFloor <= 15)
+								{
+									level[xPos, yPos, 3] = packedKobold.Instantiate<Kobold>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
 							}
 							if (randomNumber >= 6 && randomNumber < 8)
 							{
-								level[xPos, yPos, 3] = packedRogue.Instantiate<Rogue>();
-								AddEnemy(level[xPos, yPos, 3] as Enemy);
-								level[xPos, yPos, 3].gridX = xPos;
-								level[xPos, yPos, 3].gridY = yPos;
+								if (controller.currentFloor <= 5)
+								{
+									level[xPos, yPos, 3] = packedRogue.Instantiate<Rogue>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
+								if (controller.currentFloor > 5 && controller.currentFloor <= 10)
+								{
+									level[xPos, yPos, 3] = packedMushroom.Instantiate<Mushroom>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
+								if (controller.currentFloor > 10 && controller.currentFloor <= 15)
+								{
+									level[xPos, yPos, 3] = packedStoneMan.Instantiate<StoneMan>();
+									AddEnemy(level[xPos, yPos, 3] as Enemy);
+									level[xPos, yPos, 3].gridX = xPos;
+									level[xPos, yPos, 3].gridY = yPos;
+								}
 							}
 
 							for (var space = 0; space < levelWidth * levelHeight; space++)
@@ -510,6 +702,17 @@ public partial class Game : Node2D
 				level[currentRoomX, currentRoomY, 1].gridY = currentRoomY;
 				downstair = level[currentRoomX, currentRoomY, 1] as Downstair;
 				GD.Print("Create a downstair");
+				if (level[currentRoomX, currentRoomY, 3] is Enemy enemy)
+				{
+					for (var i = 0; i < 200; i++)
+					{
+						if (enemyList[i] == enemy)
+						{
+							enemyList[i] = null;
+							level[currentRoomX, currentRoomY, 3] = null;
+						}
+					}
+				}
 				// level[currentRoomX, currentRoomY, 3] = packedPlayer.Instantiate<Player>();
 				// level[currentRoomX, currentRoomY, 3].gridX = currentRoomX;
 				// level[currentRoomX, currentRoomY, 3].gridY = currentRoomY;
@@ -571,12 +774,27 @@ public partial class Game : Node2D
 			{
 				enemyList[iter] = null;
 				level[enemy.gridX, enemy.gridY, 3] = null;
-				// NewInstance<Corpse>(packedCorpse, enemy.gridX, enemy.gridY, 2);
-				var corpse = packedCorpse.Instantiate<Corpse>();
-				corpse.name = $"{enemy.species}'s Corpse";
-				corpse.nutrition = enemy.nutrition;
-				corpse.weight = enemy.weight;
-				DropItem(corpse, enemy.gridX, enemy.gridY);
+				if (enemy.isShrink)
+				{
+					var micro = packedMicro.Instantiate<Micro>();
+					micro.name = $"Micro {enemy.species}[{enemy.rune}]";
+					micro.nutrition = enemy.nutrition * 2;
+					micro.rune = enemy.rune;
+					micro.weight = 0;
+					micro.icon = enemy.icon;
+					DropItem(micro, enemy.gridX, enemy.gridY);
+					gameShell.AddLog($"{enemy.species}[{enemy.rune}] has been shrinked");
+				}
+				else
+				{
+					var corpse = packedCorpse.Instantiate<Corpse>();
+					corpse.name = $"{enemy.species}'s Corpse";
+					corpse.nutrition = enemy.nutrition;
+					corpse.weight = enemy.weight;
+					DropItem(corpse, enemy.gridX, enemy.gridY);
+					player.GetRune(enemy);
+					gameShell.AddLog($"{enemy.species}[{enemy.rune}] has been destroyed");
+				}
 				for (var i = 0; i < 100; i++)
 				{
 					if (enemy.inventory[i] != null)
@@ -584,10 +802,7 @@ public partial class Game : Node2D
 						DropItem(enemy.inventory[i], enemy.gridX, enemy.gridY);
 					}
 				}
-				player.GetRune(enemy);
 				enemy.QueueFree();
-				// TODO: Add some LOG
-				gameShell.AddLog($"{enemy.species}[{enemy.rune}] has been destroyed");
 			}
 		}
 	}
@@ -596,7 +811,7 @@ public partial class Game : Node2D
 	{
 		player.time++;
 		player.hungryNess--;
-		if (player.time % 50 == 1)
+		if (player.time % 10 == 1)
 		{
 			player.Heal(1);
 		}
@@ -605,6 +820,22 @@ public partial class Game : Node2D
 			if (enemyList[iter] != null)
 			{
 				enemyList[iter].TurnPassed();
+			}
+		}
+		// ShrinkGun Charge
+		if (player.rangeWeapon is ShrinkGun shrinkGun)
+		{
+			if ((player.time % Mathf.Max(120 - player.intelligence, 2)) == 1)
+			{
+				shrinkGun.ammo = Mathf.Min(shrinkGun.maxAmmo, shrinkGun.ammo + 1);
+			}
+		}
+		// LaserGun Charge
+		if (player.rangeWeapon is LaserGun laserGun)
+		{
+			if ((player.time % Mathf.Max(50 - player.intelligence, 2)) == 1)
+			{
+				laserGun.ammo = Mathf.Min(laserGun.maxAmmo, laserGun.ammo + 1);
 			}
 		}
 	}

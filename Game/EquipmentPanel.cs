@@ -71,7 +71,7 @@ public partial class EquipmentPanel : Node2D
 				case "RangeWeapon": player.rangeWeapon = equipment; break;
 				case "Ammo": player.ammo = equipment; break;
 			}
-			if (equipment != null)
+			if (equipment != null && selectedItem == 1)
 			{
 				equipment.isEquipped = true;
 				player.strength += equipment.strength;
@@ -81,7 +81,7 @@ public partial class EquipmentPanel : Node2D
 				player.AV += equipment.AV;
 				player.DV += equipment.DV;
 			}
-			if (otherEquipment != null)
+			if (otherEquipment != null && selectedItem == 1)
 			{
 				otherEquipment.isEquipped = false;
 				player.strength -= otherEquipment.strength;

@@ -29,6 +29,6 @@ public partial class Pistol : Equipment
 		AV = 0;
 		DV = 0;
 		MakeDescription();
-		description += "Need ammos to shoot\n";
+		description += "Need ammos to shoot, damage depend on your agility\n";
 	}
 }
