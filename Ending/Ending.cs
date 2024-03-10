@@ -33,7 +33,7 @@ public partial class Ending : Node2D
 		}
 		if (Input.IsActionJustPressed("Cancel"))
 		{
-			GetTree().Quit();
+			GetTree().ChangeSceneToFile("res://Start/Start.tscn");
 		}
 	}
 }
