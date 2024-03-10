@@ -11,7 +11,7 @@ public partial class Menu : Node2D
 	private PackedScene packedCharacterMenu;
 	private ColorRect colorRect;
 	private bool black = false;
-	private string[] menuNames = new string[] { "Continue", "New Game", "Credit", "Quit" };
+	private string[] menuNames = new string[] { "Continue(Unsupported)", "New Game", "Credit", "Quit" };
 	private StartMenuItem[] startMenuItems = new StartMenuItem[4];
 	private ColorRect select;
 	private int selectIndex = 1;

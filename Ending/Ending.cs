@@ -18,7 +18,7 @@ public partial class Ending : Node2D
 		label.Text += $"Your AV is {controller.player.AV}\n";
 		label.Text += $"Your DV is {controller.player.DV}\n";
 		label.Text += $"Your time cost is {controller.player.time} turns\n";
-		label.Text += $"Your arrived at {controller.currentFloor} floors\n";
+		label.Text += $"You arrived at {controller.currentFloor} floors\n";
 		label.Text += controller.isWin ? $"Thanks for your playing!\n" : "";
 		label.Text += "Press [ESC] to quit\n";
 	}
@@ -33,6 +33,7 @@ public partial class Ending : Node2D
 		}
 		if (Input.IsActionJustPressed("Cancel"))
 		{
+			controller.Init();
 			GetTree().ChangeSceneToFile("res://Start/Start.tscn");
 		}
 	}

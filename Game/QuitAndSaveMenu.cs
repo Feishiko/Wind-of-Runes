@@ -30,7 +30,7 @@ public partial class QuitAndSaveMenu : Node2D
 	public override void _Process(double delta)
 	{
 		select.Position = new Vector2((float)Mathf.Lerp(select.Position.X, secondaryMenuItems[currentMenu].Position.X - secondaryMenuItems[currentMenu].size.X / 2, .2f * delta * 120),
-		(float)Mathf.Lerp(select.Position.Y, secondaryMenuItems[currentMenu].Position.Y - secondaryMenuItems[currentMenu].size.Y / 2, .2f * delta * 120));
+		(float)Mathf.Lerp(select.Position.Y, secondaryMenuItems[currentMenu].Position.Y - secondaryMenuItems[currentMenu].size.Y / 2 - 2.5, .2f * delta * 120));
 		select.Size = new Vector2((float)Mathf.Lerp(select.Size.X, secondaryMenuItems[currentMenu].size.X, .2f * delta * 120),
 		(float)Mathf.Lerp(select.Size.Y, secondaryMenuItems[currentMenu].size.Y, .2f * delta * 120));
 		if (Input.IsActionJustPressed("Up") && currentMenu > 0)
@@ -50,7 +50,8 @@ public partial class QuitAndSaveMenu : Node2D
 				// var save = Godot.FileAccess.Open("user://savegame.json", Godot.FileAccess.ModeFlags.Write);
 				// GD.Print(jsonString);
 				// save.StoreString(jsonString);
-				GetTree().Quit();
+				controller.Init();
+				GetTree().ChangeSceneToFile("res://Start/Start.tscn");
 			}
 			if (currentMenu == 1)
 			{

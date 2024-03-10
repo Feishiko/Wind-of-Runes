@@ -77,7 +77,7 @@ public partial class Game : Node2D
 			if (controller.player == null)
 			{
 				level = InitTerrianGenerate();
-				gameShell.AddLog($"{player.name} enters the tower");
+				gameShell.AddLog($"{player.name} enters the tower, press ? to check help document");
 			}
 			else
 			{
@@ -824,10 +824,17 @@ public partial class Game : Node2D
 	public void TurnPassed()
 	{
 		player.time++;
-		player.hungryNess--;
+		if (player.hungryNess > 0)
+		{
+			player.hungryNess--;
+		}
 		if (player.time % 10 == 1)
 		{
 			player.Heal(1);
+		}
+		if (player.hungryNess <= 0)
+		{
+			player.hitPoint -= 1;
 		}
 		for (var iter = 0; iter < 200; iter++)
 		{

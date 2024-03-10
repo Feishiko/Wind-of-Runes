@@ -173,8 +173,8 @@ public partial class Player : BaseObject
 		{
 			if (controller.maxFloor <= 0)
 			{
-				hungryNess = 5000;
-				maxHungryNess = 5000;
+				hungryNess = 9999;
+				maxHungryNess = 9999;
 			}
 			if (gender == "Male")
 			{
@@ -192,7 +192,7 @@ public partial class Player : BaseObject
 	{
 		maxWeight = strength * 10 + toughness * 50;
 		maxHitPoint = toughness * 4 + level * 4;
-		if (!isDead && !isWin)
+		if (!isDead && !isWin && !game.gameShell.isQuitAndSave)
 		{
 			// If bag is not open
 			if (!isBagOpen && !isLookingGround && !isUpgrade && !isFire)
@@ -351,6 +351,7 @@ public partial class Player : BaseObject
 				isLookingGround = false;
 				isBagOpen = false;
 				isFire = false;
+				game.gameShell.isHelp = false;
 			}
 
 			// Fire Mode
@@ -402,14 +403,6 @@ public partial class Player : BaseObject
 					inventory[iter + 1] = null;
 				}
 			}
-
-			if (Input.IsKeyPressed(Key.A))
-			{
-				game.level[gridX, gridY, 3] = null;
-				gridX = game.upstair.gridX;
-				gridY = game.upstair.gridY;
-				game.level[gridX, gridY, 3] = this;
-			}
 		}
 
 		// Win of Dead
@@ -440,13 +433,6 @@ public partial class Player : BaseObject
 		if (hitPoint <= 0)
 		{
 			isDead = true;
-		}
-		if (Input.IsKeyPressed(Key.A))
-		{
-			game.level[gridX, gridY, 3] = null;
-			gridX = game.upstair.gridX;
-			gridY = game.upstair.gridY;
-			game.level[gridX, gridY, 3] = this;
 		}
 	}
 

@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://vy200gmfx3fs"]
+
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="1_5ktae"]
+[ext_resource type="Script" path="res://Game/Help.cs" id="1_cecyg"]
+
+[node name="Help" type="Node2D"]
+texture_filter = 1
+use_parent_material = true
+script = ExtResource("1_cecyg")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 300.0
+offset_bottom = 300.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+use_parent_material = true
+offset_right = 300.0
+offset_bottom = 300.0
+theme_override_fonts/font = ExtResource("1_5ktae")
+theme_override_font_sizes/font_size = 14
+text = "Movement -> hjklyubn/12346789
+Wait -> ./5
+Close Door -> C
+Inventory -> I
+pick -> g/,
+confirm -> [enter]
+cancel -> [esc]
+submit -> [space]
+go upstair -> <
+go downstair -> >
+fire -> f
+kill every 5 enemy will gain the maxium same kind element number*20 exp"
+autowrap_mode = 2

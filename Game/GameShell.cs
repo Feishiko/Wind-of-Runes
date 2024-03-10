@@ -23,6 +23,8 @@ public partial class GameShell : Node2D
 	private PackedScene packedGame;
 	[Export]
 	private PackedScene packedQuitAndSaveMenu;
+	[Export]
+	private PackedScene packedHelp;
 	private Inventory inventory;
 	private LookingGround lookingGround;
 	private Upgrade upgrade;
@@ -36,6 +38,8 @@ public partial class GameShell : Node2D
 	public MusicPlayer musicPlayer;
 	private QuitAndSaveMenu quitAndSaveMenu;
 	public bool isQuitAndSave = false;
+	private Help help;
+	public bool isHelp = false;
 	public override void _Ready()
 	{
 		// Controller
@@ -87,7 +91,7 @@ public partial class GameShell : Node2D
 		GetNode<Label>("Floor").Text = "Floor: " + game.floor.ToString();
 
 		// Quit and Save
-		if (!game.player.isLookingGround && !game.player.isBagOpen && !game.player.isFire && !game.player.isUpgrade)
+		if (!game.player.isLookingGround && !game.player.isBagOpen && !game.player.isFire && !game.player.isUpgrade && !isHelp)
 		{
 			if (Input.IsActionJustPressed("Cancel"))
 			{
@@ -243,6 +247,39 @@ public partial class GameShell : Node2D
 		// Logs
 		var right = logs != null ? ">" : "";
 		labelLogs.text = $"{right}{logs}";
+
+		// Help
+		if (Input.IsActionJustPressed("Help"))
+		{
+			logs = null;
+			if (!isHelp)
+			{
+				isHelp = true;
+				if (help == null)
+				{
+					help = packedHelp.Instantiate<Help>();
+					AddChild(help);
+				}
+			}
+			else
+			{
+				isHelp = false;
+				if (help != null)
+				{
+					help.QueueFree();
+					help = null;
+				}
+			}
+		}
+
+		if (!isHelp)
+		{
+			if (help != null)
+			{
+				help.QueueFree();
+				help = null;
+			}
+		}
 
 	}
 
