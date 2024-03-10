@@ -38,6 +38,10 @@ public partial class Player : BaseObject
 	private PackedScene packedShrinkGun;
 	[Export]
 	private PackedScene packedLaserGun;
+	[Export]
+	private PackedScene packedEnding;
+	[Export]
+	private Texture2D textureCorpse;
 	private Game game;
 	public int hitPoint = 24;
 	public int maxHitPoint = 20;
@@ -72,6 +76,9 @@ public partial class Player : BaseObject
 	private Controller controller;
 	public bool isUpgrade = false;
 	public bool isFire = false;
+	public bool isWin = false;
+	public bool isDead = false;
+	public double endTimer = 0;
 	public override void _Ready()
 	{
 		// Controller
@@ -80,7 +87,12 @@ public partial class Player : BaseObject
 		game = GetParent<Game>();
 		var playerTexture = textureHumanMale;
 
-		species = "Avali";
+		if (controller.currentFloor <= 0)
+		{
+			name = controller.playerName == "" ? RandomName.RandomCharacterName() : controller.playerName;
+			gender = controller.playerGender;
+			species = controller.playerSpecies;
+		}
 
 		if (species == "Human")
 		{
@@ -180,216 +192,255 @@ public partial class Player : BaseObject
 	{
 		maxWeight = strength * 10 + toughness * 50;
 		maxHitPoint = toughness * 4 + level * 4;
-		// If bag is not open
-		if (!isBagOpen && !isLookingGround && !isUpgrade && !isFire)
+		if (!isDead && !isWin)
 		{
-			if (Input.IsActionJustPressed("Left"))
+			// If bag is not open
+			if (!isBagOpen && !isLookingGround && !isUpgrade && !isFire)
 			{
-				Movement(Vector2.Left);
-			}
-			if (Input.IsActionJustPressed("Down"))
-			{
-				Movement(Vector2.Down);
-			}
-			if (Input.IsActionJustPressed("Up"))
-			{
-				Movement(Vector2.Up);
-			}
-			if (Input.IsActionJustPressed("Right"))
-			{
-				Movement(Vector2.Right);
-			}
-			if (Input.IsActionJustPressed("UpLeft"))
-			{
-				Movement(new Vector2(-1, -1));
-			}
-			if (Input.IsActionJustPressed("UpRight"))
-			{
-				Movement(new Vector2(1, -1));
-			}
-			if (Input.IsActionJustPressed("DownLeft"))
-			{
-				Movement(new Vector2(-1, 1));
-			}
-			if (Input.IsActionJustPressed("DownRight"))
-			{
-				Movement(new Vector2(1, 1));
-			}
-			if (Input.IsActionJustPressed("Wait"))
-			{
-				game.TurnPassed();
-			}
-
-			if (Input.IsActionJustPressed("Close"))
-			{
-				for (var i = -1; i <= 1; i++)
+				if (Input.IsActionJustPressed("Left"))
 				{
-					for (var j = -1; j <= 1; j++)
+					Movement(Vector2.Left);
+				}
+				if (Input.IsActionJustPressed("Down"))
+				{
+					Movement(Vector2.Down);
+				}
+				if (Input.IsActionJustPressed("Up"))
+				{
+					Movement(Vector2.Up);
+				}
+				if (Input.IsActionJustPressed("Right"))
+				{
+					Movement(Vector2.Right);
+				}
+				if (Input.IsActionJustPressed("UpLeft"))
+				{
+					Movement(new Vector2(-1, -1));
+				}
+				if (Input.IsActionJustPressed("UpRight"))
+				{
+					Movement(new Vector2(1, -1));
+				}
+				if (Input.IsActionJustPressed("DownLeft"))
+				{
+					Movement(new Vector2(-1, 1));
+				}
+				if (Input.IsActionJustPressed("DownRight"))
+				{
+					Movement(new Vector2(1, 1));
+				}
+				if (Input.IsActionJustPressed("Wait"))
+				{
+					game.TurnPassed();
+				}
+
+				if (Input.IsActionJustPressed("Close"))
+				{
+					for (var i = -1; i <= 1; i++)
 					{
-						if (i != 0 || j != 0)
+						for (var j = -1; j <= 1; j++)
 						{
-							if (game.level[gridX + i, gridY + j, 1] is Door door)
+							if (i != 0 || j != 0)
 							{
-								door.isOpen = false;
+								if (game.level[gridX + i, gridY + j, 1] is Door door)
+								{
+									door.isOpen = false;
+									game.TurnPassed();
+								}
+							}
+						}
+					}
+				}
+				// Pick up items
+				if (Input.IsActionJustPressed("Pick"))
+				{
+					if (game.level[gridX, gridY, 2] is DropItems dropItems)
+					{
+						if (dropItems.IsSingleItem())
+						{
+							if (Pickable(dropItems.GetSingleItem()))
+							{
+								Pick(dropItems.GetSingleItem());
+								dropItems.DeleteItem(dropItems.GetSingleItem());
 								game.TurnPassed();
+							}
+						}
+						else
+						{
+							game.gameShell.logs = null;
+							isLookingGround = true;
+						}
+					}
+				}
+
+				// Go Upstair
+				if (Input.IsActionJustPressed("Upstair") && game.level[gridX, gridY, 1] is Upstair)
+				{
+					GoUpStair();
+				}
+
+				// Go Downstair
+				if (Input.IsActionJustPressed("Downstair") && game.level[gridX, gridY, 1] is Downstair)
+				{
+					GoDownStair();
+				}
+
+				// Fire Mode Open(Normal Weapon)
+				if (Input.IsActionJustPressed("Fire") && rangeWeapon != null && ammo != null)
+				{
+					// Clear the log
+					game.gameShell.logs = null;
+					isFire = true;
+				}
+				if (Input.IsActionJustPressed("Fire"))
+				{
+					if (rangeWeapon == null)
+					{
+						game.gameShell.AddLog("You need a rangeweapon to shoot");
+					}
+					else
+					{
+						if (rangeWeapon is Pistol && ammo == null)
+						{
+							game.gameShell.AddLog("You need some bullet to shoot");
+						}
+						// High-tech Weapon
+						if (rangeWeapon is ShrinkGun shrinkGun)
+						{
+							if (shrinkGun.ammo > 0)
+							{
+								// Clear the log
+								game.gameShell.logs = null;
+								isFire = true;
+							}
+							else
+							{
+								game.gameShell.AddLog("Your shrink gun need to charge before use");
+							}
+						}
+						if (rangeWeapon is LaserGun laserGun)
+						{
+							if (laserGun.ammo > 0)
+							{
+								// Clear the log
+								game.gameShell.logs = null;
+								isFire = true;
+							}
+							else
+							{
+								game.gameShell.AddLog("Your laser gun need to charge before use");
 							}
 						}
 					}
 				}
 			}
-			// Pick up items
-			if (Input.IsActionJustPressed("Pick"))
-			{
-				if (game.level[gridX, gridY, 2] is DropItems dropItems)
-				{
-					if (dropItems.IsSingleItem())
-					{
-						if (Pickable(dropItems.GetSingleItem()))
-						{
-							Pick(dropItems.GetSingleItem());
-							dropItems.DeleteItem(dropItems.GetSingleItem());
-							game.TurnPassed();
-						}
-					}
-					else
-					{
-						game.gameShell.logs = null;
-						isLookingGround = true;
-					}
-				}
-			}
 
-			// Go Upstair
-			if (Input.IsActionJustPressed("Upstair") && game.level[gridX, gridY, 1] is Upstair)
-			{
-				GoUpStair();
-			}
-
-			// Go Downstair
-			if (Input.IsActionJustPressed("Downstair") && game.level[gridX, gridY, 1] is Downstair)
-			{
-				GoDownStair();
-			}
-
-			// Fire Mode Open(Normal Weapon)
-			if (Input.IsActionJustPressed("Fire") && rangeWeapon != null && ammo != null)
+			// Open or Close Bag
+			if (Input.IsActionJustPressed("Inventory") && !isLookingGround && !isUpgrade && !isFire)
 			{
 				// Clear the log
 				game.gameShell.logs = null;
-				isFire = true;
+				isBagOpen = !isBagOpen;
 			}
-			if (Input.IsActionJustPressed("Fire"))
+
+			// Close Inventory and LookingGround
+			if (Input.IsActionJustPressed("Cancel"))
 			{
-				if (rangeWeapon == null)
+				// Clear the log
+				game.gameShell.logs = null;
+				isLookingGround = false;
+				isBagOpen = false;
+				isFire = false;
+			}
+
+			// Fire Mode
+			if (isFire)
+			{
+				if (Input.IsActionJustPressed("Left"))
 				{
-					game.gameShell.AddLog("You need a rangeweapon to shoot");
+					Fire(-1, 0);
 				}
-				else
+				if (Input.IsActionJustPressed("Right"))
 				{
-					if (rangeWeapon is Pistol && ammo == null)
-					{
-						game.gameShell.AddLog("You need some bullet to shoot");
-					}
-					// High-tech Weapon
-					if (rangeWeapon is ShrinkGun shrinkGun)
-					{
-						if (shrinkGun.ammo > 0)
-						{
-							// Clear the log
-							game.gameShell.logs = null;
-							isFire = true;
-						}
-						else
-						{
-							game.gameShell.AddLog("Your shrink gun need to charge before use");
-						}
-					}
-					if (rangeWeapon is LaserGun laserGun)
-					{
-						if (laserGun.ammo > 0)
-						{
-							// Clear the log
-							game.gameShell.logs = null;
-							isFire = true;
-						}
-						else
-						{
-							game.gameShell.AddLog("Your laser gun need to charge before use");
-						}
-					}
+					Fire(1, 0);
 				}
+				if (Input.IsActionJustPressed("Up"))
+				{
+					Fire(0, -1);
+				}
+				if (Input.IsActionJustPressed("Down"))
+				{
+					Fire(0, 1);
+				}
+				if (Input.IsActionJustPressed("UpLeft"))
+				{
+					Fire(-1, -1);
+				}
+				if (Input.IsActionJustPressed("UpRight"))
+				{
+					Fire(1, -1);
+				}
+				if (Input.IsActionJustPressed("DownLeft"))
+				{
+					Fire(-1, 1);
+				}
+				if (Input.IsActionJustPressed("DownRight"))
+				{
+					Fire(1, 1);
+				}
+			}
 
+			// Upgrade
+			isUpgrade = exp >= level * 20;
+
+			// Inventory
+			for (var iter = 0; iter < 199; iter++)
+			{
+				if (inventory[iter] == null && inventory[iter + 1] != null)
+				{
+					inventory[iter] = inventory[iter + 1];
+					inventory[iter + 1] = null;
+				}
+			}
+
+			if (Input.IsKeyPressed(Key.A))
+			{
+				game.level[gridX, gridY, 3] = null;
+				gridX = game.upstair.gridX;
+				gridY = game.upstair.gridY;
+				game.level[gridX, gridY, 3] = this;
 			}
 		}
 
-		// Open or Close Bag
-		if (Input.IsActionJustPressed("Inventory") && !isLookingGround && !isUpgrade && !isFire)
+		// Win of Dead
+		if (isWin || isDead)
 		{
-			// Clear the log
-			game.gameShell.logs = null;
-			isBagOpen = !isBagOpen;
+			endTimer += delta * 120;
+			if (endTimer != 0)
+			{
+				game.gameShell.musicPlayer.Play("Null");
+			}
+			if (endTimer > 300)
+			{
+				controller.player = this;
+				GetTree().ChangeSceneToPacked(packedEnding);
+			}
 		}
 
-		// Close Inventory and LookingGround
-		if (Input.IsActionJustPressed("Cancel"))
+		if (isDead)
 		{
-			// Clear the log
-			game.gameShell.logs = null;
-			isLookingGround = false;
-			isBagOpen = false;
-			isFire = false;
+			GetChild<Sprite2D>(0).Texture = textureCorpse;
 		}
 
-		// Fire Mode
-		if (isFire)
+		if (isWin)
 		{
-			if (Input.IsActionJustPressed("Left"))
-			{
-				Fire(-1, 0);
-			}
-			if (Input.IsActionJustPressed("Right"))
-			{
-				Fire(1, 0);
-			}
-			if (Input.IsActionJustPressed("Up"))
-			{
-				Fire(0, -1);
-			}
-			if (Input.IsActionJustPressed("Down"))
-			{
-				Fire(0, 1);
-			}
-			if (Input.IsActionJustPressed("UpLeft"))
-			{
-				Fire(-1, -1);
-			}
-			if (Input.IsActionJustPressed("UpRight"))
-			{
-				Fire(1, -1);
-			}
-			if (Input.IsActionJustPressed("DownLeft"))
-			{
-				Fire(-1, 1);
-			}
-			if (Input.IsActionJustPressed("DownRight"))
-			{
-				Fire(1, 1);
-			}
+			Visible = false;
 		}
 
-		// Upgrade
-		isUpgrade = exp >= level * 20;
-
-		// Inventory
-		for (var iter = 0; iter < 199; iter++)
+		if (hitPoint <= 0)
 		{
-			if (inventory[iter] == null && inventory[iter + 1] != null)
-			{
-				inventory[iter] = inventory[iter + 1];
-				inventory[iter + 1] = null;
-			}
+			isDead = true;
 		}
-
 		if (Input.IsKeyPressed(Key.A))
 		{
 			game.level[gridX, gridY, 3] = null;
@@ -520,7 +571,15 @@ public partial class Player : BaseObject
 		controller.currentFloor += 1;
 		controller.player = this;
 		controller.isUp = true;
-		GetTree().ReloadCurrentScene();
+		if (controller.currentFloor == 17)
+		{
+			controller.isWin = true;
+			isWin = true;
+		}
+		else
+		{
+			game.gameShell.ReloadLevel();
+		}
 	}
 
 	public void GoDownStair()
@@ -529,7 +588,7 @@ public partial class Player : BaseObject
 		controller.currentFloor -= 1;
 		controller.player = this;
 		controller.isUp = false;
-		GetTree().ReloadCurrentScene();
+		game.gameShell.ReloadLevel();
 	}
 
 	public void GetRune(Enemy enemy)

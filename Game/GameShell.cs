@@ -15,6 +15,14 @@ public partial class GameShell : Node2D
 	private PackedScene packedFireMode;
 	[Export]
 	private PackedScene packedLog;
+	[Export]
+	private PackedScene packedAnimation;
+	[Export]
+	private PackedScene packedMusicPlayer;
+	[Export]
+	private PackedScene packedGame;
+	[Export]
+	private PackedScene packedQuitAndSaveMenu;
 	private Inventory inventory;
 	private LookingGround lookingGround;
 	private Upgrade upgrade;
@@ -24,6 +32,10 @@ public partial class GameShell : Node2D
 	private FireMode fireMode;
 	public string logs = "";
 	public Log labelLogs = new Log();
+	private ColorRect animation;
+	public MusicPlayer musicPlayer;
+	private QuitAndSaveMenu quitAndSaveMenu;
+	public bool isQuitAndSave = false;
 	public override void _Ready()
 	{
 		// Controller
@@ -44,6 +56,17 @@ public partial class GameShell : Node2D
 		labelLogs.Position = new Vector2(10, 280);
 		AddChild(labelLogs);
 
+		// Start Animation
+		if (controller.isAnimation)
+		{
+			controller.isAnimation = false;
+			animation = packedAnimation.Instantiate<ColorRect>();
+			AddChild(animation);
+		}
+
+		// Music Player
+		musicPlayer = packedMusicPlayer.Instantiate<MusicPlayer>();
+		AddChild(musicPlayer);
 	}
 
 	public override void _Process(double delta)
@@ -63,6 +86,48 @@ public partial class GameShell : Node2D
 		GetNode<Label>("Exp").Text = "Exp: " + game.player.exp.ToString() + "/" + (game.player.level * 20).ToString();
 		GetNode<Label>("Floor").Text = "Floor: " + game.floor.ToString();
 
+		// Quit and Save
+		if (!game.player.isLookingGround && !game.player.isBagOpen && !game.player.isFire && !game.player.isUpgrade)
+		{
+			if (Input.IsActionJustPressed("Cancel"))
+			{
+				if (!isQuitAndSave)
+				{
+					quitAndSaveMenu = packedQuitAndSaveMenu.Instantiate<QuitAndSaveMenu>();
+					isQuitAndSave = true;
+					AddChild(quitAndSaveMenu);
+				}
+				else
+				{
+					if (quitAndSaveMenu != null && isQuitAndSave)
+					{
+						quitAndSaveMenu.QueueFree();
+						isQuitAndSave = false;
+						quitAndSaveMenu = null;
+					}
+				}
+			}
+		}
+
+		if (!isQuitAndSave)
+		{
+			if (quitAndSaveMenu != null)
+			{
+				quitAndSaveMenu.QueueFree();
+				quitAndSaveMenu = null;
+			}
+		}
+
+		// Start Animation
+		if (animation != null)
+		{
+			animation.Modulate = new Color(1, 1, 1, (float)Mathf.Lerp(animation.Modulate.A, 0, .02f * delta * 120));
+			if (animation.Modulate.A == 0)
+			{
+				animation = null;
+				animation.QueueFree();
+			}
+		}
 		// Open Inventory
 		if (game.player.isBagOpen)
 		{
@@ -184,5 +249,12 @@ public partial class GameShell : Node2D
 	public void AddLog(string text)
 	{
 		logs = text;
+	}
+
+	public void ReloadLevel()
+	{
+		game.QueueFree();
+		game = packedGame.Instantiate<Game>();
+		GetNode<SubViewport>("SubViewportContainer/SubViewport").AddChild(game);
 	}
 }

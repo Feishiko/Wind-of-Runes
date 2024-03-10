@@ -233,14 +233,28 @@ public partial class Game : Node2D
 		// }
 
 		Position += new Vector2(40, 40);
+
+		// Music Player
+		if (controller.currentFloor >= 1 && controller.currentFloor <= 5)
+		{
+			gameShell.musicPlayer.Play("WindUnderneath");
+		}
+		if (controller.currentFloor >= 6 && controller.currentFloor <= 10)
+		{
+			gameShell.musicPlayer.Play("Forest");
+		}
+		if (controller.currentFloor >= 11 && controller.currentFloor <= 15)
+		{
+			gameShell.musicPlayer.Play("StrangeCrystal");
+		}
+		if (controller.currentFloor == 16)
+		{
+			gameShell.musicPlayer.Play("SharpShard");
+		}
 	}
 
 	public override void _Process(double delta)
 	{
-		if (Input.IsKeyPressed(Key.R))
-		{
-			GetTree().ReloadCurrentScene();
-		}
 		// Sprite Display
 		foreach (var item in level)
 		{

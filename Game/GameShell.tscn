@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b56t5jurbu65u"]
+[gd_scene load_steps=17 format=3 uid="uid://b56t5jurbu65u"]
 
 [ext_resource type="Shader" path="res://Shader/GameShell.gdshader" id="1_1h1ps"]
 [ext_resource type="Script" path="res://Game/GameShell.cs" id="1_4sv0r"]
@@ -12,6 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://dtiapnfei2d1e" path="res://Game/Upgrade.tscn" id="6_n5ae0"]
 [ext_resource type="PackedScene" uid="uid://brtbxq003t1mk" path="res://Game/FireMode.tscn" id="7_8alvs"]
 [ext_resource type="PackedScene" uid="uid://b7evnd2hgf7pg" path="res://Game/Log.tscn" id="8_7rlnf"]
+[ext_resource type="PackedScene" uid="uid://4ldyve26nca" path="res://Game/Animation.tscn" id="9_aby1a"]
+[ext_resource type="PackedScene" uid="uid://d1cwy74wjdm1t" path="res://Music/MusicPlayer.tscn" id="10_w102j"]
+[ext_resource type="PackedScene" uid="uid://bgc4q5g2kx6ck" path="res://Game/QuitAndSaveMenu.tscn" id="12_i4yat"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lk4a"]
 shader = ExtResource("1_1h1ps")
@@ -26,6 +29,10 @@ packedRune = ExtResource("5_twu5x")
 packedUpgrade = ExtResource("6_n5ae0")
 packedFireMode = ExtResource("7_8alvs")
 packedLog = ExtResource("8_7rlnf")
+packedAnimation = ExtResource("9_aby1a")
+packedMusicPlayer = ExtResource("10_w102j")
+packedGame = ExtResource("1_mlpcq")
+packedQuitAndSaveMenu = ExtResource("12_i4yat")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 use_parent_material = true

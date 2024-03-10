@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://d1cwy74wjdm1t"]
+
+[ext_resource type="Script" path="res://Music/MusicPlayer.cs" id="1_sjjs4"]
+[ext_resource type="AudioStream" uid="uid://bxl8s7fhhrt4a" path="res://Music/Wind Underneath.ogg" id="2_0lr52"]
+[ext_resource type="AudioStream" uid="uid://iwxn04l8mlau" path="res://Music/Beneath the Tower.ogg" id="2_oggyg"]
+[ext_resource type="AudioStream" uid="uid://yvf4joiky2xy" path="res://Music/Forest.ogg" id="3_8ngq7"]
+[ext_resource type="AudioStream" uid="uid://bg5w3spwlct3j" path="res://Music/Strange Crystal.mp3" id="5_mfnd5"]
+[ext_resource type="AudioStream" uid="uid://58wxklg7rx8b" path="res://Music/Sharp Shard.mp3" id="6_6a0o0"]
+
+[node name="MusicPlayer" type="Node2D"]
+script = ExtResource("1_sjjs4")
+
+[node name="BeneathTheTower" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_oggyg")
+
+[node name="WindUnderneath" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_0lr52")
+
+[node name="Forest" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_8ngq7")
+
+[node name="StrangeCrystal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_mfnd5")
+
+[node name="SharpShard" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_6a0o0")

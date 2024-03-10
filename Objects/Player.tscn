@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cis6rtdjl57pd"]
+[gd_scene load_steps=21 format=3 uid="uid://cis6rtdjl57pd"]
 
 [ext_resource type="Script" path="res://Objects/Player.cs" id="1_06q1j"]
 [ext_resource type="Texture2D" uid="uid://k8ks0q1mon2x" path="res://Texture/humanmale.png" id="2_ou3am"]
@@ -18,6 +18,8 @@
 [ext_resource type="PackedScene" uid="uid://rxf5t65k2ug8" path="res://Objects/Bread.tscn" id="16_dtwob"]
 [ext_resource type="PackedScene" uid="uid://b60r7pwvtoqbx" path="res://Objects/ShrinkGun.tscn" id="17_4hxhd"]
 [ext_resource type="PackedScene" uid="uid://vd0gu33phblr" path="res://Objects/LaserGun.tscn" id="18_5dyqk"]
+[ext_resource type="PackedScene" uid="uid://cqexbe2nfstb6" path="res://Ending/Ending.tscn" id="19_6qu8u"]
+[ext_resource type="Texture2D" uid="uid://cgnstm85t3bvn" path="res://Texture/corpse.png" id="20_8mdk1"]
 
 [node name="Player" type="Node2D"]
 z_index = 1
@@ -39,6 +41,8 @@ packedShootingLine = ExtResource("15_8i4n8")
 packedBread = ExtResource("16_dtwob")
 packedShrinkGun = ExtResource("17_4hxhd")
 packedLaserGun = ExtResource("18_5dyqk")
+packedEnding = ExtResource("19_6qu8u")
+textureCorpse = ExtResource("20_8mdk1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

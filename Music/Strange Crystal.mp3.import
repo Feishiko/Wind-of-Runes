@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bg5w3spwlct3j"
+path="res://.godot/imported/Strange Crystal.mp3-82148d0ec27216590330c72252a86b79.mp3str"
+
+[deps]
+
+source_file="res://Music/Strange Crystal.mp3"
+dest_files=["res://.godot/imported/Strange Crystal.mp3-82148d0ec27216590330c72252a86b79.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://4ldyve26nca"]
+
+[node name="Animation" type="ColorRect"]
+z_index = 4
+offset_right = 400.0
+offset_bottom = 300.0
+color = Color(0, 0, 0, 1)

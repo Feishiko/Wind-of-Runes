@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://doatsxjafvnxj"]
+
+[ext_resource type="Script" path="res://Start/CharacterMenuItem.cs" id="1_cry8n"]
+[ext_resource type="FontFile" uid="uid://bomv41nw1s0lg" path="res://DPIX_8PT.TTF" id="2_6gplr"]
+
+[node name="CharacterMenuItem" type="Node2D"]
+use_parent_material = true
+script = ExtResource("1_cry8n")
+
+[node name="Label" type="Label" parent="."]
+use_parent_material = true
+offset_right = 40.0
+offset_bottom = 26.0
+theme_override_fonts/font = ExtResource("2_6gplr")
+theme_override_font_sizes/font_size = 16
+uppercase = true

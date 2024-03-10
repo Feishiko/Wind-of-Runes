@@ -1,0 +1,105 @@
+[gd_scene load_steps=5 format=3 uid="uid://bb37mpraeavg1"]
+
+[ext_resource type="Script" path="res://Start/CharacterMenu.cs" id="1_82t2t"]
+[ext_resource type="PackedScene" uid="uid://doatsxjafvnxj" path="res://Start/CharacterMenuItem.tscn" id="2_0rja5"]
+[ext_resource type="FontFile" uid="uid://bomv41nw1s0lg" path="res://DPIX_8PT.TTF" id="2_egllf"]
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="4_dshtd"]
+
+[node name="CharacterMenu" type="Node2D"]
+texture_filter = 1
+use_parent_material = true
+script = ExtResource("1_82t2t")
+packedCharacterMenuItem = ExtResource("2_0rja5")
+
+[node name="Select" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="NameBack" type="ColorRect" parent="."]
+offset_top = 7.0
+offset_right = 278.0
+offset_bottom = 33.0
+color = Color(0, 0, 0, 1)
+
+[node name="Name" type="Label" parent="."]
+use_parent_material = true
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 209.0
+offset_bottom = 31.0
+theme_override_fonts/font = ExtResource("2_egllf")
+text = "What is your name today?"
+
+[node name="SpeciesDesBack" type="ColorRect" parent="."]
+offset_left = 160.0
+offset_top = 94.0
+offset_right = 397.0
+offset_bottom = 218.0
+color = Color(0, 0, 0, 1)
+
+[node name="SpeciesDes" type="Label" parent="."]
+offset_left = 161.0
+offset_top = 94.0
+offset_right = 396.0
+offset_bottom = 217.0
+theme_override_fonts/font = ExtResource("4_dshtd")
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 2
+
+[node name="SpeciesBack" type="ColorRect" parent="."]
+offset_top = 63.0
+offset_right = 294.0
+offset_bottom = 89.0
+color = Color(0, 0, 0, 1)
+
+[node name="Species" type="Label" parent="."]
+use_parent_material = true
+offset_left = 5.0
+offset_top = 61.0
+offset_right = 209.0
+offset_bottom = 87.0
+theme_override_fonts/font = ExtResource("2_egllf")
+text = "What is your species today?"
+
+[node name="GenderBack" type="ColorRect" parent="."]
+offset_top = 220.0
+offset_right = 294.0
+offset_bottom = 246.0
+color = Color(0, 0, 0, 1)
+
+[node name="Gender" type="Label" parent="."]
+use_parent_material = true
+offset_left = 5.0
+offset_top = 217.0
+offset_right = 289.0
+offset_bottom = 243.0
+theme_override_fonts/font = ExtResource("2_egllf")
+text = "What is your gender today?"
+
+[node name="InputName" type="Label" parent="."]
+use_parent_material = true
+offset_left = 5.0
+offset_top = 33.0
+offset_right = 209.0
+offset_bottom = 59.0
+theme_override_fonts/font = ExtResource("2_egllf")
+text = ">"
+
+[node name="HelpBack" type="ColorRect" parent="."]
+offset_left = 295.0
+offset_top = 260.0
+offset_right = 400.0
+offset_bottom = 295.0
+color = Color(0, 0, 0, 1)
+
+[node name="Help" type="Label" parent="."]
+use_parent_material = true
+offset_left = 296.0
+offset_top = 258.0
+offset_right = 400.0
+offset_bottom = 300.0
+theme_override_fonts/font = ExtResource("4_dshtd")
+theme_override_font_sizes/font_size = 14
+text = "[ESC]Cancel
+[Enter]Confirm"

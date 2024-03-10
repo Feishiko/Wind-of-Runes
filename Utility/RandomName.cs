@@ -31,4 +31,11 @@ public static class RandomName
 		Random random = new Random();
 		return species[random.Next(species.Length)];
 	}
+
+	public static string RandomIntro()
+	{
+		string[] words = new string[] {"Gott ist tot", "Was mich nicht umbringt, macht mich stärker.", "Was vernünftig ist, das ist wirklich,\nund was wirklich ist, das ist vernünftig.", "Man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.", "Weniges, aber Reifes"};
+		Random random = new Random();
+		return words[random.Next(words.Length)];
+	}
 }

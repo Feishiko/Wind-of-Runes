@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://bshac37rwexw5"]
+
+[ext_resource type="Script" path="res://Start/Start.cs" id="1_d00qn"]
+[ext_resource type="PackedScene" uid="uid://dccx7fwex74k2" path="res://Start/Menu.tscn" id="2_a8tbo"]
+[ext_resource type="FontFile" uid="uid://bomv41nw1s0lg" path="res://DPIX_8PT.TTF" id="2_jt0dm"]
+[ext_resource type="Shader" path="res://Shader/GameShell.gdshader" id="3_bn6v8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ajtq0"]
+shader = ExtResource("3_bn6v8")
+
+[node name="Start" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_d00qn")
+packedMenu = ExtResource("2_a8tbo")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 400.0
+offset_bottom = 300.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+material = SubResource("ShaderMaterial_ajtq0")
+offset_right = 400.0
+offset_bottom = 300.0
+theme_override_fonts/font = ExtResource("2_jt0dm")
+theme_override_font_sizes/font_size = 16
+text = "A GAME BY FEISHIKO"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,3 +1,4 @@
+[System.Serializable]
 public class Controller
 {
 	private static Controller uniqueInstance;
@@ -9,6 +10,11 @@ public class Controller
 	// public int turn = 0;
 	public bool isUp = false;
 	// public string[] logs = new string[4];
+	public bool isWin = false;
+	public bool isAnimation = false;
+	public string playerName = null;
+	public string playerSpecies = null;
+	public string playerGender = null;
 	private Controller()
 	{
 	}

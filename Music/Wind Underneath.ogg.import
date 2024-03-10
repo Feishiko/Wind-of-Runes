@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bxl8s7fhhrt4a"
+path="res://.godot/imported/Wind Underneath.ogg-38bbd35a76d2c5c2562292eeb8a0dbcd.oggvorbisstr"
+
+[deps]
+
+source_file="res://Music/Wind Underneath.ogg"
+dest_files=["res://.godot/imported/Wind Underneath.ogg-38bbd35a76d2c5c2562292eeb8a0dbcd.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

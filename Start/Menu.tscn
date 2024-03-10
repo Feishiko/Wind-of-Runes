@@ -1,0 +1,108 @@
+[gd_scene load_steps=10 format=3 uid="uid://dccx7fwex74k2"]
+
+[ext_resource type="Script" path="res://Start/Menu.cs" id="1_j5mea"]
+[ext_resource type="Shader" path="res://Shader/GameShell.gdshader" id="2_h64ur"]
+[ext_resource type="PackedScene" uid="uid://bqwwkhoxmw606" path="res://Start/StartMenuItem.tscn" id="3_rrvd3"]
+[ext_resource type="FontFile" uid="uid://bomv41nw1s0lg" path="res://DPIX_8PT.TTF" id="4_b5e0f"]
+[ext_resource type="Texture2D" uid="uid://bqaw7jq4fcbru" path="res://Texture/wind of runes.png" id="4_mjs65"]
+[ext_resource type="PackedScene" uid="uid://b56t5jurbu65u" path="res://Game/GameShell.tscn" id="4_o7x6q"]
+[ext_resource type="PackedScene" uid="uid://bb37mpraeavg1" path="res://Start/CharacterMenu.tscn" id="5_tpl5e"]
+[ext_resource type="AudioStream" uid="uid://iwxn04l8mlau" path="res://Music/Beneath the Tower.ogg" id="8_s0o56"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qdbil"]
+shader = ExtResource("2_h64ur")
+
+[node name="Menu" type="Node2D"]
+material = SubResource("ShaderMaterial_qdbil")
+script = ExtResource("1_j5mea")
+packedStartMenuItem = ExtResource("3_rrvd3")
+packedGame = ExtResource("4_o7x6q")
+packedCharacterMenu = ExtResource("5_tpl5e")
+
+[node name="Back" type="Sprite2D" parent="."]
+use_parent_material = true
+position = Vector2(200, 150)
+scale = Vector2(0.683, 0.683)
+texture = ExtResource("4_mjs65")
+
+[node name="Select" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 72.0
+offset_top = 21.0
+offset_right = 325.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+texture_filter = 1
+use_parent_material = true
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 60.0
+theme_override_fonts/font = ExtResource("4_b5e0f")
+theme_override_font_sizes/font_size = 24
+text = "Wind of Runes"
+horizontal_alignment = 1
+
+[node name="CreditBack" type="ColorRect" parent="."]
+visible = false
+z_index = 1
+texture_filter = 1
+offset_left = 40.0
+offset_right = 360.0
+offset_bottom = 300.0
+color = Color(0, 0, 0, 1)
+
+[node name="Credit" type="Label" parent="."]
+visible = false
+z_index = 1
+texture_filter = 1
+offset_right = 400.0
+offset_bottom = 300.0
+theme_override_fonts/font = ExtResource("4_b5e0f")
+theme_override_font_sizes/font_size = 16
+text = "[Programming]
+Feishiko
+[Music]
+Feishiko
+[PixelArt]
+Feishiko
+[CoverArt]
+ArcDraws
+[SpecialThanks]
+People in Roguelike Fans"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 2
+offset_right = 400.0
+offset_bottom = 300.0
+color = Color(0, 0, 0, 1)
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_s0o56")
+autoplay = true
+
+[node name="Words" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = 3
+use_parent_material = true
+offset_right = 400.0
+offset_bottom = 300.0
+theme_override_fonts/font = ExtResource("4_b5e0f")
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

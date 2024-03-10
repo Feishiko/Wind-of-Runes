@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://cqexbe2nfstb6"]
+
+[ext_resource type="Script" path="res://Ending/Ending.cs" id="1_hucwm"]
+[ext_resource type="Shader" path="res://Shader/GameShell.gdshader" id="1_jw7n7"]
+[ext_resource type="FontFile" uid="uid://c5cs143l4177s" path="res://DS_PIXEL_CYR.TTF" id="1_piw5q"]
+[ext_resource type="PackedScene" uid="uid://bshac37rwexw5" path="res://Start/Start.tscn" id="3_fntck"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ct5a"]
+shader = ExtResource("1_jw7n7")
+
+[node name="Ending" type="Node2D"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_7ct5a")
+script = ExtResource("1_hucwm")
+packedStart = ExtResource("3_fntck")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 400.0
+offset_bottom = 300.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+use_parent_material = true
+offset_right = 399.0
+offset_bottom = 240.0
+theme_override_fonts/font = ExtResource("1_piw5q")
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 2
+visible_characters = 0
+visible_ratio = 0.0
