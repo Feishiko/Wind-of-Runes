@@ -174,6 +174,14 @@ public partial class GameShell : Node2D
 			if (lookingGround == null)
 			{
 				lookingGround = packedLookingGround.Instantiate<LookingGround>();
+				for (var iter = 0; iter < 199; iter++)
+				{
+					if ((game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter] == null)
+					{
+						(game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter] = (game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter + 1];
+						(game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter + 1] = null;
+					}
+				}
 				// Add Items
 				for (var page = 0; page < 10; page++)
 				{

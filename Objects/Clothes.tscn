@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://l33mqv70r8pq"]
+[gd_scene load_steps=3 format=3 uid="uid://l33mqv70r8pq"]
 
 [ext_resource type="Script" path="res://Objects/Clothes.cs" id="1_y2a64"]
+[ext_resource type="Texture2D" uid="uid://b3x4wql7te1dk" path="res://Texture/clouth.png" id="2_uqyuf"]
 
 [node name="Clothes" type="Node2D"]
 script = ExtResource("1_y2a64")
+icon = ExtResource("2_uqyuf")
