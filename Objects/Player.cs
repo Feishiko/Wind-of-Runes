@@ -264,6 +264,10 @@ public partial class Player : BaseObject
 								dropItems.DeleteItem(dropItems.GetSingleItem());
 								game.TurnPassed();
 							}
+							else
+							{
+								game.gameShell.AddLog("Too heavy! You can't pick up more items!");
+							}
 						}
 						else
 						{
