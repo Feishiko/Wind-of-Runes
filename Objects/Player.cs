@@ -49,7 +49,7 @@ public partial class Player : BaseObject
 	public string name = RandomName.RandomCharacterName(); // Can custom
 	public string gender = RandomName.RandomGender(); // Male or Female
 	public string species = RandomName.RandomSpecies(); // Human, Kobold, Avian, Avali, Robot
-	public int strength = 5; // Decide the melee weapon's damage and resistence
+	public int strength = 50; // Decide the melee weapon's damage and resistence
 	public int agility = 5; // Decide the range weapon's damage and resistence
 	public int intelligence = 5; // Decide magic's damage and resistence and max health
 	public int toughness = 5; // Decide how strong you are(how heavy stuff you can take)
@@ -434,6 +434,14 @@ public partial class Player : BaseObject
 		{
 			isDead = true;
 		}
+
+		// if (Input.IsKeyPressed(Key.A))
+		// {
+		// 	game.level[gridX, gridY, 3] = null;
+		// 	gridX = game.upstair.gridX;
+		// 	gridY = game.upstair.gridY;
+		// 	game.level[gridX, gridY, 3] = this;
+		// }
 	}
 
 	public void Movement(Vector2 dir)
@@ -469,7 +477,7 @@ public partial class Player : BaseObject
 					damage = random.Next(1, strength + 1 + (weapon != null ? weapon.damage : 0));
 				}
 				damage = Mathf.Max(1, damage - enemy.AV);
-				if (enemy.DV > random.Next(30))
+				if (enemy.DV > random.Next(60))
 				{
 					damage = 0;
 				}
@@ -672,72 +680,6 @@ public partial class Player : BaseObject
 	{
 		for (var iter = 0; iter < 10; iter++)
 		{
-			if (game.level[gridX + dirX * iter, gridY + dirY * iter, 3] is Enemy enemy)
-			{
-				var random = new Random();
-				if (rangeWeapon is Pistol)
-				{
-					var damage = random.Next(rangeWeapon.damage + agility) + 1;
-					damage = Mathf.Max(1, damage - enemy.AV);
-					if (enemy.DV > random.Next(30))
-					{
-						damage = 0;
-					}
-					enemy.hitPoint -= damage;
-					game.DamageNumber(enemy.gridX, enemy.gridY, damage);
-					(ammo as Bullet).numbers -= 1;
-					var line = packedShootingLine.Instantiate<ShootingLine>();
-					line.originPos = new Vector2(gridX * 16, gridY * 16);
-					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
-					game.AddChild(line);
-					if ((ammo as Bullet).numbers <= 0)
-					{
-						DeleteItem(ammo);
-						ammo = null;
-					}
-				}
-				// High-tech Weapon
-				if (rangeWeapon is ShrinkGun shrinkGun)
-				{
-					var hit = true;
-					if (enemy.DV > random.Next(30))
-					{
-						hit = false;
-						game.gameShell.AddLog("The ray missed!");
-					}
-					if (hit)
-					{
-						enemy.isShrink = true;
-						game.RemoveEnemy(enemy);
-					}
-					var line = packedShootingLine.Instantiate<ShootingLine>();
-					line.originPos = new Vector2(gridX * 16, gridY * 16);
-					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
-					line.GetNode<Line2D>("Line2D").DefaultColor = Colors.Blue;
-					game.AddChild(line);
-					shrinkGun.ammo -= 1;
-					game.DamageNumber(enemy.gridX, enemy.gridY, hit ? 9999 : 0);
-				}
-				if (rangeWeapon is LaserGun laserGun)
-				{
-					var damage = random.Next(rangeWeapon.damage + agility) + 1;
-					damage = Mathf.Max(1, damage - enemy.AV);
-					if (enemy.DV > random.Next(30))
-					{
-						damage = 0;
-					}
-					enemy.hitPoint -= damage;
-					game.DamageNumber(enemy.gridX, enemy.gridY, damage);
-					var line = packedShootingLine.Instantiate<ShootingLine>();
-					line.originPos = new Vector2(gridX * 16, gridY * 16);
-					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
-					line.GetNode<Line2D>("Line2D").DefaultColor = Colors.Green;
-					game.AddChild(line);
-					laserGun.ammo -= 1;
-				}
-				game.TurnPassed();
-				break;
-			}
 			if (game.level[gridX + dirX * iter, gridY + dirY * iter, 0] is Wall wall)
 			{
 				if (rangeWeapon is Pistol)
@@ -776,6 +718,73 @@ public partial class Player : BaseObject
 				game.TurnPassed();
 				break;
 			}
+			if (game.level[gridX + dirX * iter, gridY + dirY * iter, 3] is Enemy enemy)
+			{
+				var random = new Random();
+				if (rangeWeapon is Pistol)
+				{
+					var damage = random.Next(rangeWeapon.damage + agility) + 1;
+					damage = Mathf.Max(1, damage - enemy.AV);
+					if (enemy.DV > random.Next(60))
+					{
+						damage = 0;
+					}
+					enemy.hitPoint -= damage;
+					game.DamageNumber(enemy.gridX, enemy.gridY, damage);
+					(ammo as Bullet).numbers -= 1;
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+					game.AddChild(line);
+					if ((ammo as Bullet).numbers <= 0)
+					{
+						DeleteItem(ammo);
+						ammo = null;
+					}
+				}
+				// High-tech Weapon
+				if (rangeWeapon is ShrinkGun shrinkGun)
+				{
+					var hit = true;
+					if (enemy.DV > random.Next(60))
+					{
+						hit = false;
+						game.gameShell.AddLog("The ray missed!");
+					}
+					if (hit)
+					{
+						enemy.isShrink = true;
+						game.RemoveEnemy(enemy);
+					}
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+					line.GetNode<Line2D>("Line2D").DefaultColor = Colors.Blue;
+					game.AddChild(line);
+					shrinkGun.ammo -= 1;
+					game.DamageNumber(enemy.gridX, enemy.gridY, hit ? 9999 : 0);
+				}
+				if (rangeWeapon is LaserGun laserGun)
+				{
+					var damage = random.Next(rangeWeapon.damage + agility) + 1;
+					damage = Mathf.Max(1, damage - enemy.AV);
+					if (enemy.DV > random.Next(60))
+					{
+						damage = 0;
+					}
+					enemy.hitPoint -= damage;
+					game.DamageNumber(enemy.gridX, enemy.gridY, damage);
+					var line = packedShootingLine.Instantiate<ShootingLine>();
+					line.originPos = new Vector2(gridX * 16, gridY * 16);
+					line.targetPos = new Vector2(enemy.gridX * 16, enemy.gridY * 16);
+					line.GetNode<Line2D>("Line2D").DefaultColor = Colors.Green;
+					game.AddChild(line);
+					laserGun.ammo -= 1;
+				}
+				game.TurnPassed();
+				break;
+			}
+
 		}
 		isFire = false;
 	}

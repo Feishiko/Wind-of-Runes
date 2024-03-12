@@ -77,13 +77,17 @@ private Game game;
 			}
 		}
 		// Shooting
-		for (var distance = 1; distance < 5; distance++)
+		for (var y = -1; y <= 1; y++)
 		{
-			for (var y = -1; y <= 1; y++)
+			for (var x = -1; x <= 1; x++)
 			{
-				for (var x = -1; x <= 1; x++)
+				for (var distance = 1; distance < 5; distance++)
 				{
 					if (game.level[Mathf.Clamp(gridX + x * distance, 0, 39), Mathf.Clamp(gridY + y * distance, 0, 39), 0] is Wall)
+					{
+						break;
+					}
+					if (game.level[Mathf.Clamp(gridX + x * distance, 0, 39), Mathf.Clamp(gridY + y * distance, 0, 39), 1] is Door)
 					{
 						break;
 					}

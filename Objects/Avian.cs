@@ -23,7 +23,7 @@ public partial class Avian : Enemy
 		var random = new Random();
 		var bullet = packedBullet.Instantiate<Bullet>();
 		bullet.Init();
-		bullet.numbers = random.Next(1, 10);
+		bullet.numbers = random.Next(10, 20);
 		Pick(bullet);
 		if (random.Next(10) == 1)
 		{
@@ -107,13 +107,17 @@ public partial class Avian : Enemy
 			}
 		}
 		// Shooting
-		for (var distance = 1; distance < 5; distance++)
+		for (var y = -1; y <= 1; y++)
 		{
-			for (var y = -1; y <= 1; y++)
+			for (var x = -1; x <= 1; x++)
 			{
-				for (var x = -1; x <= 1; x++)
+				for (var distance = 1; distance < 5; distance++)
 				{
 					if (game.level[Mathf.Clamp(gridX + x * distance, 0, 39), Mathf.Clamp(gridY + y * distance, 0, 39), 0] is Wall)
+					{
+						break;
+					}
+					if (game.level[Mathf.Clamp(gridX + x * distance, 0, 39), Mathf.Clamp(gridY + y * distance, 0, 39), 1] is Door)
 					{
 						break;
 					}

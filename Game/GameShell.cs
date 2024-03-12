@@ -178,8 +178,16 @@ public partial class GameShell : Node2D
 				{
 					if ((game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter] == null)
 					{
-						(game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter] = (game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter + 1];
-						(game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter + 1] = null;
+						// Deals with multi-items
+						for (var i = iter; i < 199; i++)
+						{
+							if ((game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[i + 1] != null)
+							{
+								(game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[iter] = (game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[i + 1];
+								(game.level[game.player.gridX, game.player.gridY, 2] as DropItems).dropItems[i + 1] = null;
+								break;
+							}
+						}
 					}
 				}
 				// Add Items

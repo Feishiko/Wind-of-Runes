@@ -94,6 +94,10 @@ public partial class LookingGround : Node2D
 						gameShell.game.player.Pick(item);
 						(gameShell.game.level[gameShell.game.player.gridX, gameShell.game.player.gridY, 2] as DropItems).DeleteItem(item);
 					}
+					if (!gameShell.game.player.Pickable(item))
+					{
+						gameShell.AddLog("Too heavy! You can't pick up more items!");
+					}
 				}
 			}
 			gameShell.game.player.isLookingGround = false;

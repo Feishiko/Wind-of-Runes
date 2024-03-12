@@ -423,7 +423,7 @@ public partial class Game : Node2D
 		level[7, 10, 1].gridY = 10;
 
 		// Enemies
-		for (var height = 11; height < 20; height++)
+		for (var height = 11; height < 15; height++)
 		{
 			for (var width = 5; width < 10; width++)
 			{
@@ -529,6 +529,10 @@ public partial class Game : Node2D
 							// Generate Enemies
 							var someRandom = new Random();
 							var randomNumber = someRandom.Next(100);
+							if (controller.currentFloor > 10 && controller.currentFloor <= 15)
+							{
+								randomNumber = someRandom.Next(30);
+							}
 							if (randomNumber < 2)
 							{
 								if (controller.currentFloor <= 5)

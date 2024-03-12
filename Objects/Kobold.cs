@@ -25,49 +25,49 @@ public partial class Kobold : Enemy
 		DV = level + 5;
 		RuneSprite(rune);
 		var random = new Random();
-		if (random.Next(10) == 1)
+		if (random.Next(5) == 1)
 		{
 			var boot = packedBoot.Instantiate<Boot>();
 			boot.Init();
 			Pick(boot);
 		}
-		if (random.Next(10) == 1)
+		if (random.Next(5) == 1)
 		{
 			var clothes = packedClothes.Instantiate<Clothes>();
 			clothes.Init();
 			Pick(clothes);
 		}
-		if (random.Next(10) == 1)
+		if (random.Next(5) == 1)
 		{
 			var sword = packedSword.Instantiate<Sword>();
 			sword.Init();
 			Pick(sword);
 		}
-		if (random.Next(10) == 1)
+		if (random.Next(5) == 1)
 		{
 			var glove = packedGlove.Instantiate<Glove>();
 			glove.Init();
 			Pick(glove);
 		}
-		if (random.Next(10) == 1)
+		if (random.Next(5) == 1)
 		{
 			var pistol = packedPistol.Instantiate<Pistol>();
 			pistol.Init();
 			Pick(pistol);
 		}
-		if (random.Next(10) == 1)
+		if (random.Next(5) == 1)
 		{
 			var helmet = packedHelmet.Instantiate<Helmet>();
 			helmet.Init();
 			Pick(helmet);
 		}
-		if (random.Next(20) == 1)
+		if (random.Next(10) == 1)
 		{
 			var laserGun = packedLaserGun.Instantiate<LaserGun>();
 			laserGun.Init();
 			Pick(laserGun);
 		}
-		if (random.Next(5) == 1)
+		if (random.Next(3) == 1)
 		{
 			var bread = packedBread.Instantiate<Bread>();
 			bread.Init();
@@ -119,13 +119,18 @@ public partial class Kobold : Enemy
 			}
 		}
 		// Shooting
-		for (var distance = 1; distance < 5; distance++)
+
+		for (var y = -1; y <= 1; y++)
 		{
-			for (var y = -1; y <= 1; y++)
+			for (var x = -1; x <= 1; x++)
 			{
-				for (var x = -1; x <= 1; x++)
+				for (var distance = 1; distance < 5; distance++)
 				{
 					if (game.level[Mathf.Clamp(gridX + x * distance, 0, 39), Mathf.Clamp(gridY + y * distance, 0, 39), 0] is Wall)
+					{
+						break;
+					}
+					if (game.level[Mathf.Clamp(gridX + x * distance, 0, 39), Mathf.Clamp(gridY + y * distance, 0, 39), 1] is Door)
 					{
 						break;
 					}

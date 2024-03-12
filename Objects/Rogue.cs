@@ -25,7 +25,7 @@ public partial class Rogue : Enemy
 		bullet.Init();
 		bullet.numbers = random.Next(1, 3);
 		Pick(bullet);
-		if (random.Next(10) == 1)
+		if (random.Next(3) == 1)
 		{
 			var bread = packedBread.Instantiate<Bread>();
 			bread.Init();
