@@ -1,7 +1,10 @@
 using Godot;
 using System;
 using System.Security.Cryptography;
-
+public class JsonDropItems : JsonBaseObject
+{
+	public JsonPickUp[] dropItems { get; set; } = new JsonPickUp[200];
+}
 public partial class DropItems : BaseObject
 {
 	private Game game;

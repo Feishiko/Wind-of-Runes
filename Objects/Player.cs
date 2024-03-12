@@ -2,6 +2,37 @@ using Godot;
 using System;
 using System.IO;
 
+public class JsonPlayer
+{
+	public int hitPoint { get; set; }
+	public int maxHitPoint { get; set; }
+	public int level { get; set; }
+	public string name { get; set; }
+	public string gender { get; set; }
+	public string species { get; set; }
+	public int strength { get; set; }
+	public int agility { get; set; }
+	public int intelligence { get; set; }
+	public int toughness { get; set; }
+	public int AV { get; set; }
+	public int DV { get; set; }
+	public int hungryNess { get; set; }
+	public int maxHungryNess { get; set; }
+	public int time { get; set; }
+	public int exp { get; set; }
+	public int weight { get; set; }
+	public int maxWeight { get; set; }
+	public JsonPickUp[] inventory { get; set; } = new JsonPickUp[200];
+	public JsonEquipment head { get; set; }
+	public JsonEquipment hand { get; set; }
+	public JsonEquipment body { get; set; }
+	public JsonEquipment foot { get; set; }
+	public JsonEquipment weapon { get; set; }
+	public JsonEquipment rangeWeapon { get; set; }
+	public JsonEquipment ammo { get; set; }
+	public string[] runes { get; set; } = new string[5];
+}
+
 public partial class Player : BaseObject
 {
 	[Export]
@@ -49,7 +80,7 @@ public partial class Player : BaseObject
 	public string name = RandomName.RandomCharacterName(); // Can custom
 	public string gender = RandomName.RandomGender(); // Male or Female
 	public string species = RandomName.RandomSpecies(); // Human, Kobold, Avian, Avali, Robot
-	public int strength = 50; // Decide the melee weapon's damage and resistence
+	public int strength = 5; // Decide the melee weapon's damage and resistence
 	public int agility = 5; // Decide the range weapon's damage and resistence
 	public int intelligence = 5; // Decide magic's damage and resistence and max health
 	public int toughness = 5; // Decide how strong you are(how heavy stuff you can take)
@@ -292,9 +323,12 @@ public partial class Player : BaseObject
 				// Fire Mode Open(Normal Weapon)
 				if (Input.IsActionJustPressed("Fire") && rangeWeapon != null && ammo != null)
 				{
-					// Clear the log
-					game.gameShell.logs = null;
-					isFire = true;
+					if (rangeWeapon is Pistol)
+					{
+						// Clear the log
+						game.gameShell.logs = null;
+						isFire = true;
+					}
 				}
 				if (Input.IsActionJustPressed("Fire"))
 				{
@@ -439,13 +473,13 @@ public partial class Player : BaseObject
 			isDead = true;
 		}
 
-		// if (Input.IsKeyPressed(Key.A))
-		// {
-		// 	game.level[gridX, gridY, 3] = null;
-		// 	gridX = game.upstair.gridX;
-		// 	gridY = game.upstair.gridY;
-		// 	game.level[gridX, gridY, 3] = this;
-		// }
+		if (Input.IsKeyPressed(Key.A))
+		{
+			game.level[gridX, gridY, 3] = null;
+			gridX = game.upstair.gridX;
+			gridY = game.upstair.gridY;
+			game.level[gridX, gridY, 3] = this;
+		}
 	}
 
 	public void Movement(Vector2 dir)

@@ -94,6 +94,7 @@ public partial class CharacterMenu : Node2D
 			else if (state == 2)
 			{
 				controller.playerGender = gender[currentGender];
+				state = 3;
 				menu.isStartGame = true;
 			}
 		}
@@ -120,8 +121,8 @@ public partial class CharacterMenu : Node2D
 				menu.isCharacterMenu = false;
 			}
 		}
-		GetNode<Label>("Gender").Visible = state == 2;
-		GetNode<ColorRect>("GenderBack").Visible = state == 2;
+		GetNode<Label>("Gender").Visible = state >= 2;
+		GetNode<ColorRect>("GenderBack").Visible = state >= 2;
 		GetNode<ColorRect>("SpeciesBack").Visible = state >= 1;
 		speciesLabel.Visible = state >= 1;
 		GetNode<Label>("SpeciesDes").Visible = state >= 1;

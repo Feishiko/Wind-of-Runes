@@ -1,6 +1,25 @@
 using Godot;
 using System;
 
+public class JsonEnemy : JsonBaseObject
+{
+	public string name { get; set; }
+	public int hitPoint { get; set; }
+	public int level { get; set; }
+	public string species { get; set; }
+	public string gender { get; set; }
+	public int strength { get; set; }
+	public int agility { get; set; }
+	public int intelligence { get; set; }
+	public int toughness { get; set; }
+	public int AV { get; set; }
+	public int DV { get; set; }
+	public int nutrition { get; set; }
+	public int weight { get; set; }
+	public JsonPickUp[] inventory { get; set; } = new JsonPickUp[100];
+	public string rune { get; set; }
+}
+
 public partial class Enemy : BaseObject
 {
 	[Export]

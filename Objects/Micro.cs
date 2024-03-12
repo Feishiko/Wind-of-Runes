@@ -1,6 +1,11 @@
 using Godot;
 using System;
 
+public class JsonMicro : JsonFood
+{
+	public string rune { get; set; }
+}
+
 public partial class Micro : Food
 {
 	public string rune;

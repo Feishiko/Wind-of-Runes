@@ -1,20 +1,17 @@
-[System.Serializable]
 public class Controller
 {
 	private static Controller uniqueInstance;
-	public Player player;
-	public int currentFloor = 0;
-	public int maxFloor = -1;
+	public Player player { get; set; }
+	public int currentFloor { get; set; } = 0;
+	public int maxFloor { get; set; } = -1;
 	// LevelWidth is 40, LevelHeight is 40
 	public BaseObject[,,,] wholeLevels = new BaseObject[40, 40, 4, 20];
-	// public int turn = 0;
-	public bool isUp = false;
-	// public string[] logs = new string[4];
-	public bool isWin = false;
-	public bool isAnimation = false;
-	public string playerName = null;
-	public string playerSpecies = null;
-	public string playerGender = null;
+	public bool isUp { get; set; } = false;
+	public bool isWin { get; set; } = false;
+	public bool isAnimation { get; set; } = false;
+	public string playerName { get; set; } = null;
+	public string playerSpecies { get; set; } = null;
+	public string playerGender { get; set; } = null;
 	private Controller()
 	{
 	}

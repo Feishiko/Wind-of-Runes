@@ -1,6 +1,12 @@
 using Godot;
 using System;
 
+public class JsonShrinkGun : JsonEquipment
+{
+	public int ammo { get; set; }
+	public int maxAmmo { get; set; }
+}
+
 public partial class ShrinkGun : Equipment
 {
 	private Controller controller;

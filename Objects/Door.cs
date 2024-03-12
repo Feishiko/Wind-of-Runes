@@ -1,6 +1,9 @@
 using Godot;
 using System;
-
+public class JsonDoor : JsonBaseObject
+{
+	public bool isOpen { get; set; }
+}
 public partial class Door : BaseObject
 {
 	[Export]

@@ -1,6 +1,11 @@
 using Godot;
 using System;
 
+public class JsonBullet : JsonEquipment
+{
+	public int numbers { get; set; }
+}
+
 public partial class Bullet : Equipment
 {
 	private Controller controller;

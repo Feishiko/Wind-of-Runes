@@ -1,6 +1,14 @@
 using Godot;
 using System;
 
+public class JsonBaseObject
+{
+	public int gridX { get; set; }
+	public int gridY { get; set; }
+	public bool isVisible { get; set; }
+	public bool isMemorized { get; set; }
+}
+
 public partial class BaseObject : Node2D
 {
 	public int gridX;

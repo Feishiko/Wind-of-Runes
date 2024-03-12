@@ -1,6 +1,13 @@
 using Godot;
 using System;
 
+public class JsonPickUp
+{
+	public string name { get; set; }
+	public string description { get; set; }
+	public int weight { get; set; }
+}
+
 public partial class PickUp : BaseObject
 {
 	[Export]
