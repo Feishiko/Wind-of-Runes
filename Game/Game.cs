@@ -206,21 +206,31 @@ public partial class Game : Node2D
 				}
 			}
 
-			if (controller.isUp)
+			if (!controller.isSave)
 			{
-				level[downstair.gridX, downstair.gridY, 3] = packedPlayer.Instantiate<Player>();
-				(level[downstair.gridX, downstair.gridY, 3] as Player).PlayerCopy(controller.player);
-				level[downstair.gridX, downstair.gridY, 3].gridX = downstair.gridX;
-				level[downstair.gridX, downstair.gridY, 3].gridY = downstair.gridY;
-				AddChild(level[downstair.gridX, downstair.gridY, 3]);
-				player = level[downstair.gridX, downstair.gridY, 3] as Player;
+				if (controller.isUp)
+				{
+					level[downstair.gridX, downstair.gridY, 3] = packedPlayer.Instantiate<Player>();
+					(level[downstair.gridX, downstair.gridY, 3] as Player).PlayerCopy(controller.player);
+					level[downstair.gridX, downstair.gridY, 3].gridX = downstair.gridX;
+					level[downstair.gridX, downstair.gridY, 3].gridY = downstair.gridY;
+					AddChild(level[downstair.gridX, downstair.gridY, 3]);
+					player = level[downstair.gridX, downstair.gridY, 3] as Player;
+				}
+				else
+				{
+					level[upstair.gridX, upstair.gridY, 3] = packedPlayer.Instantiate<Player>();
+					(level[upstair.gridX, upstair.gridY, 3] as Player).PlayerCopy(controller.player);
+					level[upstair.gridX, upstair.gridY, 3].gridX = upstair.gridX;
+					level[upstair.gridX, upstair.gridY, 3].gridY = upstair.gridY;
+					AddChild(level[upstair.gridX, upstair.gridY, 3]);
+					player = level[upstair.gridX, upstair.gridY, 3] as Player;
+				}
 			}
 			else
 			{
 				level[upstair.gridX, upstair.gridY, 3] = packedPlayer.Instantiate<Player>();
 				(level[upstair.gridX, upstair.gridY, 3] as Player).PlayerCopy(controller.player);
-				level[upstair.gridX, upstair.gridY, 3].gridX = upstair.gridX;
-				level[upstair.gridX, upstair.gridY, 3].gridY = upstair.gridY;
 				AddChild(level[upstair.gridX, upstair.gridY, 3]);
 				player = level[upstair.gridX, upstair.gridY, 3] as Player;
 			}

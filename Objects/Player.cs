@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.IO;
 
-public class JsonPlayer
+public class JsonPlayer: JsonBaseObject
 {
 	public int hitPoint { get; set; }
 	public int maxHitPoint { get; set; }
@@ -31,6 +31,106 @@ public class JsonPlayer
 	public JsonEquipment rangeWeapon { get; set; }
 	public JsonEquipment ammo { get; set; }
 	public string[] runes { get; set; } = new string[5];
+
+	public void CopiedFrom(Player player)
+	{
+		hitPoint = player.hitPoint;
+		maxHitPoint = player.maxHitPoint;
+		level = player.level;
+		name = player.name;
+		gender = player.gender;
+		species = player.species;
+		strength = player.strength;
+		agility = player.agility;
+		intelligence = player.intelligence;
+		toughness = player.toughness;
+		AV = player.AV;
+		DV = player.DV;
+		hungryNess = player.hungryNess;
+		maxHungryNess = player.maxHungryNess;
+		time = player.time;
+		exp = player.exp;
+		weight = player.weight;
+		maxWeight = player.weight;
+		// Base Object
+		gridX = player.gridX;
+		gridY = player.gridY;
+		for (var iter = 0; iter < 200; iter++)
+		{
+			var pickUp = player.inventory[iter];
+			if (pickUp != null)
+			{
+				if (inventory[iter] == null)
+				{
+					inventory[iter] = new JsonPickUp();
+				}
+				inventory[iter].name = pickUp.name;
+				inventory[iter].description = pickUp.description;
+				inventory[iter].weight = pickUp.weight;
+				if (pickUp is Equipment equipment)
+				{
+					if (inventory[iter] is not JsonEquipment)
+					{
+						inventory[iter] = new JsonEquipment();
+					}
+					(inventory[iter] as JsonEquipment).CopiedFrom(equipment);
+					if (equipment.isEquipped)
+					{
+						head = equipment.part == "Head" ? inventory[iter] as JsonEquipment : head;
+						hand = equipment.part == "Hand" ? inventory[iter] as JsonEquipment : hand;
+						foot = equipment.part == "Foot" ? inventory[iter] as JsonEquipment : foot;
+						weapon = equipment.part == "Weapon" ? inventory[iter] as JsonEquipment : weapon;
+						body = equipment.part == "Body" ? inventory[iter] as JsonEquipment : body;
+						rangeWeapon = equipment.part == "RangeWeapon" ? inventory[iter] as JsonEquipment : rangeWeapon;
+					}
+				}
+				if (pickUp is Food food)
+				{
+					if (inventory[iter] is not JsonFood)
+					{
+						inventory[iter] = new JsonFood();
+					}
+					(inventory[iter] as JsonFood).CopiedFrom(food);
+				}
+				if (pickUp is Bullet bullet)
+				{
+					if (inventory[iter] is not JsonBullet)
+					{
+						inventory[iter] = new JsonBullet();
+					}
+					(inventory[iter] as JsonBullet).CopiedFrom(bullet);
+					ammo = bullet.isEquipped ? (inventory[iter] as JsonBullet) : ammo;
+				}
+				if (pickUp is ShrinkGun shrinkGun)
+				{
+					if (inventory[iter] is not JsonShrinkGun)
+					{
+						inventory[iter] = new JsonShrinkGun();
+					}
+					(inventory[iter] as JsonShrinkGun).CopiedFrom(shrinkGun);
+					rangeWeapon = shrinkGun.isEquipped ? (inventory[iter] as JsonShrinkGun) : rangeWeapon;
+				}
+				if (pickUp is LaserGun laserGun)
+				{
+					if (inventory[iter] is not JsonLaserGun)
+					{
+						inventory[iter] = new JsonLaserGun();
+					}
+					(inventory[iter] as JsonLaserGun).CopiedFrom(laserGun);
+					rangeWeapon = laserGun.isEquipped ? (inventory[iter] as JsonLaserGun) : rangeWeapon;
+				}
+				if (pickUp is Micro micro)
+				{
+					if (inventory[iter] is not JsonMicro)
+					{
+						inventory[iter] = new JsonMicro();
+					}
+					(inventory[iter] as JsonMicro).CopiedFrom(micro);
+				}
+			}
+		}
+		runes = player.runes;
+	}
 }
 
 public partial class Player : BaseObject
@@ -712,6 +812,8 @@ public partial class Player : BaseObject
 		rangeWeapon = player.rangeWeapon;
 		ammo = player.ammo;
 		runes = player.runes;
+		gridX = player.gridX;
+		gridY = player.gridY;
 	}
 
 	public void Fire(int dirX, int dirY)
@@ -830,5 +932,10 @@ public partial class Player : BaseObject
 	public void Heal(int number)
 	{
 		hitPoint = Mathf.Min(hitPoint + number, maxHitPoint);
+	}
+
+	public void Record()
+	{
+		controller.player = this;
 	}
 }

@@ -12,6 +12,7 @@ public class Controller
 	public string playerName { get; set; } = null;
 	public string playerSpecies { get; set; } = null;
 	public string playerGender { get; set; } = null;
+	public bool isSave = false;
 	private Controller()
 	{
 	}

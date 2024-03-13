@@ -3,8 +3,22 @@ using System;
 
 public class JsonFood : JsonPickUp
 {
-	public int nutrition { get; set; }
-	public string type { get; set; } // Bread, Corpse..
+	public void CopiedFrom(Food food)
+	{
+		name = food.name;
+		description = food.description;
+		weight = food.weight;
+		nutrition = food.nutrition;
+		if (food is Corpse)
+		{
+			type = "Corpse";
+		}
+		if (food is Bread)
+		{
+			type = "Bread";
+		}
+		pickUpType = "Food";
+	}
 }
 
 public partial class Food : PickUp
@@ -16,5 +30,10 @@ public partial class Food : PickUp
 
 	public override void _Process(double delta)
 	{
+	}
+
+	public void ReceivedFrom(JsonPickUp jsonPickUp)
+	{
+		nutrition = jsonPickUp.nutrition;
 	}
 }

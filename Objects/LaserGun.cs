@@ -3,8 +3,12 @@ using System;
 
 public class JsonLaserGun : JsonEquipment
 {
-	public int ammo { get; set; }
-	public int maxAmmo { get; set; }
+	public void CopiedFrom(LaserGun laserGun)
+	{
+		ammo = laserGun.ammo;
+		maxAmmo = laserGun.maxAmmo;
+		pickUpType = "LaserGun";
+	}
 }
 
 public partial class LaserGun : Equipment

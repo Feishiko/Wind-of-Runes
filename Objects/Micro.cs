@@ -3,7 +3,11 @@ using System;
 
 public class JsonMicro : JsonFood
 {
-	public string rune { get; set; }
+	public void CopiedFrom(Micro micro)
+	{
+		rune = micro.rune;
+		pickUpType = "Micro";
+	}
 }
 
 public partial class Micro : Food
@@ -15,5 +19,11 @@ public partial class Micro : Food
 
 	public override void _Process(double delta)
 	{
+	}
+
+	public void MicroReceivedFrom(JsonPickUp jsonPickUp)
+	{
+		nutrition = jsonPickUp.nutrition;
+		rune = jsonPickUp.rune;
 	}
 }

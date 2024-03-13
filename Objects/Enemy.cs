@@ -18,6 +18,71 @@ public class JsonEnemy : JsonBaseObject
 	public int weight { get; set; }
 	public JsonPickUp[] inventory { get; set; } = new JsonPickUp[100];
 	public string rune { get; set; }
+
+	public void CopiedFrom(Enemy enemy)
+	{
+		name = enemy.name;
+		hitPoint = enemy.hitPoint;
+		level = enemy.level;
+		species = enemy.species;
+		gender = enemy.gender;
+		strength = enemy.strength;
+		agility = enemy.agility;
+		toughness = enemy.toughness;
+		intelligence = enemy.intelligence;
+		AV = enemy.AV;
+		DV = enemy.DV;
+		nutrition = enemy.nutrition;
+		weight = enemy.weight;
+		rune = enemy.rune;
+		gridX = enemy.gridX;
+		gridY = enemy.gridY;
+		for (var iter = 0; iter < 10; iter++)
+		{
+			if (enemy.inventory[iter] != null)
+			{
+				if (inventory[iter] == null)
+				{
+					inventory[iter] = new JsonPickUp();
+				}
+				inventory[iter].name = enemy.inventory[iter].name;
+				inventory[iter].description = enemy.inventory[iter].description;
+				inventory[iter].weight = enemy.inventory[iter].weight;
+				if (enemy.inventory[iter] is Food food)
+				{
+					if (inventory[iter] is not JsonFood)
+					{
+						inventory[iter] = new JsonFood();
+					}
+					(inventory[iter] as JsonFood).CopiedFrom(food);
+				}
+				if (enemy.inventory[iter] is Equipment equipment)
+				{
+					if (inventory[iter] is not JsonEquipment)
+					{
+						inventory[iter] = new JsonEquipment();
+					}
+					(inventory[iter] as JsonEquipment).CopiedFrom(equipment);
+				}
+				if (enemy.inventory[iter] is Bullet bullet)
+				{
+					if (inventory[iter] is not JsonBullet)
+					{
+						inventory[iter] = new JsonBullet();
+					}
+					(inventory[iter] as JsonBullet).CopiedFrom(bullet);
+				}
+				if (enemy.inventory[iter] is LaserGun laserGun)
+				{
+					if (inventory[iter] is not JsonLaserGun)
+					{
+						inventory[iter] = new JsonLaserGun();
+					}
+					(inventory[iter] as JsonLaserGun).CopiedFrom(laserGun);
+				}
+			}
+		}
+	}
 }
 
 public partial class Enemy : BaseObject

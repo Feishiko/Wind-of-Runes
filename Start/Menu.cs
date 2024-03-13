@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.IO;
+using System.Text.Json;
 
 public partial class Menu : Node2D
 {
@@ -66,7 +68,10 @@ public partial class Menu : Node2D
 			{
 				switch (startMenuItems[selectIndex].text)
 				{
-					case "Continue":; break;
+					case "Continue":
+						{
+							LoadGame();
+						}; break;
 					case "New Game":
 						{
 							isCharacterMenu = true;
@@ -150,6 +155,75 @@ public partial class Menu : Node2D
 		if (startGameTimer >= 820)
 		{
 			GetTree().ChangeSceneToPacked(packedGame);
+		}
+	}
+
+	public void LoadGame()
+	{
+		controller.isSave = true;
+
+		var savedGame = new SaveGame();
+		var filePath = ProjectSettings.GlobalizePath("user://savegame.json");
+		string jsonString = File.ReadAllText(filePath);
+		savedGame = JsonSerializer.Deserialize<SaveGame>(jsonString);
+
+		controller.playerName = savedGame.playerName;
+		controller.playerGender = savedGame.playerGender;
+		controller.playerSpecies = savedGame.playerSpecies;
+		controller.currentFloor = savedGame.currentFloor;
+		controller.maxFloor = savedGame.maxFloor;
+		controller.isAnimation = savedGame.isAnimation;
+
+		controller.player = new Player
+		{
+			hitPoint = savedGame.player.hitPoint,
+			maxHitPoint = savedGame.player.maxHitPoint,
+			level = savedGame.player.level,
+			name = savedGame.player.name,
+			gender = savedGame.player.gender,
+			species = savedGame.player.species,
+			strength = savedGame.player.strength,
+			agility = savedGame.player.agility,
+			toughness = savedGame.player.toughness,
+			intelligence = savedGame.player.intelligence,
+			AV = savedGame.player.AV,
+			DV = savedGame.player.DV,
+			hungryNess = savedGame.player.hungryNess,
+			maxHungryNess = savedGame.player.maxHungryNess,
+			time = savedGame.player.time,
+			exp = savedGame.player.exp,
+			weight = savedGame.player.weight,
+			maxWeight = savedGame.player.maxWeight,
+			runes = savedGame.player.runes
+		};
+
+		for (var iter = 0; iter < 200; iter++)
+		{
+			if (savedGame.player.inventory[iter] != null)
+			{
+				if (savedGame.player.inventory[iter].pickUpType == "Food")
+				{
+					if (savedGame.player.inventory[iter].type == "Bread")
+					{
+						controller.player.inventory[iter] = new Bread();
+					}
+					if (savedGame.player.inventory[iter].type == "Corpse")
+					{
+						controller.player.inventory[iter] = new Corpse();
+					}
+					(controller.player.inventory[iter] as Food).ReceivedFrom(savedGame.player.inventory[iter]);
+				}
+				if (savedGame.player.inventory[iter].pickUpType == "Equipment")
+				{
+					controller.player.inventory[iter] = new Equipment();
+					(controller.player.inventory[iter] as Equipment).ReceivedFrom(savedGame.player.inventory[iter]);
+				}
+				if (savedGame.player.inventory[iter].pickUpType == "Micro")
+				{
+					controller.player.inventory[iter] = new Micro();
+					(controller.player.inventory[iter] as Micro).MicroReceivedFrom(savedGame.player.inventory[iter]);
+				}
+			}
 		}
 	}
 }

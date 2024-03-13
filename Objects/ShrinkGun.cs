@@ -3,8 +3,12 @@ using System;
 
 public class JsonShrinkGun : JsonEquipment
 {
-	public int ammo { get; set; }
-	public int maxAmmo { get; set; }
+	void CopiedFrom(ShrinkGun shrinkGun)
+	{
+		ammo = shrinkGun.ammo;
+		maxAmmo = shrinkGun.maxAmmo;
+		pickUpType = "ShrinkGun";
+	}
 }
 
 public partial class ShrinkGun : Equipment

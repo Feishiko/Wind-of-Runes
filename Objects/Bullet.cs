@@ -3,7 +3,11 @@ using System;
 
 public class JsonBullet : JsonEquipment
 {
-	public int numbers { get; set; }
+	void CopiedFrom(Bullet bullet)
+	{
+		numbers = bullet.numbers;
+		pickUpType = "Bullet";
+	}
 }
 
 public partial class Bullet : Equipment
